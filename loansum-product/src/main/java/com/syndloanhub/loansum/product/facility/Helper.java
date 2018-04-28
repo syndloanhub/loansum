@@ -10,11 +10,13 @@
 
 package com.syndloanhub.loansum.product.facility;
 
+import static com.syndloanhub.loansum.product.facility.FacilityType.Revolving;
 import static com.syndloanhub.loansum.product.facility.LoanContractEventType.RepaymentEvent;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -269,4 +271,115 @@ public final class Helper {
 
     return accrualSchedule;
   }
+
+  /**
+   * Utility function used to generate total commitment schedule based on a given total commitment
+   * amount as of a certain date, the type of facility, a set of non-prorated contracts, and a
+   * schedule of commitment events.
+   * 
+   * @param facilityType
+   * @param commitmentAmountStartDate
+   * @param commitmentAmount
+   * @param contracts
+   * @param events
+   * @return commitment schedule
+   */
+  static public LocalDateDoubleTimeSeries generateCommitmentSchedule(FacilityType facilityType,
+      LocalDate commitmentAmountStartDate,
+      double commitmentAmount,
+      List<LoanContract> contracts, List<FacilityEvent> events) {
+    List<LocalDate> dates = new ArrayList<LocalDate>();
+    List<Double> values = new ArrayList<Double>();
+
+    dates.add(commitmentAmountStartDate);
+    values.add(commitmentAmount);
+
+    if (facilityType != Revolving) {
+      for (LoanContract contract : contracts) {
+        double pikInterest = 0;
+        LocalDate startPikAccrual = contract.getAccrual().getStartDate();
+        LocalDate endPikAccrual = contract.getAccrual().getEndDate();
+        double pikContractAmount = contract.getAccrual().getAccrualAmount().getAmount();
+        boolean piking = contract.getAccrual().getPikSpread() > 0;
+
+        if (contract.getEvents() != null) {
+          for (LoanContractEvent event : contract.getEvents()) {
+            if (piking) {
+              endPikAccrual = event.getEffectiveDate();
+              pikInterest +=
+                  contract.getAccrual().getDayCount().yearFraction(startPikAccrual, endPikAccrual) *
+                      contract.getAccrual().getPikSpread() * pikContractAmount;
+            }
+
+            int i = Collections.binarySearch(dates, event.getEffectiveDate());
+
+            if (i < 0) {
+              i = -(i + 1);
+              dates.add(i, event.getEffectiveDate());
+              values.add(i, values.get(i - 1));
+            }
+
+            switch (event.getType()) {
+              case BorrowingEvent:
+                pikContractAmount += event.getAmount().getAmount();
+                for (int j = i; j < values.size(); j++)
+                  values.set(j, values.get(j) + event.getAmount().getAmount());
+                break;
+              case RepaymentEvent:
+                pikContractAmount -= event.getAmount().getAmount();
+                for (int j = i; j < values.size(); j++)
+                  values.set(j, values.get(j) - event.getAmount().getAmount());
+                break;
+            }
+
+            if (piking) {
+              startPikAccrual = endPikAccrual;
+              endPikAccrual = contract.getAccrual().getEndDate();
+            }
+          }
+        }
+
+        if (piking) {
+          pikInterest +=
+              contract.getAccrual().getDayCount().yearFraction(startPikAccrual, endPikAccrual) *
+                  contract.getAccrual().getPikSpread() *
+                  pikContractAmount;
+
+          CommitmentAdjustment pikAdjustment = CommitmentAdjustment.builder()
+              .amount(CurrencyAmount.of(contract.getAccrual().getAccrualAmount().getCurrency(), pikInterest))
+              .effectiveDate(contract.getPaymentDate())
+              .pik(true)
+              .build();
+
+          if (events == null)
+            events = new ArrayList<FacilityEvent>();
+
+          events.add(pikAdjustment);
+        }
+      }
+    }
+
+    if (events != null) {
+      for (FacilityEvent event : events) {
+        int i = Collections.binarySearch(dates, event.getEffectiveDate());
+
+        if (i < 0) {
+          i = -(i + 1);
+          dates.add(i, event.getEffectiveDate());
+          values.add(i, values.get(i - 1));
+        }
+
+        switch (event.getType()) {
+          case CommitmentAdjustmentEvent:
+            CommitmentAdjustment adjustment = (CommitmentAdjustment) event;
+            for (int j = i; j < values.size(); j++)
+              values.set(j, values.get(j) + adjustment.getAmount().getAmount());
+            break;
+        }
+      }
+    }
+
+    return LocalDateDoubleTimeSeries.builder().putAll(dates, values).build();
+  }
+
 }
