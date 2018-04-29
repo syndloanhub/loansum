@@ -74,7 +74,7 @@ import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanTradeList;
 public class ProratedLoanTradePricerTest {
   private static final Logger log = LoggerFactory
       .getLogger(ProratedLoanTradePricerTest.class);
-    private static boolean regenerate = false;
+  private static boolean regenerate = false;
 
   public void test_termLoan_1() throws IOException {
     final Repayment REPAYMENT_1 = Repayment.builder()
@@ -2143,7 +2143,10 @@ public class ProratedLoanTradePricerTest {
       double amount = Double.parseDouble(sl.get(6));
 
       final TradeInfo TRADE_INFO = TradeInfo.builder()
-          .tradeDate(tradeDate).settlementDate(actualSettle).build();
+          .tradeDate(tradeDate)
+          .settlementDate(actualSettle)
+          .id(StandardId.of("trade", tid))
+          .build();
 
       LoanTrade LOAN_TRADE = LoanTrade
           .builder()
@@ -2317,7 +2320,10 @@ public class ProratedLoanTradePricerTest {
       double amount = Double.parseDouble(sl.get(6));
 
       final TradeInfo TRADE_INFO = TradeInfo.builder()
-          .tradeDate(tradeDate).settlementDate(actualSettle).build();
+          .tradeDate(tradeDate)
+          .settlementDate(actualSettle)
+          .id(StandardId.of("trade", tid))
+          .build();
 
       LoanTrade LOAN_TRADE = LoanTrade
           .builder()
@@ -2669,9 +2675,11 @@ public class ProratedLoanTradePricerTest {
         .borrower(StandardId.of("cpty", "BORROWER"))
         .startDate(LocalDate.of(2016, 8, 29))
         .maturityDate(LocalDate.of(2022, 8, 4))
-        .contracts(Arrays.asList(CONTRACT_9, CONTRACT_10, CONTRACT_12, CONTRACT_13, CONTRACT_14, CONTRACT_15, CONTRACT_16,
-            CONTRACT_17, CONTRACT_18, CONTRACT_19, CONTRACT_20, CONTRACT_21, CONTRACT_22, CONTRACT_23, CONTRACT_24, CONTRACT_25,
-            CONTRACT_26))
+        .contracts(
+            Arrays.asList(CONTRACT_9, CONTRACT_10, CONTRACT_11, CONTRACT_12, CONTRACT_13, CONTRACT_14, CONTRACT_15, CONTRACT_16,
+                CONTRACT_17, CONTRACT_18, CONTRACT_19, CONTRACT_20, CONTRACT_21, CONTRACT_22, CONTRACT_23, CONTRACT_24,
+                CONTRACT_25,
+                CONTRACT_26))
         .events(Arrays.asList(ADJUSTMENT_1, ADJUSTMENT_2))
         .facilityType(Term)
         .originalCommitmentAmount(CurrencyAmount.of(Currency.USD, 238200000))

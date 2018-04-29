@@ -46,6 +46,50 @@
   }
  }, {
   "annotation": {
+   "source": "contract~11",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 11949.21875,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2016-10-31"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2016-11-30"
+        },
+        "Days": 30,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0575,
+        "Share Not": 2493750.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-01-24",
+   "presentValue": "USD 11949.21875",
+   "forecastValue": "USD 11949.21875",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
    "source": "contract~12",
    "uncertain": false,
    "type": "DelayedCompensation",
