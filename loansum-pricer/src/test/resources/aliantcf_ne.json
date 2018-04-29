@@ -1,0 +1,134 @@
+{
+ "@bean": "com.syndloanhub.loansum.product.facility.AnnotatedCashFlows",
+ "cashFlows": [{
+  "annotation": {
+   "source": "contract~2",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-04-10",
+   "presentValue": "USD 4012.4559581899703",
+   "forecastValue": "USD 4012.4559581899703",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~2",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-04-26",
+   "presentValue": "USD 3646.8451248566366",
+   "forecastValue": "USD 3646.8451248566366",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~3",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-04-26",
+   "presentValue": "USD 2188.107074913982",
+   "forecastValue": "USD 2188.107074913982",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": true,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-07-26",
+   "presentValue": "USD 33382.691545444424",
+   "forecastValue": "USD 33382.691545444424",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": false,
+   "type": "Repayment",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER"
+  },
+  "cashFlow": {
+   "paymentDate": "2017-06-30",
+   "presentValue": "USD 7600.87582574318",
+   "forecastValue": "USD 7600.87582574318",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-04-10",
+   "presentValue": "USD 3026063.6143259304",
+   "forecastValue": "USD 3026063.6143259304",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfCarry",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-04-10",
+   "presentValue": "USD 911.5913125000001",
+   "forecastValue": "USD 911.5913125000001",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "EconomicBenefit",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-04-10",
+   "presentValue": "USD 85.50985298717671",
+   "forecastValue": "USD 85.50985298717671",
+   "discountFactor": 1.0
+  }
+ }]
+}

@@ -1,0 +1,100 @@
+{
+ "@bean": "com.syndloanhub.loansum.product.facility.AnnotatedCashFlows",
+ "cashFlows": [{
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-05-11",
+   "presentValue": "USD 613.4027777777777",
+   "forecastValue": "USD 613.4027777777777",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-05-11",
+   "presentValue": "USD 500000",
+   "forecastValue": "USD 500000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER"
+  },
+  "cashFlow": {
+   "paymentDate": "2017-07-26",
+   "presentValue": "USD 1778.8680555555557",
+   "forecastValue": "USD 1778.8680555555557",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-06-09",
+   "presentValue": "USD 61.34027777777778",
+   "forecastValue": "USD 61.34027777777778",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-06-09",
+   "presentValue": "USD 501874.99999999994",
+   "forecastValue": "USD 501874.99999999994",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfCarry",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-06-09",
+   "presentValue": "USD 15.177118229166668",
+   "forecastValue": "USD 15.177118229166668",
+   "discountFactor": 1.0
+  }
+ }]
+}

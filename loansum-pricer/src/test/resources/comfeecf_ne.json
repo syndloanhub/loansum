@@ -1,0 +1,136 @@
+{
+ "@bean": "com.syndloanhub.loansum.product.facility.AnnotatedCashFlows",
+ "cashFlows": [{
+  "annotation": {
+   "source": "contract~1",
+   "uncertain": true,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-08-17",
+   "presentValue": "USD 349390",
+   "forecastValue": "USD 349390",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~2",
+   "uncertain": true,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-08-17",
+   "presentValue": "USD 94626.45833333333",
+   "forecastValue": "USD 94626.45833333333",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~2",
+   "uncertain": false,
+   "type": "Borrowing",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~AGENT"
+  },
+  "cashFlow": {
+   "paymentDate": "2016-08-04",
+   "presentValue": "USD 75000000",
+   "forecastValue": "USD 75000000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~3",
+   "uncertain": true,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-09-19",
+   "presentValue": "USD 964545.9999999999",
+   "forecastValue": "USD 964545.9999999999",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": true,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-10-17",
+   "presentValue": "USD 823886.0000000001",
+   "forecastValue": "USD 823886.0000000001",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~5",
+   "uncertain": true,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-11-17",
+   "presentValue": "USD 913094.6666666666",
+   "forecastValue": "USD 913094.6666666666",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "fee~1",
+   "uncertain": true,
+   "type": "Fee",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-08-17",
+   "presentValue": "USD 47569.444444444445",
+   "forecastValue": "USD 47569.444444444445",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {}
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-08-01",
+   "presentValue": "USD 225000000",
+   "forecastValue": "USD 225000000",
+   "discountFactor": 1.0
+  }
+ }]
+}

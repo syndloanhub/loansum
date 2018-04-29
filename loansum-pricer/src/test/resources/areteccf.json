@@ -1,0 +1,253 @@
+{
+ "@bean": "com.syndloanhub.loansum.product.facility.AnnotatedCashFlows",
+ "cashFlows": [{
+  "annotation": {
+   "source": "contract~3",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "com.opengamma.strata.market.explain.ExplainMap",
+       "map": {
+        "Share Amt": 1224.1261173333335,
+        "Start": {
+         "@type": "java.time.LocalDate",
+         "value": "2016-08-08"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2016-08-25"
+        },
+        "Days": 17,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "com.opengamma.strata.basics.date.DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.02,
+        "Share Not": 1296133.536,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-09-08",
+   "presentValue": "USD 1224.1261173333335",
+   "forecastValue": "USD 1224.1261173333335",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1012.0102637884985,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2016-08-25"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2016-09-08"
+        },
+        "Days": 14,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.02,
+        "Share Not": 1301156.0534423552,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-09-08",
+   "presentValue": "USD 1012.0102637884985",
+   "forecastValue": "USD 1012.0102637884985",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~AGENT",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1301.1560534423552,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2016-09-08"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2016-09-26"
+        },
+        "Days": 18,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.02,
+        "Share Not": 1301156.0534423552,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-09-26",
+   "presentValue": "USD 1301.1560534423552",
+   "forecastValue": "USD 1301.1560534423552",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": false,
+   "type": "PikInterest",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~AGENT",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 5204.624213769421,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2016-08-25"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2016-09-26"
+        },
+        "Days": 32,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.045,
+        "Share Not": 1301156.0534423552,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-09-26",
+   "presentValue": "USD 5204.624213769421",
+   "forecastValue": "USD 5204.624213769421",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 907293.4751932486,
+        "Share Not": 1301156.0534423552,
+        "Price": 0.7,
+        "Sett Per PIK": 3515.7622164,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-09-08",
+   "presentValue": "USD 907293.4751932486",
+   "forecastValue": "USD 907293.4751932486",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfCarry",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 403.43762073436267,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2016-08-08"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2016-09-08"
+        },
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "Days": 31,
+        "DIY": 360.0,
+        "Avg LIBOR": 0.0051638,
+        "Exp Sett Px": 907293.4752,
+        "Formula": "Exp Sett Px x Avg LIBOR x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2016-09-08",
+   "presentValue": "USD 403.43762073436267",
+   "forecastValue": "USD 403.43762073436267",
+   "discountFactor": 1.0
+  }
+ }]
+}

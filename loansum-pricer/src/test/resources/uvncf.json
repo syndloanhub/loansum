@@ -1,0 +1,364 @@
+{
+ "@bean": "com.syndloanhub.loansum.product.facility.AnnotatedCashFlows",
+ "cashFlows": [{
+  "annotation": {
+   "source": "contract~3",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "com.opengamma.strata.market.explain.ExplainMap",
+       "map": {
+        "Share Amt": 166.21836937562284,
+        "Start": {
+         "@type": "java.time.LocalDate",
+         "value": "2017-01-04"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2017-01-05"
+        },
+        "Days": 1,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "com.opengamma.strata.basics.date.DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.04,
+        "Share Not": 1495965.3243806055,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-01-05",
+   "presentValue": "USD 166.21836937562284",
+   "forecastValue": "USD 166.21836937562284",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~3",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~AGENT",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 4321.677603766193,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2017-01-05"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2017-01-31"
+        },
+        "Days": 26,
+        "DIY": 360.00000000000006,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.04,
+        "Share Not": 1495965.3243806055,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-01-31",
+   "presentValue": "USD 4321.677603766193",
+   "forecastValue": "USD 4321.677603766193",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~AGENT",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 4654.11434251744,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2017-01-31"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2017-02-28"
+        },
+        "Days": 28,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.04,
+        "Share Not": 1495965.3243806055,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-02-28",
+   "presentValue": "USD 4654.11434251744",
+   "forecastValue": "USD 4654.11434251744",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~5",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~AGENT",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2493.275540634342,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2017-02-28"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2017-03-15"
+        },
+        "Days": 15,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.04,
+        "Share Not": 1495965.3243806055,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-03-15",
+   "presentValue": "USD 2493.275540634342",
+   "forecastValue": "USD 2493.275540634342",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~6",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~AGENT",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 4.011839975668765,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2017-03-15"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2017-03-24"
+        },
+        "Days": 9,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.04,
+        "Share Not": 4011.8399756687645,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 5470.496109484767,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2017-03-15"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2017-04-17"
+        },
+        "Days": 33,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.04,
+        "Share Not": 1491953.4844049364,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-04-17",
+   "presentValue": "USD 5474.507949460435",
+   "forecastValue": "USD 5474.507949460435",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~6",
+   "uncertain": false,
+   "type": "Repayment",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~AGENT"
+  },
+  "cashFlow": {
+   "paymentDate": "2017-03-24",
+   "presentValue": "USD 4011.8399756687645",
+   "forecastValue": "USD 4011.8399756687645",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1505315.1076579844,
+        "Share Not": 1495965.3243806055,
+        "Price": 1.00625,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-01-05",
+   "presentValue": "USD 1505315.1076579844",
+   "forecastValue": "USD 1505315.1076579844",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfCarry",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 32.26738800318839,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2017-01-04"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2017-01-05"
+        },
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "Days": 1,
+        "DIY": 360.0,
+        "Avg LIBOR": 0.0077167,
+        "Exp Sett Px": 1505340.3243806055,
+        "Formula": "Exp Sett Px x Avg LIBOR x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-01-05",
+   "presentValue": "USD 32.26738800318839",
+   "forecastValue": "USD 32.26738800318839",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "EconomicBenefit",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": -25.216722621214643,
+        "Price": 1.00625,
+        "Trd Dt Funded": 1495965.3243806052,
+        "Sett Dt Funded": 1495965.3243806055,
+        "Trd Dt Repay": 4034.6756193945184,
+        "Formula": "(Trd Dt Funded - Sett Dt Funded + Trd Dt Repay) x (1 - Price)"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-01-05",
+   "presentValue": "USD 25.216722621214643",
+   "forecastValue": "USD 25.216722621214643",
+   "discountFactor": 1.0
+  }
+ }]
+}
