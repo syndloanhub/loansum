@@ -172,13 +172,18 @@ public final class ProratedLoanTrade implements CalculationTarget, ProratedTrade
   private final TradeInfo info;
 
   /**
-   * The term deposit product that was agreed when the trade occurred.
+   * The loan facility product that was agreed when the trade occurred.
    * <p>
    * The product captures the contracted financial details of the trade.
    */
   @PropertyDefinition(validate = "notNull", overrideGet = true)
   private final ProratedFacility product;
 
+  /**
+   * Default values.
+   * 
+   * @param builder
+   */
   @ImmutableDefaults
   private static void applyDefaults(Builder builder) {
     builder.info = TradeInfo.empty();
@@ -446,7 +451,7 @@ public final class ProratedLoanTrade implements CalculationTarget, ProratedTrade
 
   //-----------------------------------------------------------------------
   /**
-   * Gets the term deposit product that was agreed when the trade occurred.
+   * Gets the loan facility product that was agreed when the trade occurred.
    * <p>
    * The product captures the contracted financial details of the trade.
    * @return the value of the property, not null
@@ -1393,7 +1398,7 @@ public final class ProratedLoanTrade implements CalculationTarget, ProratedTrade
     }
 
     /**
-     * Sets the term deposit product that was agreed when the trade occurred.
+     * Sets the loan facility product that was agreed when the trade occurred.
      * <p>
      * The product captures the contracted financial details of the trade.
      * @param product  the new value, not null
