@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
@@ -152,7 +151,7 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
             .stream()
             .map(fee -> fee.prorate(trade))
             .collect(Collectors.toList()))
-        .fundingDate(startDate)
+        .startDate(startDate)
         .maturityDate(maturityDate)
         .facilityType(facilityType)
         .commitment(builder.build())
@@ -213,14 +212,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
    */
   @PropertyDefinition(validate = "notNull")
   private final LocalDate startDate;
-
-  /**
-   * The start date of this facility.
-   * <p>
-   * Funds may be drawn from this date.
-   */
-  @PropertyDefinition(get = "optional")
-  private final LocalDate mustDrawByDate;
 
   /**
    * The maturity date of this facility.
@@ -343,7 +334,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       List<? extends StandardId> identifiers,
       CurrencyAmount originalCommitmentAmount,
       LocalDate startDate,
-      LocalDate mustDrawByDate,
       LocalDate maturityDate,
       List<? extends LoanContract> contracts,
       List<? extends AccruingFee> fees,
@@ -363,7 +353,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     this.identifiers = (identifiers != null ? ImmutableList.copyOf(identifiers) : null);
     this.originalCommitmentAmount = originalCommitmentAmount;
     this.startDate = startDate;
-    this.mustDrawByDate = mustDrawByDate;
     this.maturityDate = maturityDate;
     this.contracts = (contracts != null ? ImmutableList.copyOf(contracts) : null);
     this.fees = (fees != null ? ImmutableList.copyOf(fees) : null);
@@ -450,17 +439,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
 
   //-----------------------------------------------------------------------
   /**
-   * Gets the start date of this facility.
-   * <p>
-   * Funds may be drawn from this date.
-   * @return the optional value of the property, not null
-   */
-  public Optional<LocalDate> getMustDrawByDate() {
-    return Optional.ofNullable(mustDrawByDate);
-  }
-
-  //-----------------------------------------------------------------------
-  /**
    * Gets the maturity date of this facility.
    * <p>
    * Date on which final principal and interest is repaid.
@@ -535,7 +513,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
           JodaBeanUtils.equal(identifiers, other.identifiers) &&
           JodaBeanUtils.equal(originalCommitmentAmount, other.originalCommitmentAmount) &&
           JodaBeanUtils.equal(startDate, other.startDate) &&
-          JodaBeanUtils.equal(mustDrawByDate, other.mustDrawByDate) &&
           JodaBeanUtils.equal(maturityDate, other.maturityDate) &&
           JodaBeanUtils.equal(contracts, other.contracts) &&
           JodaBeanUtils.equal(fees, other.fees) &&
@@ -555,7 +532,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     hash = hash * 31 + JodaBeanUtils.hashCode(identifiers);
     hash = hash * 31 + JodaBeanUtils.hashCode(originalCommitmentAmount);
     hash = hash * 31 + JodaBeanUtils.hashCode(startDate);
-    hash = hash * 31 + JodaBeanUtils.hashCode(mustDrawByDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(maturityDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(contracts);
     hash = hash * 31 + JodaBeanUtils.hashCode(fees);
@@ -566,7 +542,7 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
 
   @Override
   public String toString() {
-    StringBuilder buf = new StringBuilder(448);
+    StringBuilder buf = new StringBuilder(416);
     buf.append("Facility{");
     buf.append("id").append('=').append(id).append(',').append(' ');
     buf.append("borrower").append('=').append(borrower).append(',').append(' ');
@@ -575,7 +551,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     buf.append("identifiers").append('=').append(identifiers).append(',').append(' ');
     buf.append("originalCommitmentAmount").append('=').append(originalCommitmentAmount).append(',').append(' ');
     buf.append("startDate").append('=').append(startDate).append(',').append(' ');
-    buf.append("mustDrawByDate").append('=').append(mustDrawByDate).append(',').append(' ');
     buf.append("maturityDate").append('=').append(maturityDate).append(',').append(' ');
     buf.append("contracts").append('=').append(contracts).append(',').append(' ');
     buf.append("fees").append('=').append(fees).append(',').append(' ');
@@ -632,11 +607,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     private final MetaProperty<LocalDate> _startDate = DirectMetaProperty.ofImmutable(
         this, "startDate", Facility.class, LocalDate.class);
     /**
-     * The meta-property for the {@code mustDrawByDate} property.
-     */
-    private final MetaProperty<LocalDate> _mustDrawByDate = DirectMetaProperty.ofImmutable(
-        this, "mustDrawByDate", Facility.class, LocalDate.class);
-    /**
      * The meta-property for the {@code maturityDate} property.
      */
     private final MetaProperty<LocalDate> _maturityDate = DirectMetaProperty.ofImmutable(
@@ -676,7 +646,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
         "identifiers",
         "originalCommitmentAmount",
         "startDate",
-        "mustDrawByDate",
         "maturityDate",
         "contracts",
         "fees",
@@ -706,8 +675,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
           return _originalCommitmentAmount;
         case -2129778896:  // startDate
           return _startDate;
-        case 1853585906:  // mustDrawByDate
-          return _mustDrawByDate;
         case -414641441:  // maturityDate
           return _maturityDate;
         case -395505247:  // contracts
@@ -795,14 +762,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     }
 
     /**
-     * The meta-property for the {@code mustDrawByDate} property.
-     * @return the meta-property, not null
-     */
-    public MetaProperty<LocalDate> mustDrawByDate() {
-      return _mustDrawByDate;
-    }
-
-    /**
      * The meta-property for the {@code maturityDate} property.
      * @return the meta-property, not null
      */
@@ -860,8 +819,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
           return ((Facility) bean).getOriginalCommitmentAmount();
         case -2129778896:  // startDate
           return ((Facility) bean).getStartDate();
-        case 1853585906:  // mustDrawByDate
-          return ((Facility) bean).mustDrawByDate;
         case -414641441:  // maturityDate
           return ((Facility) bean).getMaturityDate();
         case -395505247:  // contracts
@@ -900,7 +857,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     private List<? extends StandardId> identifiers;
     private CurrencyAmount originalCommitmentAmount;
     private LocalDate startDate;
-    private LocalDate mustDrawByDate;
     private LocalDate maturityDate;
     private List<? extends LoanContract> contracts;
     private List<? extends AccruingFee> fees;
@@ -926,7 +882,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       this.identifiers = beanToCopy.getIdentifiers();
       this.originalCommitmentAmount = beanToCopy.getOriginalCommitmentAmount();
       this.startDate = beanToCopy.getStartDate();
-      this.mustDrawByDate = beanToCopy.mustDrawByDate;
       this.maturityDate = beanToCopy.getMaturityDate();
       this.contracts = beanToCopy.getContracts();
       this.fees = beanToCopy.getFees();
@@ -952,8 +907,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
           return originalCommitmentAmount;
         case -2129778896:  // startDate
           return startDate;
-        case 1853585906:  // mustDrawByDate
-          return mustDrawByDate;
         case -414641441:  // maturityDate
           return maturityDate;
         case -395505247:  // contracts
@@ -994,9 +947,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
         case -2129778896:  // startDate
           this.startDate = (LocalDate) newValue;
           break;
-        case 1853585906:  // mustDrawByDate
-          this.mustDrawByDate = (LocalDate) newValue;
-          break;
         case -414641441:  // maturityDate
           this.maturityDate = (LocalDate) newValue;
           break;
@@ -1034,7 +984,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
           identifiers,
           originalCommitmentAmount,
           startDate,
-          mustDrawByDate,
           maturityDate,
           contracts,
           fees,
@@ -1138,18 +1087,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     }
 
     /**
-     * Sets the start date of this facility.
-     * <p>
-     * Funds may be drawn from this date.
-     * @param mustDrawByDate  the new value
-     * @return this, for chaining, not null
-     */
-    public Builder mustDrawByDate(LocalDate mustDrawByDate) {
-      this.mustDrawByDate = mustDrawByDate;
-      return this;
-    }
-
-    /**
      * Sets the maturity date of this facility.
      * <p>
      * Date on which final principal and interest is repaid.
@@ -1241,7 +1178,7 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     //-----------------------------------------------------------------------
     @Override
     public String toString() {
-      StringBuilder buf = new StringBuilder(448);
+      StringBuilder buf = new StringBuilder(416);
       buf.append("Facility.Builder{");
       buf.append("id").append('=').append(JodaBeanUtils.toString(id)).append(',').append(' ');
       buf.append("borrower").append('=').append(JodaBeanUtils.toString(borrower)).append(',').append(' ');
@@ -1250,7 +1187,6 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       buf.append("identifiers").append('=').append(JodaBeanUtils.toString(identifiers)).append(',').append(' ');
       buf.append("originalCommitmentAmount").append('=').append(JodaBeanUtils.toString(originalCommitmentAmount)).append(',').append(' ');
       buf.append("startDate").append('=').append(JodaBeanUtils.toString(startDate)).append(',').append(' ');
-      buf.append("mustDrawByDate").append('=').append(JodaBeanUtils.toString(mustDrawByDate)).append(',').append(' ');
       buf.append("maturityDate").append('=').append(JodaBeanUtils.toString(maturityDate)).append(',').append(' ');
       buf.append("contracts").append('=').append(JodaBeanUtils.toString(contracts)).append(',').append(' ');
       buf.append("fees").append('=').append(JodaBeanUtils.toString(fees)).append(',').append(' ');
