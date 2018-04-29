@@ -50,9 +50,6 @@ import org.joda.beans.impl.direct.DirectMetaProperty;
  * function. For example, an interest contract with a repayment embedded may be rebuilt into
  * 2 sub-accruals implementing the pre and post-paydown accruals.
  */
-/**
- * 
- */
 @BeanDefinition
 public final class FixedRateAccrual implements Accrual, ImmutableBean {
 
