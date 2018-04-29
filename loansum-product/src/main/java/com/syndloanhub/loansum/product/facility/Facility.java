@@ -24,7 +24,6 @@ import org.joda.beans.gen.ImmutableDefaults;
 import org.joda.beans.gen.ImmutableValidator;
 import org.joda.beans.gen.PropertyDefinition;
 
-import static com.syndloanhub.loansum.product.facility.FacilityType.Revolving;
 import static com.syndloanhub.loansum.product.facility.FacilityType.Term;
 import static com.syndloanhub.loansum.product.facility.LoanContractEventType.RepaymentEvent;
 import static com.syndloanhub.loansum.product.facility.Helper.intersects;
@@ -32,7 +31,6 @@ import static com.syndloanhub.loansum.product.facility.Helper.tsget;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -229,7 +227,7 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
    * <p>
    * Date on which final principal and interest is repaid.
    */
-  @PropertyDefinition(get = "optional")
+  @PropertyDefinition(validate = "notNull")
   private final LocalDate maturityDate;
 
   /**
@@ -357,6 +355,7 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     JodaBeanUtils.notNull(facilityType, "facilityType");
     JodaBeanUtils.notNull(originalCommitmentAmount, "originalCommitmentAmount");
     JodaBeanUtils.notNull(startDate, "startDate");
+    JodaBeanUtils.notNull(maturityDate, "maturityDate");
     this.id = id;
     this.borrower = borrower;
     this.agent = agent;
@@ -465,10 +464,10 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
    * Gets the maturity date of this facility.
    * <p>
    * Date on which final principal and interest is repaid.
-   * @return the optional value of the property, not null
+   * @return the value of the property, not null
    */
-  public Optional<LocalDate> getMaturityDate() {
-    return Optional.ofNullable(maturityDate);
+  public LocalDate getMaturityDate() {
+    return maturityDate;
   }
 
   //-----------------------------------------------------------------------
@@ -864,7 +863,7 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
         case 1853585906:  // mustDrawByDate
           return ((Facility) bean).mustDrawByDate;
         case -414641441:  // maturityDate
-          return ((Facility) bean).maturityDate;
+          return ((Facility) bean).getMaturityDate();
         case -395505247:  // contracts
           return ((Facility) bean).getContracts();
         case 3138989:  // fees
@@ -928,7 +927,7 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       this.originalCommitmentAmount = beanToCopy.getOriginalCommitmentAmount();
       this.startDate = beanToCopy.getStartDate();
       this.mustDrawByDate = beanToCopy.mustDrawByDate;
-      this.maturityDate = beanToCopy.maturityDate;
+      this.maturityDate = beanToCopy.getMaturityDate();
       this.contracts = beanToCopy.getContracts();
       this.fees = beanToCopy.getFees();
       this.totalCommitmentSchedule = beanToCopy.getTotalCommitmentSchedule();
@@ -1154,10 +1153,11 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
      * Sets the maturity date of this facility.
      * <p>
      * Date on which final principal and interest is repaid.
-     * @param maturityDate  the new value
+     * @param maturityDate  the new value, not null
      * @return this, for chaining, not null
      */
     public Builder maturityDate(LocalDate maturityDate) {
+      JodaBeanUtils.notNull(maturityDate, "maturityDate");
       this.maturityDate = maturityDate;
       return this;
     }
