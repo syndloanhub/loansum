@@ -1,0 +1,392 @@
+<!-- 
+/**
+ * Copyright (c) 2018 SyndLoanHub, LLC and contributors
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License from within this distribution and at:
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+ -->
+<html>
+<body onload="tradeChange()">
+	<h1>Cashflows</h1>
+	<p id="cftable"></p>
+
+	<script type="text/javascript">
+		function calculateCashflows() {
+			alert("calculateCashflows");
+
+			var xhr = new XMLHttpRequest();
+			// var url = "loansum/calculateCashflows";
+			var url = "loansum/calculateProceeds";
+
+			xhr.open("POST", url, true);
+			xhr.setRequestHeader("Content-type", "application/json");
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					var cashflow = JSON.parse(xhr.responseText);
+					if (cashflow.message) {
+						alert(cashflow.message);
+					} else {
+						document.getElementById("cashflows").value = JSON
+								.stringify(cashflow)
+						cashflowChange();
+					}
+				}
+			};
+
+			xhr.send(document.getElementById("trade").value);
+		}
+
+		function explainInterest(explains) {
+			alert("explain=" + explains);
+			var txt = "<table border='1' width='100%'>";
+			txt += "<tr>" + "<th>Share Not</th>" + "<th>Start</th>"
+					+ "<th>End</th>" + "<th>Days</th>" + "<th>DIY</th>"
+					+ "<th>All-in Rt</th>" + "<th>Share Amt</th>"
+					+ "<th>Formula</th>" + "</tr>";
+			for (i in explains.map.Accrual.value) {
+				txt += "<tr>";
+				txt += "<td>";
+				txt += explains.map.Accrual.value[i].map["Share Not"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.Accrual.value[i].map["Start"].value;
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.Accrual.value[i].map["End"].value;
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.Accrual.value[i].map["Days"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.Accrual.value[i].map["DIY"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.Accrual.value[i].map["All-in Rt"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.Accrual.value[i].map["Share Amt"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.Accrual.value[i].map["Formula"];
+				txt += "</td>";
+				txt += "</tr>";
+			}
+			txt += "</table>";
+			return txt;
+		}
+
+		function explainCostOfCarry(explains) {
+			alert("explain=" + explains);
+			var txt = "<table border='1' width='100%'>";
+			txt += "<tr>" + "<th>Exp Sett Px</th>" + "<th>Start</th>"
+					+ "<th>End</th>" + "<th>Days</th>" + "<th>DIY</th>"
+					+ "<th>Avg LIBOR</th>" + "<th>Formula</th>" + "</tr>";
+			for (i in explains.map.CashFlow.value) {
+				txt += "<tr>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Exp Sett Px"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Start"].value;
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["End"].value;
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Days"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["DIY"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Avg LIBOR"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Formula"];
+				txt += "</td>";
+				txt += "</tr>";
+			}
+			txt += "</table>";
+			return txt;
+		}
+
+		function explainCostOfFunded(explains) {
+			alert("explain=" + explains);
+			var txt = "<table border='1' width='100%'>";
+			txt += "<tr>" + "<th>Share Not</th>" + "<th>Price</th>"
+					+ "<th>Sett Per PIK</th>" + "<th>Share Amt</th>"
+					+ "<th>Formula</th>" + "</tr>";
+			for (i in explains.map.CashFlow.value) {
+				txt += "<tr>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Share Not"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Price"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Sett Per PIK"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Share Amt"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Formula"];
+				txt += "</td>";
+				txt += "</tr>";
+			}
+			txt += "</table>";
+			return txt;
+		}
+
+		function explainEconomicBenefit(explains) {
+			alert("explain=" + explains);
+			var txt = "<table border='1' width='100%'>";
+			txt += "<tr>" + "<th>Trd Dt Funded</th>"
+					+ "<th>Sett Dt Funded</th>" + "<th>Trd Dt Repay</th>"
+					+ "<th>Price</th>" + "<th>Formula</th>" + "</tr>";
+			for (i in explains.map.CashFlow.value) {
+				txt += "<tr>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Trd Dt Funded"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Sett Dt Funded"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Trd Dt Repay"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Price"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Formula"];
+				txt += "</td>";
+				txt += "</tr>";
+			}
+			txt += "</table>";
+			return txt;
+		}
+
+		function cashflowChange() {
+			var data = JSON.parse(document.getElementById("cashflows").value);
+			var txt = "<table border='1' width='100%'>";
+
+			txt += "<tr>" + "<th>Payment Date</th>" + "<th>Type</th>"
+					+ "<th>Source</th>" + "<th>Payer</th>"
+					+ "<th>Receiver</th>" + "<th>Uncertain</th>"
+					+ "<th>Payment</th>" + "<th>Explain</th>" + "</tr>";
+
+			for (i in data.cashFlows) {
+				txt += "<tr>";
+
+				txt += "<td>" + data.cashFlows[i].cashFlow.paymentDate
+						+ "</td>";
+
+				txt += "<td>" + data.cashFlows[i].annotation.type + "</td>";
+
+				txt += "<td>";
+				if (data.cashFlows[i].annotation.source) {
+					txt += data.cashFlows[i].annotation.source;
+				}
+				txt += "</td>";
+
+				txt += "<td>" + data.cashFlows[i].annotation.payingCounterparty
+						+ "</td>";
+				txt += "<td>"
+						+ data.cashFlows[i].annotation.receivingCounterparty
+						+ "</td>";
+				txt += "<td>" + data.cashFlows[i].annotation.uncertain
+						+ "</td>";
+				txt += "<td>" + data.cashFlows[i].cashFlow.forecastValue
+						+ "</td>";
+
+				txt += "<td>";
+
+				if (data.cashFlows[i].annotation.type == "Interest"
+						|| data.cashFlows[i].annotation.type == "DelayedCompensation")
+					txt += explainInterest(data.cashFlows[i].annotation.explains);
+				if (data.cashFlows[i].annotation.type == "CostOfFunded")
+					txt += explainCostOfFunded(data.cashFlows[i].annotation.explains);
+				if (data.cashFlows[i].annotation.type == "CostOfCarry")
+					txt += explainCostOfCarry(data.cashFlows[i].annotation.explains);
+				if (data.cashFlows[i].annotation.type == "EconomicBenefit")
+					txt += explainEconomicBenefit(data.cashFlows[i].annotation.explains);
+
+				txt += "</td>";
+
+				txt += "</tr>";
+			}
+
+			txt += "</table>";
+			document.getElementById("cftable").innerHTML = txt;
+		}
+
+		function tradeChange() {
+			alert("tradeChange");
+			calculateCashflows();
+		}
+	</script>
+
+	<h1>Trade</h1>
+	<textarea rows="10" cols="80" id="trade" onchange="tradeChange()">
+{
+ "@bean": "com.syndloanhub.loansum.product.facility.LoanTrade",
+ "id": "tid~50696",
+ "buySell": "Buy",
+ "buyer": "cpty~BUYER",
+ "seller": "cpty~SELLER",
+ "amount": 3000000.0,
+ "currency": "USD",
+ "price": 1.01125,
+ "expectedSettlementDate": "2017-03-30",
+ "delayedCompensationFlag": true,
+ "association": "LSTA",
+ "formOfPurchase": "Assignment",
+ "documentationType": "Par",
+ "tradeType": "Secondary",
+ "whenIssuedFlag": false,
+ "commitmentReductionCreditFlag": true,
+ "paydownOnTradeDate": false,
+ "adjustmentOnTradeDate": false,
+ "accrualSettlementType": "SettledWithoutAccrued",
+ "averageLibor": 0.009834,
+ "info": {
+  "tradeDate": "2017-03-21",
+  "settlementDate": "2017-04-10",
+  "attributes": {}
+ },
+ "product": {
+  "id": "lid~LOAN1",
+  "borrower": "cpty~BORROWER",
+  "agent": "cpty~AGENT",
+  "facilityType": "Term",
+  "identifiers": ["LXID~LX123456", "CUSIP~012345678", "BLOOMBERGID~BB12345678"],
+  "originalCommitmentAmount": "USD 1598500000",
+  "startDate": "2017-01-24",
+  "maturityDate": "2022-08-14",
+  "contracts": [{
+   "id": "contract~1",
+   "accrual": {
+    "@bean": "FloatingRateAccrual",
+    "startDate": "2017-01-24",
+    "endDate": "2017-03-16",
+    "allInRate": 0.0450283,
+    "pikSpread": 0.0,
+    "accrualAmount": "USD 1598500000",
+    "dayCount": "Act/360",
+    "paymentFrequency": "P3M",
+    "paymentProjection": "USD 1.0196846152916666E7",
+    "pikProjection": "USD 0",
+    "index": {
+     "@type": "com.opengamma.strata.basics.index.IborIndex",
+     "value": "USD-LIBOR-3M"
+    },
+    "baseRate": 0.012583,
+    "spread": 0.0325
+   },
+   "paymentDate": "2017-03-16",
+   "events": []
+  }, {
+   "id": "contract~2",
+   "accrual": {
+    "@bean": "FloatingRateAccrual",
+    "startDate": "2017-03-16",
+    "endDate": "2017-04-20",
+    "allInRate": 0.043873300000000004,
+    "pikSpread": 0.0,
+    "accrualAmount": "USD 1598500000",
+    "dayCount": "Act/360",
+    "paymentFrequency": "P3M",
+    "paymentProjection": "USD 6818337.365972224",
+    "pikProjection": "USD 0",
+    "index": {
+     "@type": "IborIndex",
+     "value": "USD-LIBOR-3M"
+    },
+    "baseRate": 0.0113733,
+    "spread": 0.0325
+   },
+   "paymentDate": "2017-04-26",
+   "events": [{
+    "@bean": "Repayment",
+    "effectiveDate": "2017-03-31",
+    "amount": "USD 4050000",
+    "interestOnPaydown": false,
+    "price": 1.0
+   }]
+  }, {
+   "id": "contract~3",
+   "accrual": {
+    "@bean": "FloatingRateAccrual",
+    "startDate": "2017-04-20",
+    "endDate": "2017-04-26",
+    "allInRate": 0.043873300000000004,
+    "pikSpread": 0.0,
+    "accrualAmount": "USD 1794450000",
+    "dayCount": "Act/360",
+    "paymentFrequency": "P3M",
+    "paymentProjection": "USD 1312140.71975",
+    "pikProjection": "USD 0",
+    "index": {
+     "@type": "IborIndex",
+     "value": "USD-LIBOR-3M"
+    },
+    "baseRate": 0.0113733,
+    "spread": 0.0325
+   },
+   "paymentDate": "2017-04-26",
+   "events": []
+  }, {
+   "id": "contract~4",
+   "accrual": {
+    "@bean": "FloatingRateAccrual",
+    "startDate": "2017-04-26",
+    "endDate": "2017-07-26",
+    "allInRate": 0.044165,
+    "pikSpread": 0.0,
+    "accrualAmount": "USD 1794450000",
+    "dayCount": "Act/360",
+    "paymentFrequency": "P3M",
+    "paymentProjection": "USD 2.0033115185416665E7",
+    "pikProjection": "USD 0",
+    "index": {
+     "@type": "IborIndex",
+     "value": "USD-LIBOR-3M"
+    },
+    "baseRate": 0.011665000000000002,
+    "spread": 0.0325
+   },
+   "paymentDate": "2017-07-26",
+   "events": [{
+    "@bean": "Repayment",
+    "effectiveDate": "2017-06-30",
+    "amount": "USD 4558012.17",
+    "interestOnPaydown": false,
+    "price": 1.0
+   }]
+  }],
+  "fees": [],
+  "events": [{
+   "@bean": "CommitmentAdjustment",
+   "effectiveDate": "2017-04-20",
+   "amount": "USD 200000000",
+   "pik": false,
+   "refusalAllowed": true
+  }]
+ }
+}
+	</textarea>
+
+	<h1>Cashflow JSON</h1>
+	<textarea rows="10" cols="80" id="cashflows"
+		onchange="cashFlowChange()"></textarea>
+	<br>
+
+</body>
+</html>
