@@ -31,7 +31,6 @@ import com.opengamma.strata.basics.schedule.Frequency;
 import com.opengamma.strata.collect.ArgChecker;
 import com.opengamma.strata.collect.tuple.Pair;
 import com.opengamma.strata.product.ProductTrade;
-import com.opengamma.strata.product.TradeInfo;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedFloatingRateAccrual;
 
 import static com.syndloanhub.loansum.product.facility.Helper.max;

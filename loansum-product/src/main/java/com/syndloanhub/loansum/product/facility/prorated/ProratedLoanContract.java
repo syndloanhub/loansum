@@ -14,7 +14,6 @@ import org.joda.beans.ImmutableBean;
 
 import com.google.common.collect.ImmutableList;
 import com.opengamma.strata.basics.StandardId;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;

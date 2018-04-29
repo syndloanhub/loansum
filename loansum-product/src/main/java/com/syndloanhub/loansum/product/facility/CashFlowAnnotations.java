@@ -24,7 +24,6 @@ import org.joda.beans.gen.PropertyDefinition;
 
 import com.opengamma.strata.basics.StandardId;
 import com.opengamma.strata.market.explain.ExplainMap;
-import java.io.Serializable;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;

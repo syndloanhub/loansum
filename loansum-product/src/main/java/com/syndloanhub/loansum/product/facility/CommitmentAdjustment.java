@@ -15,7 +15,6 @@ import org.joda.beans.ImmutableBean;
 import static com.syndloanhub.loansum.product.facility.Helper.tsget;
 import static com.syndloanhub.loansum.product.facility.FacilityEventType.CommitmentAdjustmentEvent;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.NoSuchElementException;

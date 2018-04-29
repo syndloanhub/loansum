@@ -23,10 +23,6 @@ import org.joda.beans.gen.BeanDefinition;
 import org.joda.beans.gen.PropertyDefinition;
 
 import com.google.common.collect.ImmutableList;
-import com.opengamma.strata.market.amount.CashFlows;
-
-import java.io.Serializable;
-
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
