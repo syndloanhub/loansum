@@ -11,16 +11,19 @@
  -->
 <html>
 <body onload="tradeChange()">
-	<h1>Cashflows</h1>
+	<h1>Cash Flows</h1>
 	<p id="cftable"></p>
+
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 
 	<script type="text/javascript">
 		function calculateCashflows() {
-			alert("calculateCashflows");
+			//alert("calculateCashflows");
 
 			var xhr = new XMLHttpRequest();
-			// var url = "loansum/calculateCashflows";
-			var url = "loansum/calculateProceeds";
+			var url = "loansum/calculateCashflows";
+			//var url = "loansum/calculateProceeds";
 
 			xhr.open("POST", url, true);
 			xhr.setRequestHeader("Content-type", "application/json");
@@ -41,55 +44,25 @@
 			xhr.send(document.getElementById("trade").value);
 		}
 
+		function fmtAmount(amount) {
+			return numeral(amount).format("0,0.00");
+		}
+
+		function fmtRate(rate) {
+			return numeral(rate * 100.0).format("0.00000");
+		}
+
 		function explainInterest(explains) {
-			alert("explain=" + explains);
+			//alert("explain=" + explains);
 			var txt = "<table border='1' width='100%'>";
 			txt += "<tr>" + "<th>Share Not</th>" + "<th>Start</th>"
 					+ "<th>End</th>" + "<th>Days</th>" + "<th>DIY</th>"
 					+ "<th>All-in Rt</th>" + "<th>Share Amt</th>"
 					+ "<th>Formula</th>" + "</tr>";
-			for (i in explains.map.Accrual.value) {
-				txt += "<tr>";
-				txt += "<td>";
-				txt += explains.map.Accrual.value[i].map["Share Not"];
-				txt += "</td>";
-				txt += "<td>";
-				txt += explains.map.Accrual.value[i].map["Start"].value;
-				txt += "</td>";
-				txt += "<td>";
-				txt += explains.map.Accrual.value[i].map["End"].value;
-				txt += "</td>";
-				txt += "<td>";
-				txt += explains.map.Accrual.value[i].map["Days"];
-				txt += "</td>";
-				txt += "<td>";
-				txt += explains.map.Accrual.value[i].map["DIY"];
-				txt += "</td>";
-				txt += "<td>";
-				txt += explains.map.Accrual.value[i].map["All-in Rt"];
-				txt += "</td>";
-				txt += "<td>";
-				txt += explains.map.Accrual.value[i].map["Share Amt"];
-				txt += "</td>";
-				txt += "<td>";
-				txt += explains.map.Accrual.value[i].map["Formula"];
-				txt += "</td>";
-				txt += "</tr>";
-			}
-			txt += "</table>";
-			return txt;
-		}
-
-		function explainCostOfCarry(explains) {
-			alert("explain=" + explains);
-			var txt = "<table border='1' width='100%'>";
-			txt += "<tr>" + "<th>Exp Sett Px</th>" + "<th>Start</th>"
-					+ "<th>End</th>" + "<th>Days</th>" + "<th>DIY</th>"
-					+ "<th>Avg LIBOR</th>" + "<th>Formula</th>" + "</tr>";
 			for (i in explains.map.CashFlow.value) {
 				txt += "<tr>";
 				txt += "<td>";
-				txt += explains.map.CashFlow.value[i].map["Exp Sett Px"];
+				txt += fmtAmount(explains.map.CashFlow.value[i].map["Share Not"]);
 				txt += "</td>";
 				txt += "<td>";
 				txt += explains.map.CashFlow.value[i].map["Start"].value;
@@ -104,7 +77,45 @@
 				txt += explains.map.CashFlow.value[i].map["DIY"];
 				txt += "</td>";
 				txt += "<td>";
-				txt += explains.map.CashFlow.value[i].map["Avg LIBOR"];
+				txt += fmtRate(explains.map.CashFlow.value[i].map["All-in Rt"]);
+				txt += "</td>";
+				txt += "<td>";
+				txt += fmtAmount(explains.map.CashFlow.value[i].map["Share Amt"]);
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Formula"];
+				txt += "</td>";
+				txt += "</tr>";
+			}
+			txt += "</table>";
+			return txt;
+		}
+
+		function explainCostOfCarry(explains) {
+			//alert("explain=" + explains);
+			var txt = "<table border='1' width='100%'>";
+			txt += "<tr>" + "<th>Exp Sett Px</th>" + "<th>Start</th>"
+					+ "<th>End</th>" + "<th>Days</th>" + "<th>DIY</th>"
+					+ "<th>Avg LIBOR</th>" + "<th>Formula</th>" + "</tr>";
+			for (i in explains.map.CashFlow.value) {
+				txt += "<tr>";
+				txt += "<td>";
+				txt += fmtAmount(explains.map.CashFlow.value[i].map["Exp Sett Px"]);
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Start"].value;
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["End"].value;
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["Days"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += explains.map.CashFlow.value[i].map["DIY"];
+				txt += "</td>";
+				txt += "<td>";
+				txt += fmtRate(explains.map.CashFlow.value[i].map["Avg LIBOR"]);
 				txt += "</td>";
 				txt += "<td>";
 				txt += explains.map.CashFlow.value[i].map["Formula"];
@@ -116,24 +127,19 @@
 		}
 
 		function explainCostOfFunded(explains) {
-			alert("explain=" + explains);
 			var txt = "<table border='1' width='100%'>";
 			txt += "<tr>" + "<th>Share Not</th>" + "<th>Price</th>"
-					+ "<th>Sett Per PIK</th>" + "<th>Share Amt</th>"
-					+ "<th>Formula</th>" + "</tr>";
+					+ "<th>Sett Per PIK</th>" + "<th>Formula</th>" + "</tr>";
 			for (i in explains.map.CashFlow.value) {
 				txt += "<tr>";
 				txt += "<td>";
-				txt += explains.map.CashFlow.value[i].map["Share Not"];
+				txt += fmtAmount(explains.map.CashFlow.value[i].map["Share Not"]);
 				txt += "</td>";
 				txt += "<td>";
-				txt += explains.map.CashFlow.value[i].map["Price"];
+				txt += fmtRate(explains.map.CashFlow.value[i].map["Price"]);
 				txt += "</td>";
 				txt += "<td>";
-				txt += explains.map.CashFlow.value[i].map["Sett Per PIK"];
-				txt += "</td>";
-				txt += "<td>";
-				txt += explains.map.CashFlow.value[i].map["Share Amt"];
+				txt += fmtAmount(explains.map.CashFlow.value[i].map["Sett Per PIK"]);
 				txt += "</td>";
 				txt += "<td>";
 				txt += explains.map.CashFlow.value[i].map["Formula"];
@@ -141,11 +147,12 @@
 				txt += "</tr>";
 			}
 			txt += "</table>";
+			//alert("explainCostOfFunded=" + txt);
 			return txt;
 		}
 
 		function explainEconomicBenefit(explains) {
-			alert("explain=" + explains);
+			// alert("explain=" + explains);
 			var txt = "<table border='1' width='100%'>";
 			txt += "<tr>" + "<th>Trd Dt Funded</th>"
 					+ "<th>Sett Dt Funded</th>" + "<th>Trd Dt Repay</th>"
@@ -153,16 +160,16 @@
 			for (i in explains.map.CashFlow.value) {
 				txt += "<tr>";
 				txt += "<td>";
-				txt += explains.map.CashFlow.value[i].map["Trd Dt Funded"];
+				txt += fmtAmount(explains.map.CashFlow.value[i].map["Trd Dt Funded"]);
 				txt += "</td>";
 				txt += "<td>";
-				txt += explains.map.CashFlow.value[i].map["Sett Dt Funded"];
+				txt += fmtAmount(explains.map.CashFlow.value[i].map["Sett Dt Funded"]);
 				txt += "</td>";
 				txt += "<td>";
-				txt += explains.map.CashFlow.value[i].map["Trd Dt Repay"];
+				txt += fmtAmount(explains.map.CashFlow.value[i].map["Trd Dt Repay"]);
 				txt += "</td>";
 				txt += "<td>";
-				txt += explains.map.CashFlow.value[i].map["Price"];
+				txt += fmtRate(explains.map.CashFlow.value[i].map["Price"]);
 				txt += "</td>";
 				txt += "<td>";
 				txt += explains.map.CashFlow.value[i].map["Formula"];
@@ -203,7 +210,8 @@
 						+ "</td>";
 				txt += "<td>" + data.cashFlows[i].annotation.uncertain
 						+ "</td>";
-				txt += "<td>" + data.cashFlows[i].cashFlow.forecastValue
+				txt += "<td>"
+						+ fmtAmount(data.cashFlows[i].cashFlow.forecastValue)
 						+ "</td>";
 
 				txt += "<td>";
@@ -219,7 +227,6 @@
 					txt += explainEconomicBenefit(data.cashFlows[i].annotation.explains);
 
 				txt += "</td>";
-
 				txt += "</tr>";
 			}
 
@@ -228,16 +235,15 @@
 		}
 
 		function tradeChange() {
-			alert("tradeChange");
+			// alert("tradeChange");
 			calculateCashflows();
 		}
 	</script>
 
-	<h1>Trade</h1>
+	<h1>Trade JSON</h1>
 	<textarea rows="10" cols="80" id="trade" onchange="tradeChange()">
 {
  "@bean": "com.syndloanhub.loansum.product.facility.LoanTrade",
- "id": "tid~50696",
  "buySell": "Buy",
  "buyer": "cpty~BUYER",
  "seller": "cpty~SELLER",
@@ -372,6 +378,14 @@
    }]
   }],
   "fees": [],
+  "totalCommitmentSchedule": {
+   "@bean": "com.opengamma.strata.collect.timeseries.SparseLocalDateDoubleTimeSeries",
+   "dates": {
+    "@meta": "java.time.LocalDate[]",
+    "value": []
+   },
+   "values": ""
+  },
   "events": [{
    "@bean": "CommitmentAdjustment",
    "effectiveDate": "2017-04-20",
@@ -383,7 +397,7 @@
 }
 	</textarea>
 
-	<h1>Cashflow JSON</h1>
+	<h1>Cash Flow JSON</h1>
 	<textarea rows="10" cols="80" id="cashflows"
 		onchange="cashFlowChange()"></textarea>
 	<br>
