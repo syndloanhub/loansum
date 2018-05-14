@@ -12,11 +12,7 @@ package com.syndloanhub.loansum.product.facility;
 
 import static com.syndloanhub.loansum.product.facility.FacilityType.Term;
 import static com.syndloanhub.loansum.product.facility.LoanTradingType.Secondary;
-import static com.syndloanhub.loansum.product.facility.Helper.generateCommitmentSchedule;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -35,7 +31,6 @@ import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeriesBuilder;
 import com.opengamma.strata.product.ProductTrade;
 import com.opengamma.strata.product.TradeInfo;
 import com.opengamma.strata.product.common.BuySell;
-
 import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanTrade;
 
 import org.joda.beans.Bean;
@@ -43,6 +38,7 @@ import org.joda.beans.impl.direct.DirectMetaProperty;
 import org.joda.beans.MetaBean;
 import org.joda.beans.gen.BeanDefinition;
 import org.joda.beans.gen.ImmutableDefaults;
+import org.joda.beans.gen.ImmutablePreBuild;
 import org.joda.beans.gen.ImmutableValidator;
 import org.joda.beans.gen.PropertyDefinition;
 
@@ -173,36 +169,10 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
   public ProratedLoanTrade prorate(ProductTrade trade) {
     assert (trade == null || trade == this);
 
-    Facility loan = getProduct();
-
-    // Generate commitment schedule if not given. Add PIK commitment
-    // adjustments as necessary.
-
-    List<FacilityEvent> events = new ArrayList<FacilityEvent>(loan.getEvents());
-    LocalDateDoubleTimeSeries commitmentSchedule = loan.getTotalCommitmentSchedule();
-
-    if (commitmentSchedule == null || commitmentSchedule.size() == 0) {
-      loan = Facility.builder()
-          .id(loan.getId())
-          .identifiers(loan.getIdentifiers())
-          .agent(loan.getAgent())
-          .borrower(loan.getBorrower())
-          .startDate(loan.getStartDate())
-          .maturityDate(loan.getMaturityDate())
-          .contracts(loan.getContracts())
-          .totalCommitmentSchedule(generateCommitmentSchedule(loan.getFacilityType(), loan.getStartDate(),
-              loan.getOriginalCommitmentAmount().getAmount(),
-              loan.getContracts(), events))
-          .events(events)
-          .facilityType(loan.getFacilityType())
-          .originalCommitmentAmount(loan.getOriginalCommitmentAmount())
-          .fees(loan.getFees())
-          .build();
-    }
-
     // Adjust trade amount if necessary due to trade date repayment or adjustment.
 
     double adjustedAmount = getAmount();
+    final Facility loan = getProduct();
 
     if (isPaydownOnTradeDate() || isAdjustmentOnTradeDate()) {
       LocalDate tradeDate = getInfo().getTradeDate().get();
@@ -257,6 +227,7 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
         .tradeType(tradeType)
         .info(info)
         .product(loan.prorate(penultimateTrade))
+        .pctShare(penultimateTrade.getPctShare())
         .build();
   }
 
@@ -275,46 +246,44 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
   private final Facility product;
 
   /*
-   * Lazily calculated series of prorated share of global facility.
+   * Calculated series of prorated share of global facility.
    */
-  private LocalDateDoubleTimeSeries pctShare;
+  @PropertyDefinition(validate = "")
+  private final LocalDateDoubleTimeSeries pctShare;
 
   /**
-   * Calculate percentage share of loan facility based on this trade.
+   * Complete construction of LoanTrade percentage share series.
    * 
-   * @return time-series of percentage share which may change based on commitment
-   * adjustments occurring after trade date.
+   * @param builder
    */
-  public LocalDateDoubleTimeSeries getPctShare() {
-    if (pctShare == null) {
-      LocalDateDoubleTimeSeriesBuilder pctShareBuilder = LocalDateDoubleTimeSeries.builder();
-      LocalDate tradeDate = info.getTradeDate().get();
+  @ImmutablePreBuild
+  private static void preBuild(Builder builder) {
+    LocalDateDoubleTimeSeriesBuilder pctShareBuilder = LocalDateDoubleTimeSeries.builder();
+    LocalDate tradeDate = builder.info.getTradeDate().get();
 
-      pctShareBuilder.put(tradeDate, amount / product.getCommitmentAmount(tradeDate).getAmount());
+    pctShareBuilder.put(tradeDate, builder.amount / builder.product.getCommitmentAmount(tradeDate).getAmount());
 
-      if (product.getFacilityType() == Term && product.getEvents() != null) {
-        for (FacilityEvent event : product.getEvents()) {
-          switch (event.getType()) {
-            case CommitmentAdjustmentEvent:
-              CommitmentAdjustment adjustment = (CommitmentAdjustment) event;
+    if (builder.product.getFacilityType() == Term && builder.product.getEvents() != null) {
+      for (FacilityEvent event : builder.product.getEvents()) {
+        switch (event.getType()) {
+          case CommitmentAdjustmentEvent:
+            CommitmentAdjustment adjustment = (CommitmentAdjustment) event;
 
-              if (!adjustment.getEffectiveDate().isBefore(tradeDate) && !adjustment.isPik() && adjustment.isRefusalAllowed()) {
-                double lastPctShare = pctShareBuilder.build().getLatestValue();
-                double lastCommitmentAmount = product.getCommitmentAmount(event.getEffectiveDate().minusDays(1)).getAmount();
-                double newCommmitmentAmount = product.getCommitmentAmount(event.getEffectiveDate()).getAmount();
-                double newPctShare = lastPctShare * lastCommitmentAmount / newCommmitmentAmount;
+            if (!adjustment.getEffectiveDate().isBefore(tradeDate) && !adjustment.isPik() && adjustment.isRefusalAllowed()) {
+              double lastPctShare = pctShareBuilder.build().getLatestValue();
+              double lastCommitmentAmount =
+                  builder.product.getCommitmentAmount(event.getEffectiveDate().minusDays(1)).getAmount();
+              double newCommmitmentAmount = builder.product.getCommitmentAmount(event.getEffectiveDate()).getAmount();
+              double newPctShare = lastPctShare * lastCommitmentAmount / newCommmitmentAmount;
 
-                pctShareBuilder.put(event.getEffectiveDate(), newPctShare);
-              }
-              break;
-          }
+              pctShareBuilder.put(event.getEffectiveDate(), newPctShare);
+            }
+            break;
         }
       }
-
-      pctShare = pctShareBuilder.build();
     }
 
-    return pctShare;
+    builder.pctShare(pctShareBuilder.build());
   }
 
   /**
@@ -387,7 +356,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
       LoanTradingAccrualSettlement accrualSettlementType,
       double averageLibor,
       TradeInfo info,
-      Facility product) {
+      Facility product,
+      LocalDateDoubleTimeSeries pctShare) {
     JodaBeanUtils.notNull(buySell, "buySell");
     JodaBeanUtils.notNull(buyer, "buyer");
     JodaBeanUtils.notNull(seller, "seller");
@@ -415,6 +385,7 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     this.averageLibor = averageLibor;
     this.info = info;
     this.product = product;
+    this.pctShare = pctShare;
     validate();
   }
 
@@ -610,6 +581,21 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
 
   //-----------------------------------------------------------------------
   /**
+   * Gets the loan product that was agreed when the trade occurred.
+   * /
+   * @PropertyDefinition(validate = "notNull", overrideGet = true)
+   * private final Facility product;
+   * 
+   * /*
+   * Calculated series of prorated share of global facility.
+   * @return the value of the property
+   */
+  public LocalDateDoubleTimeSeries getPctShare() {
+    return pctShare;
+  }
+
+  //-----------------------------------------------------------------------
+  /**
    * Returns a builder that allows this bean to be mutated.
    * @return the mutable builder, not null
    */
@@ -643,7 +629,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
           JodaBeanUtils.equal(accrualSettlementType, other.accrualSettlementType) &&
           JodaBeanUtils.equal(averageLibor, other.averageLibor) &&
           JodaBeanUtils.equal(info, other.info) &&
-          JodaBeanUtils.equal(product, other.product);
+          JodaBeanUtils.equal(product, other.product) &&
+          JodaBeanUtils.equal(pctShare, other.pctShare);
     }
     return false;
   }
@@ -671,12 +658,13 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     hash = hash * 31 + JodaBeanUtils.hashCode(averageLibor);
     hash = hash * 31 + JodaBeanUtils.hashCode(info);
     hash = hash * 31 + JodaBeanUtils.hashCode(product);
+    hash = hash * 31 + JodaBeanUtils.hashCode(pctShare);
     return hash;
   }
 
   @Override
   public String toString() {
-    StringBuilder buf = new StringBuilder(672);
+    StringBuilder buf = new StringBuilder(704);
     buf.append("LoanTrade{");
     buf.append("buySell").append('=').append(buySell).append(',').append(' ');
     buf.append("buyer").append('=').append(buyer).append(',').append(' ');
@@ -697,7 +685,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     buf.append("accrualSettlementType").append('=').append(accrualSettlementType).append(',').append(' ');
     buf.append("averageLibor").append('=').append(averageLibor).append(',').append(' ');
     buf.append("info").append('=').append(info).append(',').append(' ');
-    buf.append("product").append('=').append(JodaBeanUtils.toString(product));
+    buf.append("product").append('=').append(product).append(',').append(' ');
+    buf.append("pctShare").append('=').append(JodaBeanUtils.toString(pctShare));
     buf.append('}');
     return buf.toString();
   }
@@ -813,6 +802,11 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     private final MetaProperty<Facility> _product = DirectMetaProperty.ofImmutable(
         this, "product", LoanTrade.class, Facility.class);
     /**
+     * The meta-property for the {@code pctShare} property.
+     */
+    private final MetaProperty<LocalDateDoubleTimeSeries> _pctShare = DirectMetaProperty.ofImmutable(
+        this, "pctShare", LoanTrade.class, LocalDateDoubleTimeSeries.class);
+    /**
      * The meta-properties.
      */
     private final Map<String, MetaProperty<?>> _metaPropertyMap$ = new DirectMetaPropertyMap(
@@ -836,7 +830,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
         "accrualSettlementType",
         "averageLibor",
         "info",
-        "product");
+        "product",
+        "pctShare");
 
     /**
      * Restricted constructor.
@@ -887,6 +882,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
           return _info;
         case -309474065:  // product
           return _product;
+        case -1304358018:  // pctShare
+          return _pctShare;
       }
       return super.metaPropertyGet(propertyName);
     }
@@ -1067,6 +1064,14 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
       return _product;
     }
 
+    /**
+     * The meta-property for the {@code pctShare} property.
+     * @return the meta-property, not null
+     */
+    public MetaProperty<LocalDateDoubleTimeSeries> pctShare() {
+      return _pctShare;
+    }
+
     //-----------------------------------------------------------------------
     @Override
     protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
@@ -1111,6 +1116,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
           return ((LoanTrade) bean).getInfo();
         case -309474065:  // product
           return ((LoanTrade) bean).getProduct();
+        case -1304358018:  // pctShare
+          return ((LoanTrade) bean).getPctShare();
       }
       return super.propertyGet(bean, propertyName, quiet);
     }
@@ -1152,6 +1159,7 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     private double averageLibor;
     private TradeInfo info;
     private Facility product;
+    private LocalDateDoubleTimeSeries pctShare;
 
     /**
      * Restricted constructor.
@@ -1185,6 +1193,7 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
       this.averageLibor = beanToCopy.getAverageLibor();
       this.info = beanToCopy.getInfo();
       this.product = beanToCopy.getProduct();
+      this.pctShare = beanToCopy.getPctShare();
     }
 
     //-----------------------------------------------------------------------
@@ -1231,6 +1240,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
           return info;
         case -309474065:  // product
           return product;
+        case -1304358018:  // pctShare
+          return pctShare;
         default:
           throw new NoSuchElementException("Unknown property: " + propertyName);
       }
@@ -1299,6 +1310,9 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
         case -309474065:  // product
           this.product = (Facility) newValue;
           break;
+        case -1304358018:  // pctShare
+          this.pctShare = (LocalDateDoubleTimeSeries) newValue;
+          break;
         default:
           throw new NoSuchElementException("Unknown property: " + propertyName);
       }
@@ -1313,6 +1327,7 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
 
     @Override
     public LoanTrade build() {
+      preBuild(this);
       return new LoanTrade(
           buySell,
           buyer,
@@ -1333,7 +1348,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
           accrualSettlementType,
           averageLibor,
           info,
-          product);
+          product,
+          pctShare);
     }
 
     //-----------------------------------------------------------------------
@@ -1547,10 +1563,26 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
       return this;
     }
 
+    /**
+     * Sets the loan product that was agreed when the trade occurred.
+     * /
+     * @PropertyDefinition(validate = "notNull", overrideGet = true)
+     * private final Facility product;
+     * 
+     * /*
+     * Calculated series of prorated share of global facility.
+     * @param pctShare  the new value
+     * @return this, for chaining, not null
+     */
+    public Builder pctShare(LocalDateDoubleTimeSeries pctShare) {
+      this.pctShare = pctShare;
+      return this;
+    }
+
     //-----------------------------------------------------------------------
     @Override
     public String toString() {
-      StringBuilder buf = new StringBuilder(672);
+      StringBuilder buf = new StringBuilder(704);
       buf.append("LoanTrade.Builder{");
       buf.append("buySell").append('=').append(JodaBeanUtils.toString(buySell)).append(',').append(' ');
       buf.append("buyer").append('=').append(JodaBeanUtils.toString(buyer)).append(',').append(' ');
@@ -1571,7 +1603,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
       buf.append("accrualSettlementType").append('=').append(JodaBeanUtils.toString(accrualSettlementType)).append(',').append(' ');
       buf.append("averageLibor").append('=').append(JodaBeanUtils.toString(averageLibor)).append(',').append(' ');
       buf.append("info").append('=').append(JodaBeanUtils.toString(info)).append(',').append(' ');
-      buf.append("product").append('=').append(JodaBeanUtils.toString(product));
+      buf.append("product").append('=').append(JodaBeanUtils.toString(product)).append(',').append(' ');
+      buf.append("pctShare").append('=').append(JodaBeanUtils.toString(pctShare));
       buf.append('}');
       return buf.toString();
     }

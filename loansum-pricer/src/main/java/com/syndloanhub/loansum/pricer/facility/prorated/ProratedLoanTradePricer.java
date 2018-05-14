@@ -25,6 +25,7 @@ import static com.syndloanhub.loansum.product.facility.Helper.EPSILON_1;
 import static com.syndloanhub.loansum.product.facility.Helper.intersection;
 import static com.syndloanhub.loansum.product.facility.Helper.intersects;
 import static com.syndloanhub.loansum.product.facility.Helper.max;
+import static com.syndloanhub.loansum.product.facility.Helper.tsget;
 import static com.syndloanhub.loansum.product.facility.FacilityEventType.CommitmentAdjustmentEvent;
 import static com.syndloanhub.loansum.product.facility.LoanTradingFormOfPurchase.Participation;
 import static com.syndloanhub.loansum.product.facility.LoanTradingType.Secondary;
@@ -43,7 +44,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
-import com.opengamma.strata.basics.ReferenceData;
 import com.opengamma.strata.basics.StandardId;
 import com.opengamma.strata.basics.currency.Currency;
 import com.opengamma.strata.basics.currency.CurrencyAmount;
@@ -55,13 +55,17 @@ import com.opengamma.strata.market.explain.ExplainMap;
 import com.opengamma.strata.market.explain.ExplainMapBuilder;
 import com.opengamma.strata.pricer.rate.RatesProvider;
 import com.opengamma.strata.product.TradeInfo;
+import com.opengamma.strata.product.common.BuySell;
 import com.syndloanhub.loansum.product.facility.AnnotatedCashFlow;
 import com.syndloanhub.loansum.product.facility.AnnotatedCashFlows;
 import com.syndloanhub.loansum.product.facility.CashFlowAnnotations;
 import com.syndloanhub.loansum.product.facility.CashFlowType;
+import com.syndloanhub.loansum.product.facility.LoanTradingFormOfPurchase;
+import com.syndloanhub.loansum.product.facility.LoanTradingType;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedAccrual;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedAccruingFee;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedCommitmentAdjustment;
+import com.syndloanhub.loansum.product.facility.prorated.ProratedFacility;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanContract;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanContractEvent;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanEvent;
@@ -103,20 +107,55 @@ public class ProratedLoanTradePricer {
   }
 
   /**
-   * TODO: Return market value
+   * Return the present value given a clean price. This amount is the sum of the proceeds of an offsetting trade settling on 
+   * valuation date plus any accrued interest. If the trade is unsettled, then we net with the expected proceeds of the trade itself.
    * 
    * @param trade
    * @param provider
-   * @param refData
    * @param cleanPrice
+   * @param explainBuilder
    * @return
    */
-  public CurrencyAmount presentValueFromCleanPrice(
-      ProratedLoanTrade trade,
-      RatesProvider provider,
-      ReferenceData refData,
-      double cleanPrice) {
-    return null;
+  public CurrencyAmount presentValueFromCleanPrice(ProratedLoanTrade trade, RatesProvider provider, double cleanPrice,
+      Optional<ExplainMapBuilder> explainBuilder) {
+    CurrencyAmount pv = CurrencyAmount.zero(trade.getProduct().getCurrency());
+    final TradeInfo info = TradeInfo.builder()
+        .settlementDate(provider.getValuationDate())
+        .tradeDate(provider.getValuationDate())
+        .build();
+    final ProratedFacility facility = trade.getProduct();
+    ProratedLoanTrade offsettingTrade = ProratedLoanTrade.builder()
+        .accrualSettlementType(trade.getAccrualSettlementType())
+        .amount(
+            facility.getCommitmentAmount(provider.getValuationDate()) * tsget(trade.getPctShare(), provider.getValuationDate()))
+        .association(trade.getAssociation())
+        .averageLibor(trade.getAverageLibor())
+        .buyer(trade.getSeller())
+        .buySell(trade.getBuySell().isBuy() ? BuySell.SELL : BuySell.BUY)
+        .commitmentReductionCreditFlag(trade.isCommitmentReductionCreditFlag())
+        .currency(trade.getCurrency())
+        .delayedCompensationFlag(trade.isDelayedCompensationFlag())
+        .documentationType(trade.getDocumentationType())
+        .expectedSettlementDate(provider.getValuationDate())
+        .formOfPurchase(LoanTradingFormOfPurchase.Assignment)
+        .info(info)
+        .paydownOnTradeDate(false)
+        .pctShare(trade.getPctShare())
+        .price(cleanPrice)
+        .product(trade.getProduct())
+        .seller(trade.getBuyer())
+        .tradeType(LoanTradingType.Secondary)
+        .whenIssuedFlag(false)
+        .build();
+    final CurrencyAmount proceedsFromOffsettingTrade =
+        purchasePrice(offsettingTrade, provider, provider.getValuationDate());
+    final CurrencyAmount accruedInterest = accruedInterest(trade, provider);
+
+    log.info("offsetting trade proceeds: " + proceedsFromOffsettingTrade);
+    log.info("accrued interest: " + accruedInterest);
+    pv = proceedsFromOffsettingTrade.plus(accruedInterest);
+
+    return pv;
   }
 
   /**
