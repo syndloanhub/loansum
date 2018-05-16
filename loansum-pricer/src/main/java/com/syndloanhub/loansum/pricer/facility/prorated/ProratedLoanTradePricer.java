@@ -56,6 +56,7 @@ import com.opengamma.strata.market.explain.ExplainMapBuilder;
 import com.opengamma.strata.pricer.rate.RatesProvider;
 import com.opengamma.strata.product.TradeInfo;
 import com.opengamma.strata.product.common.BuySell;
+import com.syndloanhub.loansum.product.facility.Accrual;
 import com.syndloanhub.loansum.product.facility.AnnotatedCashFlow;
 import com.syndloanhub.loansum.product.facility.AnnotatedCashFlows;
 import com.syndloanhub.loansum.product.facility.CashFlowAnnotations;
@@ -388,25 +389,28 @@ public class ProratedLoanTradePricer {
    * @return
    */
   public CurrencyAmount accruedInterest(ProratedLoanContract contract, ProratedLoanTrade trade, RatesProvider provider) {
+    CurrencyAmount accruedInterest = CurrencyAmount.zero(contract.getAccrual().getAccrualAmount().getCurrency());
     TradeInfo info = trade.getInfo();
-    CurrencyAmount zero = CurrencyAmount.zero(contract.getAccrual().getAccrualAmount().getCurrency());
 
-    if (!info.getSettlementDate().isPresent())
-      return zero;
+    // If trade is unsettled or valuation date does not intersect contract, return zero.
+    if (!info.getSettlementDate().isPresent() ||
+        !intersects(provider.getValuationDate(), Pair.of(contract.getAccrual().getStartDate(),
+            max(contract.getAccrual().getEndDate(), contract.getPaymentDate()))))
+      return accruedInterest;
 
-    if (!intersects(provider.getValuationDate(), Pair.of(contract.getAccrual().getStartDate(),
-        max(contract.getAccrual().getEndDate(), contract.getPaymentDate()))))
-      return zero;
+    // For each intersecting sub-accrual, add accrued interest contribution.
+    for (ProratedAccrual accrual : contract.getAccrualSchedule()) {
+      Pair<LocalDate, LocalDate> accrualPeriod = intersection(
+          Pair.of(info.getSettlementDate().get(), provider.getValuationDate()),
+          Pair.of(accrual.getStartDate(), accrual.getEndDate()));
 
-    Pair<LocalDate, LocalDate> accrualPeriod = intersection(
-        Pair.of(info.getSettlementDate().get(), provider.getValuationDate()),
-        Pair.of(contract.getAccrual().getStartDate(), contract.getAccrual().getEndDate()));
+      if (accrualPeriod != null)
+        accruedInterest =
+            accruedInterest.plus(accrual.getDayCount().yearFraction(accrualPeriod.getFirst(), accrualPeriod.getSecond()) *
+                accrual.getAllInRate() * accrual.getAccrualAmount().getAmount());
+    }
 
-    double accruedInterest =
-        contract.getAccrual().getDayCount().yearFraction(accrualPeriod.getFirst(), accrualPeriod.getSecond()) *
-            contract.getAccrual().getAllInRate() * contract.getAccrual().getAccrualAmount().getAmount();
-
-    return CurrencyAmount.of(contract.getAccrual().getAccrualAmount().getCurrency(), accruedInterest);
+    return accruedInterest;
   }
 
   /**

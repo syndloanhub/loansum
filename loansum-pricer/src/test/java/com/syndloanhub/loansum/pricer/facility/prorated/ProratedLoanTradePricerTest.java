@@ -2909,7 +2909,7 @@ public class ProratedLoanTradePricerTest {
         new FileReader(cfFileName));
     assertEquals(cashFlows, expected);
 
-    assertEquals(PRICER.presentValueFromCleanPrice(PRORATED_LOAN_TRADE, PROV, 1, Optional.empty()).getAmount(), 3013799.87, 1E-2);
+    assertEquals(PRICER.presentValueFromCleanPrice(PRORATED_LOAN_TRADE, PROV, 100.75/100, Optional.empty()).getAmount(),  3036172.81, 1E-2);
   }
 
 }
