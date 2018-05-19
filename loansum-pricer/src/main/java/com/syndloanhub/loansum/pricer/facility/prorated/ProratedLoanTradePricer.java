@@ -152,8 +152,6 @@ public class ProratedLoanTradePricer {
         purchasePrice(offsettingTrade, provider, provider.getValuationDate());
     final CurrencyAmount accruedInterest = accruedInterest(trade, provider);
 
-    log.info("offsetting trade proceeds: " + proceedsFromOffsettingTrade);
-    log.info("accrued interest: " + accruedInterest);
     pv = proceedsFromOffsettingTrade.plus(accruedInterest);
 
     return pv;

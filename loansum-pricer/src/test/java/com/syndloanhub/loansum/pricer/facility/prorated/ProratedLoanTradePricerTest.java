@@ -2737,6 +2737,9 @@ public class ProratedLoanTradePricerTest {
     final Repayment REPAYMENT_2 = Repayment.builder()
         .effectiveDate(LocalDate.of(2017, 6, 30))
         .amount(CurrencyAmount.of(Currency.USD, 4558012.17)).build();
+    final Repayment REPAYMENT_3 = Repayment.builder()
+        .effectiveDate(LocalDate.of(2017, 9, 29))
+        .amount(CurrencyAmount.of(Currency.USD, 4558012.17)).build();
 
     final LoanContract CONTRACT_1 = LoanContract
         .builder()
@@ -2816,6 +2819,26 @@ public class ProratedLoanTradePricerTest {
                 .build())
         .paymentDate(LocalDate.of(2017, 7, 26)).events(REPAYMENT_2)
         .build();
+    final LoanContract CONTRACT_5 = LoanContract
+        .builder()
+        .id(StandardId.of("contract", "5"))
+        .accrual(
+            FloatingRateAccrual
+                .builder()
+                .startDate(LocalDate.of(2017, 7, 26))
+                .endDate(LocalDate.of(2017, 10, 26))
+                .dayCount(DayCounts.ACT_360)
+                .allInRate(4.56389 / 100)
+                .baseRate(1.31389 / 100)
+                .spread(3.25 / 100)
+                .index(IborIndex.of("USD-LIBOR-3M"))
+                .paymentFrequency(Frequency.P3M)
+                .accrualAmount(
+                    CurrencyAmount.of(Currency.USD,
+                        1789891987.83))
+                .build())
+        .paymentDate(LocalDate.of(2017, 10, 26)).events(REPAYMENT_3)
+        .build();
 
     final FacilityEvent ADJUSTMENT_1 = CommitmentAdjustment.builder()
         .effectiveDate(LocalDate.of(2017, 4, 20))
@@ -2830,7 +2853,7 @@ public class ProratedLoanTradePricerTest {
         .maturityDate(LocalDate.of(2022, 8, 14))
         .contracts(
             Arrays.asList(CONTRACT_1, CONTRACT_2, CONTRACT_3,
-                CONTRACT_4))
+                CONTRACT_4, CONTRACT_5))
         .events(ADJUSTMENT_1)
         .facilityType(Term)
         .originalCommitmentAmount(
@@ -2858,10 +2881,10 @@ public class ProratedLoanTradePricerTest {
 
     final ProratedLoanTrade PRORATED_LOAN_TRADE = LOAN_TRADE.prorate(null);
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
-    final RatesProvider PROV = ImmutableRatesProvider.builder(
-        LocalDate.of(2017, 7, 14)).build();
     final LocalDate settle = PRORATED_LOAN_TRADE.getInfo()
         .getSettlementDate().get();
+    RatesProvider PROV = ImmutableRatesProvider.builder(
+        LocalDate.of(2017, 7, 14)).build();
 
     assertEquals(PRICER.delayedCompensation(PRORATED_LOAN_TRADE, PROV)
         .getAmount(), 4012.46, 1E-2);
@@ -2881,7 +2904,7 @@ public class ProratedLoanTradePricerTest {
     AnnotatedCashFlows cashFlows = PRICER.cashFlows(PRORATED_LOAN_TRADE,
         PROV, true);
 
-    String cfFileName = "src/test/resources/aliantcf.json";
+    String cfFileName = "src/test/resources/aliantcf_ext.json";
 
     if (regenerate) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
@@ -2896,7 +2919,7 @@ public class ProratedLoanTradePricerTest {
 
     cashFlows = PRICER.cashFlows(PRORATED_LOAN_TRADE, PROV, false);
 
-    cfFileName = "src/test/resources/aliantcf_ne.json";
+    cfFileName = "src/test/resources/aliantcf_ext_ne.json";
 
     if (regenerate) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
@@ -2909,7 +2932,33 @@ public class ProratedLoanTradePricerTest {
         new FileReader(cfFileName));
     assertEquals(cashFlows, expected);
 
-    assertEquals(PRICER.presentValueFromCleanPrice(PRORATED_LOAN_TRADE, PROV, 100.75/100, Optional.empty()).getAmount(),  3036172.81, 1E-2);
+    assertEquals(PRICER.presentValueFromCleanPrice(PRORATED_LOAN_TRADE, PROV, 100.75 / 100, Optional.empty()).getAmount(),
+        3036172.81, 1E-2);
+
+    Function<String, List<String>> mapToItem = (line) -> {
+      return Arrays.asList(line.split(","));
+    };
+
+    List<List<String>> inputList = new ArrayList<List<String>>();
+    File inputF = new File("src/test/resources/MTM1.csv");
+    InputStream inputFS = new FileInputStream(inputF);
+    BufferedReader br = new BufferedReader(new InputStreamReader(inputFS));
+
+    inputList = br.lines().skip(1).map(mapToItem)
+        .collect(Collectors.toList());
+    br.close();
+
+    for (List<String> sl : inputList) {
+      final LocalDate valuationDate = LocalDate.parse(sl.get(0));
+      final double AI = Double.parseDouble(sl.get(1));
+      final double PV = Double.parseDouble(sl.get(2));
+
+      PROV = ImmutableRatesProvider.builder(valuationDate).build();
+
+      assertEquals(PRICER.accruedInterest(PRORATED_LOAN_TRADE, PROV).getAmount(), AI, 1E-2);
+      assertEquals(PRICER.presentValueFromCleanPrice(PRORATED_LOAN_TRADE, PROV, 100.75 / 100, Optional.empty()).getAmount(), PV,
+          1E-2);
+    }
   }
 
 }
