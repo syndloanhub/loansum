@@ -107,9 +107,22 @@ public class ProratedLoanTradePricer {
         info.getSettlementDate().get().isAfter(trade.getExpectedSettlementDate());
   }
 
+  public CurrencyAmount presentValueFromCleanPrice(ProratedLoanTradeList trades, RatesProvider provider, double cleanPrice,
+      Optional<ExplainMapBuilder> explainBuilder) {
+    if (trades.getTrades().isEmpty())
+      return CurrencyAmount.zero(Currency.USD);
+
+    CurrencyAmount pv = CurrencyAmount.zero(trades.getTrades().get(0).getProduct().getCurrency());
+
+    for (ProratedLoanTrade trade : trades.getTrades())
+      pv = pv.plus(presentValueFromCleanPrice(trade, provider, cleanPrice, explainBuilder));
+
+    return pv;
+  }
+
   /**
    * Return the present value given a clean price. This amount is the sum of the proceeds of an offsetting trade settling on 
-   * valuation date plus any accrued interest. If the trade is unsettled, then we net with the expected proceeds of the trade itself.
+   * valuation date plus any accrued interest or fees. If the trade is unsettled, then we net with the expected proceeds of the trade itself.
    * 
    * @param trade
    * @param provider
@@ -154,7 +167,7 @@ public class ProratedLoanTradePricer {
 
     pv = proceedsFromOffsettingTrade.plus(accruedInterest);
 
-    return pv;
+    return trade.getBuySell().isBuy() ? pv : pv.negated();
   }
 
   /**

@@ -87,7 +87,7 @@ public final class ProratedLoanTrade implements CalculationTarget, ProratedTrade
   /**
    * Trade currency.
    */
-  @PropertyDefinition(validate = "")
+  @PropertyDefinition(validate = "notNull")
   private final Currency currency;
 
   /**
@@ -245,6 +245,7 @@ public final class ProratedLoanTrade implements CalculationTarget, ProratedTrade
     JodaBeanUtils.notNull(seller, "seller");
     ArgChecker.notNegative(amount, "amount");
     ArgChecker.notNegative(originalAmount, "originalAmount");
+    JodaBeanUtils.notNull(currency, "currency");
     ArgChecker.notNegative(price, "price");
     JodaBeanUtils.notNull(expectedSettlementDate, "expectedSettlementDate");
     JodaBeanUtils.notNull(product, "product");
@@ -331,7 +332,7 @@ public final class ProratedLoanTrade implements CalculationTarget, ProratedTrade
   //-----------------------------------------------------------------------
   /**
    * Gets trade currency.
-   * @return the value of the property
+   * @return the value of the property, not null
    */
   public Currency getCurrency() {
     return currency;
@@ -1309,10 +1310,11 @@ public final class ProratedLoanTrade implements CalculationTarget, ProratedTrade
 
     /**
      * Sets trade currency.
-     * @param currency  the new value
+     * @param currency  the new value, not null
      * @return this, for chaining, not null
      */
     public Builder currency(Currency currency) {
+      JodaBeanUtils.notNull(currency, "currency");
       this.currency = currency;
       return this;
     }

@@ -15,6 +15,7 @@ import static com.syndloanhub.loansum.product.facility.LoanTradingType.Secondary
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 import org.joda.beans.ImmutableBean;
 import org.joda.beans.JodaBeanUtils;
@@ -216,6 +217,7 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
         .formOfPurchase(formOfPurchase)
         .documentationType(documentationType)
         .commitmentReductionCreditFlag(commitmentReductionCreditFlag)
+        .currency(currency)
         .paydownOnTradeDate(paydownOnTradeDate)
         .buySell(buySell)
         .amount(adjustedAmount)
@@ -293,13 +295,14 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
    */
   @ImmutableDefaults
   private static void applyDefaults(Builder builder) {
-    builder.info = TradeInfo.empty();
-    builder.delayedCompensationFlag = true;
-    builder.adjustmentOnTradeDate = false;
-    builder.tradeType = Secondary;
-    builder.whenIssuedFlag = false;
-    builder.buyer(StandardId.of("cpty", "BUYER"));
-    builder.seller(StandardId.of("cpty", "SELLER"));
+    builder
+        .info(TradeInfo.empty())
+        .delayedCompensationFlag(true)
+        .adjustmentOnTradeDate(false)
+        .tradeType(Secondary)
+        .whenIssuedFlag(false)
+        .buyer(StandardId.of("cpty", "BUYER"))
+        .seller(StandardId.of("cpty", "SELLER"));
   }
 
   /**
