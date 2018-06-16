@@ -10,6 +10,7 @@
 
 package com.syndloanhub.loansum.product.facility.prorated;
 
+import static com.syndloanhub.loansum.product.facility.FacilityType.Term;
 import static com.syndloanhub.loansum.product.facility.Helper.intersects;
 import static com.syndloanhub.loansum.product.facility.Helper.tsget;
 import static com.syndloanhub.loansum.product.facility.LoanContractEventType.RepaymentEvent;
@@ -53,6 +54,9 @@ public final class ProratedFacility implements ProratedProduct, ImmutableBean {
    * @return total amount of all active contracts as of date
    */
   public double getFundedAmount(LocalDate date) {
+    if (facilityType == Term)
+      return getCommitmentAmount(date);
+    
     double fundedAmount = 0;
 
     for (ProratedLoanContract contract : contracts) {

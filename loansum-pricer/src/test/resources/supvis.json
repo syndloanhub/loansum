@@ -27,8 +27,8 @@
       "value": [{
        "@bean": "com.opengamma.strata.market.explain.ExplainMap",
        "map": {
-        "Share Amt": 16060.0,
-        "Share Not": 16000.000000000002,
+        "Share Amt": 16059.999999999998,
+        "Share Not": 16000.0,
         "Price": 1.00375,
         "Sett Per PIK": 0.0,
         "Formula": "Share Not x Price - Sett Per PIK"
@@ -40,8 +40,8 @@
   },
   "cashFlow": {
    "paymentDate": "2018-02-23",
-   "presentValue": "USD 16060",
-   "forecastValue": "USD 16060",
+   "presentValue": "USD 16059.999999999998",
+   "forecastValue": "USD 16059.999999999998",
    "discountFactor": 1.0
   }
  }, {
@@ -57,8 +57,8 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": 14052.499999999996,
-        "Share Not": 13999.999999999998,
+        "Share Amt": 14052.499999999998,
+        "Share Not": 14000.0,
         "Price": 1.00375,
         "Sett Per PIK": 0.0,
         "Formula": "Share Not x Price - Sett Per PIK"
@@ -70,8 +70,8 @@
   },
   "cashFlow": {
    "paymentDate": "2018-02-23",
-   "presentValue": "USD 14052.499999999996",
-   "forecastValue": "USD 14052.499999999996",
+   "presentValue": "USD 14052.499999999998",
+   "forecastValue": "USD 14052.499999999998",
    "discountFactor": 1.0
   }
  }, {
@@ -87,8 +87,8 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": 26097.499999999993,
-        "Share Not": 25999.999999999996,
+        "Share Amt": 26097.499999999996,
+        "Share Not": 26000.0,
         "Price": 1.00375,
         "Sett Per PIK": 0.0,
         "Formula": "Share Not x Price - Sett Per PIK"
@@ -100,8 +100,8 @@
   },
   "cashFlow": {
    "paymentDate": "2018-02-23",
-   "presentValue": "USD 26097.499999999993",
-   "forecastValue": "USD 26097.499999999993",
+   "presentValue": "USD 26097.499999999996",
+   "forecastValue": "USD 26097.499999999996",
    "discountFactor": 1.0
   }
  }, {
@@ -177,8 +177,8 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": 257963.74999999994,
-        "Share Not": 256999.99999999997,
+        "Share Amt": 257963.74999999997,
+        "Share Not": 257000.0,
         "Price": 1.00375,
         "Sett Per PIK": 0.0,
         "Formula": "Share Not x Price - Sett Per PIK"
@@ -190,8 +190,8 @@
   },
   "cashFlow": {
    "paymentDate": "2018-02-23",
-   "presentValue": "USD 257963.74999999994",
-   "forecastValue": "USD 257963.74999999994",
+   "presentValue": "USD 257963.74999999997",
+   "forecastValue": "USD 257963.74999999997",
    "discountFactor": 1.0
   }
  }, {
@@ -237,8 +237,8 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": 8030.0,
-        "Share Not": 8000.000000000001,
+        "Share Amt": 8029.999999999999,
+        "Share Not": 8000.0,
         "Price": 1.00375,
         "Sett Per PIK": 0.0,
         "Formula": "Share Not x Price - Sett Per PIK"
@@ -250,8 +250,8 @@
   },
   "cashFlow": {
    "paymentDate": "2018-02-23",
-   "presentValue": "USD 8030",
-   "forecastValue": "USD 8030",
+   "presentValue": "USD 8029.999999999999",
+   "forecastValue": "USD 8029.999999999999",
    "discountFactor": 1.0
   }
  }, {
@@ -267,8 +267,8 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": 2007.5,
-        "Share Not": 2000.0000000000002,
+        "Share Amt": 2007.4999999999998,
+        "Share Not": 2000.0,
         "Price": 1.00375,
         "Sett Per PIK": 0.0,
         "Formula": "Share Not x Price - Sett Per PIK"
@@ -280,8 +280,8 @@
   },
   "cashFlow": {
    "paymentDate": "2018-02-23",
-   "presentValue": "USD 2007.5",
-   "forecastValue": "USD 2007.5",
+   "presentValue": "USD 2007.4999999999998",
+   "forecastValue": "USD 2007.4999999999998",
    "discountFactor": 1.0
   }
  }, {
@@ -297,8 +297,8 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": 26097.499999999993,
-        "Share Not": 25999.999999999996,
+        "Share Amt": 26097.499999999996,
+        "Share Not": 26000.0,
         "Price": 1.00375,
         "Sett Per PIK": 0.0,
         "Formula": "Share Not x Price - Sett Per PIK"
@@ -310,8 +310,8 @@
   },
   "cashFlow": {
    "paymentDate": "2018-02-23",
-   "presentValue": "USD 26097.499999999993",
-   "forecastValue": "USD 26097.499999999993",
+   "presentValue": "USD 26097.499999999996",
+   "forecastValue": "USD 26097.499999999996",
    "discountFactor": 1.0
   }
  }, {
@@ -387,8 +387,8 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": 498161.125,
-        "Share Not": 496300.00000000006,
+        "Share Amt": 498161.12499999994,
+        "Share Not": 496300.0,
         "Price": 1.00375,
         "Sett Per PIK": 0.0,
         "Formula": "Share Not x Price - Sett Per PIK"
@@ -400,8 +400,8 @@
   },
   "cashFlow": {
    "paymentDate": "2018-02-23",
-   "presentValue": "USD 498161.125",
-   "forecastValue": "USD 498161.125",
+   "presentValue": "USD 498161.12499999994",
+   "forecastValue": "USD 498161.12499999994",
    "discountFactor": 1.0
   }
  }, {

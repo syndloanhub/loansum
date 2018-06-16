@@ -189,8 +189,8 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": 907293.4751932486,
-        "Share Not": 1301156.0534423552,
+        "Share Amt": 907293.4752,
+        "Share Not": 1301156.053452,
         "Price": 0.7,
         "Sett Per PIK": 3515.7622164,
         "Formula": "Share Not x Price - Sett Per PIK"
@@ -202,8 +202,8 @@
   },
   "cashFlow": {
    "paymentDate": "2016-09-08",
-   "presentValue": "USD 907293.4751932486",
-   "forecastValue": "USD 907293.4751932486",
+   "presentValue": "USD 907293.4752",
+   "forecastValue": "USD 907293.4752",
    "discountFactor": 1.0
   }
  }, {
