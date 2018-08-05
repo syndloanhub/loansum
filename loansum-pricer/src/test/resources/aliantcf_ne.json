@@ -94,8 +94,8 @@
   },
   "cashFlow": {
    "paymentDate": "2017-04-10",
-   "presentValue": "USD 3026063.6143259304",
-   "forecastValue": "USD 3026063.6143259304",
+   "presentValue": "USD 3026063.614325931",
+   "forecastValue": "USD 3026063.614325931",
    "discountFactor": 1.0
   }
  }, {
@@ -126,8 +126,8 @@
   },
   "cashFlow": {
    "paymentDate": "2017-04-10",
-   "presentValue": "USD 85.50985298717671",
-   "forecastValue": "USD 85.50985298717671",
+   "presentValue": "USD 85.50985298717148",
+   "forecastValue": "USD 85.50985298717148",
    "discountFactor": 1.0
   }
  }]

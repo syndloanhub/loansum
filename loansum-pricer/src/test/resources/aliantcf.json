@@ -247,8 +247,8 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": 3026063.6143259304,
-        "Share Not": 2992399.1241789176,
+        "Share Amt": 3026063.614325931,
+        "Share Not": 2992399.124178918,
         "Price": 1.01125,
         "Sett Per PIK": 0.0,
         "Formula": "Share Not x Price - Sett Per PIK"
@@ -260,8 +260,8 @@
   },
   "cashFlow": {
    "paymentDate": "2017-04-10",
-   "presentValue": "USD 3026063.6143259304",
-   "forecastValue": "USD 3026063.6143259304",
+   "presentValue": "USD 3026063.614325931",
+   "forecastValue": "USD 3026063.614325931",
    "discountFactor": 1.0
   }
  }, {
@@ -320,10 +320,10 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": -85.50985298717671,
+        "Share Amt": -85.50985298717148,
         "Price": 1.01125,
         "Trd Dt Funded": 3000000.0,
-        "Sett Dt Funded": 2992399.1241789176,
+        "Sett Dt Funded": 2992399.124178918,
         "Trd Dt Repay": 0.0,
         "Formula": "(Trd Dt Funded - Sett Dt Funded + Trd Dt Repay) x (1 - Price)"
        }
@@ -334,8 +334,8 @@
   },
   "cashFlow": {
    "paymentDate": "2017-04-10",
-   "presentValue": "USD 85.50985298717671",
-   "forecastValue": "USD 85.50985298717671",
+   "presentValue": "USD 85.50985298717148",
+   "forecastValue": "USD 85.50985298717148",
    "discountFactor": 1.0
   }
  }]

@@ -1,0 +1,2976 @@
+{
+ "@bean": "com.syndloanhub.loansum.product.facility.AnnotatedCashFlows",
+ "cashFlows": [{
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "com.opengamma.strata.market.explain.ExplainMap",
+       "map": {
+        "Share Amt": 2512499.9999999995,
+        "Share Not": 2500000.0,
+        "Price": 1.005,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-11-30",
+   "presentValue": "USD 2512499.9999999995",
+   "forecastValue": "USD 2512499.9999999995",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~1",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 655.0975,
+        "Start": {
+         "@type": "java.time.LocalDate",
+         "value": "2017-12-28"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2017-12-29"
+        },
+        "Days": 1,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "com.opengamma.strata.basics.date.DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0524078,
+        "Share Not": 4500000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-29",
+   "presentValue": "USD 655.0975",
+   "forecastValue": "USD 655.0975",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 4528125.0,
+        "Share Not": 4500000.0,
+        "Price": 1.00625,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-29",
+   "presentValue": "USD 4528125",
+   "forecastValue": "USD 4528125",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~1",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": []
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-29",
+   "presentValue": "USD 291.15444444444444",
+   "forecastValue": "USD 291.15444444444444",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 504375.0,
+        "Share Not": 500000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-29",
+   "presentValue": "USD 504375",
+   "forecastValue": "USD 504375",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 504375.0,
+        "Share Not": 500000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-29",
+   "presentValue": "USD 504375",
+   "forecastValue": "USD 504375",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1008750.0,
+        "Share Not": 1000000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-29",
+   "presentValue": "USD 1008750",
+   "forecastValue": "USD 1008750",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2012500.0000000002,
+        "Share Not": 2000000.0,
+        "Price": 1.00625,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-29",
+   "presentValue": "USD 2012500.0000000002",
+   "forecastValue": "USD 2012500.0000000002",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2012500.0000000002,
+        "Share Not": 2000000.0,
+        "Price": 1.00625,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-29",
+   "presentValue": "USD 2012500.0000000002",
+   "forecastValue": "USD 2012500.0000000002",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2511250.0,
+        "Share Not": 2500000.0,
+        "Price": 1.0045,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-11-28",
+   "presentValue": "USD 2511250",
+   "forecastValue": "USD 2511250",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~2",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 609.3422222222222,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-03-26"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-03-28"
+        },
+        "Days": 2,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 2000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-03-28",
+   "presentValue": "USD 609.3422222222222",
+   "forecastValue": "USD 609.3422222222222",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2007499.9999999998,
+        "Share Not": 2000000.0,
+        "Price": 1.00375,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-03-28",
+   "presentValue": "USD 2007499.9999999998",
+   "forecastValue": "USD 2007499.9999999998",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 200000.0,
+        "Share Not": 200000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-03-28",
+   "presentValue": "USD 200000",
+   "forecastValue": "USD 200000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~2",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": []
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-25",
+   "presentValue": "USD 1371.02",
+   "forecastValue": "USD 1371.02",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 755625.0,
+        "Share Not": 750000.0,
+        "Price": 1.0075,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-25",
+   "presentValue": "USD 755625",
+   "forecastValue": "USD 755625",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1007500.0000000001,
+        "Share Not": 1000000.0,
+        "Price": 1.0075,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-25",
+   "presentValue": "USD 1007500.0000000001",
+   "forecastValue": "USD 1007500.0000000001",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1259375.0,
+        "Share Not": 1250000.0,
+        "Price": 1.0075,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-25",
+   "presentValue": "USD 1259375",
+   "forecastValue": "USD 1259375",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~2",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELLER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2437.3688888888887,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-02-14"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-02-22"
+        },
+        "Days": 8,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 2000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-02-22",
+   "presentValue": "USD 2437.3688888888887",
+   "forecastValue": "USD 2437.3688888888887",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2012500.0000000002,
+        "Share Not": 2000000.0,
+        "Price": 1.00625,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-02-22",
+   "presentValue": "USD 2012500.0000000002",
+   "forecastValue": "USD 2012500.0000000002",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1253125.0,
+        "Share Not": 1250000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-03-22",
+   "presentValue": "USD 1253125",
+   "forecastValue": "USD 1253125",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2250000.0,
+        "Share Not": 2250000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-03-21",
+   "presentValue": "USD 2250000",
+   "forecastValue": "USD 2250000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 3014999.9999999995,
+        "Share Not": 3000000.0,
+        "Price": 1.005,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-03-20",
+   "presentValue": "USD 3014999.9999999995",
+   "forecastValue": "USD 3014999.9999999995",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~1",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 3744.974041666666,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-01-11"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-01-18"
+        },
+        "Days": 7,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0524078,
+        "Share Not": 3675000.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 3493.8533333333326,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-01-05"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-01-11"
+        },
+        "Days": 6,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0524078,
+        "Share Not": 4000000.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 5677.511666666665,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2017-12-29"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-01-04"
+        },
+        "Days": 6,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0524078,
+        "Share Not": 6500000.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 655.0974999999999,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-01-04"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-01-05"
+        },
+        "Days": 1,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0524078,
+        "Share Not": 4500000.0
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-18",
+   "presentValue": "USD 13571.436541666664",
+   "forecastValue": "USD 13571.436541666664",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~1",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": []
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-18",
+   "presentValue": "USD 436.7316666666666",
+   "forecastValue": "USD 436.7316666666666",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2017500.0,
+        "Share Not": 2000000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-18",
+   "presentValue": "USD 2017500",
+   "forecastValue": "USD 2017500",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 504375.0,
+        "Share Not": 500000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-18",
+   "presentValue": "USD 504375",
+   "forecastValue": "USD 504375",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 504375.0,
+        "Share Not": 500000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-18",
+   "presentValue": "USD 504375",
+   "forecastValue": "USD 504375",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~2",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 15517.128192222224,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-04-05"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-04-18"
+        },
+        "Days": 13,
+        "DIY": 360.00000000000006,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 7835500.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 9914.607297777779,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-03-28"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-04-05"
+        },
+        "Days": 8,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 8135500.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 9081.179473333334,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-03-22"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-03-28"
+        },
+        "Days": 6,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 9935500.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 980.3554677777778,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-03-20"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-03-21"
+        },
+        "Days": 1,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 6435500.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1323.1104677777778,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-03-21"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-03-22"
+        },
+        "Days": 1,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 8685500.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 18685.70774777778,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-03-07"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-03-20"
+        },
+        "Days": 13,
+        "DIY": 360.00000000000006,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 9435500.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 5882.132806666667,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-03-01"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-03-07"
+        },
+        "Days": 6,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 6435500.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 10061.534941111111,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-02-22"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-03-01"
+        },
+        "Days": 7,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 9435500.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 7928.837163333333,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-02-15"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-02-22"
+        },
+        "Days": 7,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 7435500.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 6081.15921,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-02-06"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-02-15"
+        },
+        "Days": 9,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 4435500.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 6717.9980000000005,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-01-25"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-02-06"
+        },
+        "Days": 12,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 3675000.0
+       }
+      }, {
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 719.7855000000008,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-01-18"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-01-25"
+        },
+        "Days": 7,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 675000.0
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-04-18",
+   "presentValue": "USD 92893.53626777777",
+   "forecastValue": "USD 92893.53626777777",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 7855088.75,
+        "Share Not": 7835500.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-04-18",
+   "presentValue": "USD 7855088.75",
+   "forecastValue": "USD 7855088.75",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 7855088.75,
+        "Share Not": 7835500.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-04-18",
+   "presentValue": "USD 7855088.75",
+   "forecastValue": "USD 7855088.75",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~3",
+   "uncertain": true,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 123232.75134479652,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-04-18"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-07-18"
+        },
+        "Days": 91,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0625313,
+        "Share Not": 7796322.5,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-07-18",
+   "presentValue": "USD 123232.75134479652",
+   "forecastValue": "USD 123232.75134479652",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~4",
+   "uncertain": true,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 302.2996788364583,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-04-18"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-07-18"
+        },
+        "Days": 91,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0610509,
+        "Share Not": 19588.75,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-07-18",
+   "presentValue": "USD 302.2996788364583",
+   "forecastValue": "USD 302.2996788364583",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~5",
+   "uncertain": true,
+   "type": "Interest",
+   "payingCounterparty": "cpty~AGENT",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 192.20287244895835,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-04-18"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-06-18"
+        },
+        "Days": 61,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0579063,
+        "Share Not": 19588.75,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-07-18",
+   "presentValue": "USD 192.20287244895835",
+   "forecastValue": "USD 192.20287244895835",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2009999.9999999998,
+        "Share Not": 2000000.0,
+        "Price": 1.005,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-02-15",
+   "presentValue": "USD 2009999.9999999998",
+   "forecastValue": "USD 2009999.9999999998",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1004999.9999999999,
+        "Share Not": 1000000.0,
+        "Price": 1.005,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-02-15",
+   "presentValue": "USD 1004999.9999999999",
+   "forecastValue": "USD 1004999.9999999999",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~1",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": []
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-11",
+   "presentValue": "USD 145.57722222222222",
+   "forecastValue": "USD 145.57722222222222",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 201750.0,
+        "Share Not": 200000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-11",
+   "presentValue": "USD 201750",
+   "forecastValue": "USD 201750",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 126093.75,
+        "Share Not": 125000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-11",
+   "presentValue": "USD 126093.75",
+   "forecastValue": "USD 126093.75",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 100875.0,
+        "Share Not": 100000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-11",
+   "presentValue": "USD 100875",
+   "forecastValue": "USD 100875",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 75656.25,
+        "Share Not": 75000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-11",
+   "presentValue": "USD 75656.25",
+   "forecastValue": "USD 75656.25",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 176093.75000000003,
+        "Share Not": 175000.0,
+        "Price": 1.00625,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-11",
+   "presentValue": "USD 176093.75000000003",
+   "forecastValue": "USD 176093.75000000003",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1995000.0,
+        "Share Not": 2000000.0,
+        "Price": 0.9975,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 1995000",
+   "forecastValue": "USD 1995000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2000000.0,
+        "Share Not": 2000000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 2000000",
+   "forecastValue": "USD 2000000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 750937.5,
+        "Share Not": 750000.0,
+        "Price": 1.00125,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 750937.5",
+   "forecastValue": "USD 750937.5",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 521300.0,
+        "Share Not": 520000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 521300",
+   "forecastValue": "USD 521300",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 701750.0,
+        "Share Not": 700000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 701750",
+   "forecastValue": "USD 701750",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 360900.0,
+        "Share Not": 360000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 360900",
+   "forecastValue": "USD 360900",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 611525.0,
+        "Share Not": 610000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 611525",
+   "forecastValue": "USD 611525",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 340850.0,
+        "Share Not": 340000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 340850",
+   "forecastValue": "USD 340850",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 471175.0,
+        "Share Not": 470000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 471175",
+   "forecastValue": "USD 471175",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 15037.5,
+        "Share Not": 15000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 15037.5",
+   "forecastValue": "USD 15037.5",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 255637.5,
+        "Share Not": 255000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 255637.5",
+   "forecastValue": "USD 255637.5",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 70175.0,
+        "Share Not": 70000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 70175",
+   "forecastValue": "USD 70175",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 591475.0,
+        "Share Not": 590000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 591475",
+   "forecastValue": "USD 591475",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 145362.5,
+        "Share Not": 145000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 145362.5",
+   "forecastValue": "USD 145362.5",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 95237.5,
+        "Share Not": 95000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 95237.5",
+   "forecastValue": "USD 95237.5",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 20050.0,
+        "Share Not": 20000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 20050",
+   "forecastValue": "USD 20050",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 60150.0,
+        "Share Not": 60000.0,
+        "Price": 1.0025,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-08",
+   "presentValue": "USD 60150",
+   "forecastValue": "USD 60150",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 251249.99999999997,
+        "Share Not": 250000.0,
+        "Price": 1.005,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-03-07",
+   "presentValue": "USD 251249.99999999997",
+   "forecastValue": "USD 251249.99999999997",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1507499.9999999998,
+        "Share Not": 1500000.0,
+        "Price": 1.005,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-03-07",
+   "presentValue": "USD 1507499.9999999998",
+   "forecastValue": "USD 1507499.9999999998",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1256249.9999999998,
+        "Share Not": 1250000.0,
+        "Price": 1.005,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-03-07",
+   "presentValue": "USD 1256249.9999999998",
+   "forecastValue": "USD 1256249.9999999998",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 444351.60000000003,
+        "Share Not": 441000.0,
+        "Price": 1.0076,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-02-06",
+   "presentValue": "USD 444351.60000000003",
+   "forecastValue": "USD 444351.60000000003",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 122423.40000000001,
+        "Share Not": 121500.0,
+        "Price": 1.0076,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-02-06",
+   "presentValue": "USD 122423.40000000001",
+   "forecastValue": "USD 122423.40000000001",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 199504.80000000002,
+        "Share Not": 198000.0,
+        "Price": 1.0076,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-02-06",
+   "presentValue": "USD 199504.80000000002",
+   "forecastValue": "USD 199504.80000000002",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~1",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": []
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-05",
+   "presentValue": "USD 582.3088888888889",
+   "forecastValue": "USD 582.3088888888889",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 242100.0,
+        "Share Not": 240000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-05",
+   "presentValue": "USD 242100",
+   "forecastValue": "USD 242100",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 262275.0,
+        "Share Not": 260000.0,
+        "Price": 1.00875,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-05",
+   "presentValue": "USD 262275",
+   "forecastValue": "USD 262275",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~2",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 76.16777777777777,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-04-04"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-04-05"
+        },
+        "Days": 1,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 500000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-04-05",
+   "presentValue": "USD 76.16777777777777",
+   "forecastValue": "USD 76.16777777777777",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 501874.99999999994,
+        "Share Not": 500000.0,
+        "Price": 1.00375,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-04-05",
+   "presentValue": "USD 501874.99999999994",
+   "forecastValue": "USD 501874.99999999994",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 200000.0,
+        "Share Not": 200000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-04-05",
+   "presentValue": "USD 200000",
+   "forecastValue": "USD 200000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~1",
+   "uncertain": false,
+   "type": "DelayedCompensation",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~BUYER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 582.3088888888889,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-01-02"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-01-04"
+        },
+        "Days": 2,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0524078,
+        "Share Not": 2000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-04",
+   "presentValue": "USD 582.3088888888889",
+   "forecastValue": "USD 582.3088888888889",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 2015000.0000000002,
+        "Share Not": 2000000.0,
+        "Price": 1.0075,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-01-04",
+   "presentValue": "USD 2015000.0000000002",
+   "forecastValue": "USD 2015000.0000000002",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 50000.0,
+        "Share Not": 50000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 50000",
+   "forecastValue": "USD 50000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 28765.84,
+        "Share Not": 28765.84,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 28765.84",
+   "forecastValue": "USD 28765.84",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 7774.26,
+        "Share Not": 7774.26,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 7774.26",
+   "forecastValue": "USD 7774.26",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 50507.17,
+        "Share Not": 50507.17,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 50507.17",
+   "forecastValue": "USD 50507.17",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 12952.73,
+        "Share Not": 12952.73,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 12952.73",
+   "forecastValue": "USD 12952.73",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 50000.0,
+        "Share Not": 50000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 50000",
+   "forecastValue": "USD 50000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 75000.0,
+        "Share Not": 75000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 75000",
+   "forecastValue": "USD 75000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 225000.0,
+        "Share Not": 225000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 225000",
+   "forecastValue": "USD 225000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1000000.0,
+        "Share Not": 1000000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 1000000",
+   "forecastValue": "USD 1000000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 100000.0,
+        "Share Not": 100000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 100000",
+   "forecastValue": "USD 100000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 600000.0,
+        "Share Not": 600000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 600000",
+   "forecastValue": "USD 600000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 825000.0,
+        "Share Not": 825000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 825000",
+   "forecastValue": "USD 825000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~SELF",
+   "receivingCounterparty": "cpty~SELLER",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1975000.0,
+        "Share Not": 1975000.0,
+        "Price": 1.0,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-12-01",
+   "presentValue": "USD 1975000",
+   "forecastValue": "USD 1975000",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~BUYER",
+   "receivingCounterparty": "cpty~SELF",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 3022500.0,
+        "Share Not": 3000000.0,
+        "Price": 1.0075,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2018-03-01",
+   "presentValue": "USD 3022500",
+   "forecastValue": "USD 3022500",
+   "discountFactor": 1.0
+  }
+ }]
+}

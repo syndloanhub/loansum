@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -3029,7 +3030,7 @@ public class ProratedLoanTradePricerTest {
     assertEquals(pnl.getAmount(), 22380.136057760905, 1E-2);
   }
 
-  public void test_portfolioPV_1() throws IOException {
+  private void test_portfolioPV_1() throws IOException {
     final Repayment REPAYMENT_1 = Repayment.builder()
         .effectiveDate(LocalDate.of(2017, 3, 31))
         .amount(CurrencyAmount.of(Currency.USD, 4050000)).build();
@@ -3197,6 +3198,8 @@ public class ProratedLoanTradePricerTest {
     AnnotatedCashFlows cashFlows = PRICER.cashFlows(trades, PROV, true);
 
 
+    StandardId cpty = StandardId.of("cpty", "BUYER");
+
     for (LocalDate date = SELL_TRADE_INFO.getSettlementDate().get(); !date
         .isEqual(CONTRACT_4.getAccrual().getEndDate().plusDays(2)); date =
             date.plusDays(1)) {
@@ -3204,9 +3207,197 @@ public class ProratedLoanTradePricerTest {
       CurrencyAmount PV = PRICER.presentValueFromCleanPrice(trades, rates, 100, Optional.empty());
       CurrencyAmount cash = cashFlows.getCashFlows().stream()
           .filter(cashFlow -> cashFlow.getCashFlow().getPaymentDate().isEqual(rates.getValuationDate()))
-          .map(cashFlow -> cashFlow.getCashFlow().getForecastValue())
+          .map(cashFlow -> cashFlow.getAnnotation().getReceivingCounterparty().equals(cpty) ?
+              cashFlow.getCashFlow().getForecastValue() :
+              cashFlow.getCashFlow().getForecastValue().negated())
           .reduce(CurrencyAmount.zero(PV.getCurrency()), (a, b) -> a.plus(b));
+      log.info("date=" + date + " PV=" + PV + " cash=" + cash);
     }
+  }
+
+  /*
+   * Multiple active contracts, active trading.
+   */
+  public void test_portfolio_4() throws IOException {
+    final LoanContract CONTRACT_1 = LoanContract
+        .builder()
+        .id(StandardId.of("contract", "1"))
+        .accrual(
+            FloatingRateAccrual
+                .builder()
+                .startDate(LocalDate.of(2017, 12, 18))
+                .endDate(LocalDate.of(2018, 1, 18))
+                .dayCount(DayCounts.ACT_360)
+                .allInRate(5.24078 / 100)
+                .baseRate(1.49078 / 100)
+                .spread(3.75 / 100)
+                .index(IborIndex.of("USD-LIBOR-1M"))
+                .paymentFrequency(Frequency.P1M)
+                .accrualAmount(CurrencyAmount.of(Currency.USD, 540000000))
+                .build())
+        .paymentDate(LocalDate.of(2018, 1, 18))
+        .build();
+    final LoanContract CONTRACT_2 = LoanContract
+        .builder()
+        .id(StandardId.of("contract", "2"))
+        .accrual(
+            FloatingRateAccrual
+                .builder()
+                .startDate(LocalDate.of(2018, 1, 18))
+                .endDate(LocalDate.of(2018, 4, 18))
+                .dayCount(DayCounts.ACT_360)
+                .allInRate(5.48408 / 100)
+                .baseRate(1.73408 / 100)
+                .spread(3.75 / 100)
+                .index(IborIndex.of("USD-LIBOR-3M"))
+                .paymentFrequency(Frequency.P3M)
+                .accrualAmount(CurrencyAmount.of(Currency.USD, 540000000))
+                .build())
+        .paymentDate(LocalDate.of(2018, 4, 18))
+        .build();
+    final LoanContract CONTRACT_3 = LoanContract
+        .builder()
+        .id(StandardId.of("contract", "3"))
+        .accrual(
+            FloatingRateAccrual
+                .builder()
+                .startDate(LocalDate.of(2018, 4, 18))
+                .endDate(LocalDate.of(2018, 7, 18))
+                .dayCount(DayCounts.ACT_360)
+                .allInRate(6.25313 / 100)
+                .baseRate(2.50313 / 100)
+                .spread(3.75 / 100)
+                .index(IborIndex.of("USD-LIBOR-3M"))
+                .paymentFrequency(Frequency.P3M)
+                .accrualAmount(CurrencyAmount.of(Currency.USD, 537300000))
+                .build())
+        .paymentDate(LocalDate.of(2018, 7, 18))
+        .build();
+    final LoanContract CONTRACT_4 = LoanContract
+        .builder()
+        .id(StandardId.of("contract", "4"))
+        .accrual(
+            FloatingRateAccrual
+                .builder()
+                .startDate(LocalDate.of(2018, 4, 18))
+                .endDate(LocalDate.of(2018, 7, 18))
+                .dayCount(DayCounts.ACT_360)
+                .allInRate(6.10509 / 100)
+                .baseRate(2.35509 / 100)
+                .spread(3.75 / 100)
+                .index(IborIndex.of("USD-LIBOR-3M"))
+                .paymentFrequency(Frequency.P3M)
+                .accrualAmount(CurrencyAmount.of(Currency.USD, 1350000))
+                .build())
+        .paymentDate(LocalDate.of(2018, 7, 18))
+        .build();
+    final LoanContract CONTRACT_5 = LoanContract
+        .builder()
+        .id(StandardId.of("contract", "5"))
+        .accrual(
+            FloatingRateAccrual
+                .builder()
+                .startDate(LocalDate.of(2018, 4, 18))
+                .endDate(LocalDate.of(2018, 6, 18))
+                .dayCount(DayCounts.ACT_360)
+                .allInRate(5.79063 / 100)
+                .baseRate(2.04063 / 100)
+                .spread(3.75 / 100)
+                .index(IborIndex.of("USD-LIBOR-2M"))
+                .paymentFrequency(Frequency.P2M)
+                .accrualAmount(CurrencyAmount.of(Currency.USD, 1350000))
+                .build())
+        .paymentDate(LocalDate.of(2018, 7, 18))
+        .build();
+
+    final Facility LOAN = Facility
+        .builder()
+        .id(StandardId.of("lid", "LOAN1"))
+        .agent(StandardId.of("cpty", "AGENT"))
+        .borrower(StandardId.of("cpty", "BORROWER"))
+        .startDate(LocalDate.of(2017, 9, 29))
+        .maturityDate(LocalDate.of(2024, 9, 7))
+        .contracts(Arrays.asList(CONTRACT_1, CONTRACT_2, CONTRACT_3, CONTRACT_4, CONTRACT_5))
+        .facilityType(Term)
+        .originalCommitmentAmount(CurrencyAmount.of(Currency.USD, 540000000))
+        .build();
+
+    Function<String, List<String>> mapToItem = (line) -> {
+      return Arrays.asList(line.split(","));
+    };
+
+    List<List<String>> inputList = new ArrayList<List<String>>();
+    File inputF = new File("src/test/resources/EAB_TRADES.csv");
+    InputStream inputFS = new FileInputStream(inputF);
+    BufferedReader br = new BufferedReader(new InputStreamReader(inputFS));
+
+    inputList = br.lines().skip(1).map(mapToItem)
+        .collect(Collectors.toList());
+    br.close();
+
+    List<ProratedLoanTrade> tradeList = new ArrayList<ProratedLoanTrade>();
+
+    final int MAX_TRADES = 10000;
+    int tradeCount = 0;
+    DateTimeFormatter dfmt = DateTimeFormatter.ofPattern("d/M/yyyy");
+
+    for (List<String> sl : inputList) {
+      if (tradeCount++ > MAX_TRADES)
+        break;
+
+      String dealNumber = sl.get(0);
+      String child = sl.get(1);
+      String tid = dealNumber + "." + child;
+      LocalDate tradeDate = LocalDate.parse(sl.get(2), dfmt);
+      LocalDate expectedSettle = LocalDate.parse(sl.get(3), dfmt);
+      LocalDate actualSettle = LocalDate.parse(sl.get(4), dfmt);
+      double price = Double.parseDouble(sl.get(5));
+      double amount = Double.parseDouble(sl.get(6));
+
+      final TradeInfo TRADE_INFO = TradeInfo.builder()
+          .tradeDate(tradeDate)
+          .settlementDate(actualSettle)
+          .id(StandardId.of("trade", tid))
+          .build();
+
+      LoanTrade LOAN_TRADE = LoanTrade
+          .builder()
+          .product(LOAN)
+          .info(TRADE_INFO)
+          .buyer(amount < 0 ? StandardId.of("cpty", "BUYER") : StandardId.of("cpty", "SELF"))
+          .seller(amount > 0 ? StandardId.of("cpty", "SELLER") : StandardId.of("cpty", "SELF"))
+          .amount(Math.abs(amount)).price(price / 100)
+          .expectedSettlementDate(expectedSettle)
+          .buySell(amount > 0 ? BUY : SELL)
+          .accrualSettlementType(SettledWithoutAccrued)
+          .association(LSTA).commitmentReductionCreditFlag(true)
+          .currency(Currency.USD).delayedCompensationFlag(true)
+          .documentationType(Par).formOfPurchase(Assignment)
+          .paydownOnTradeDate(false).build();
+
+      tradeList.add(LOAN_TRADE.prorate(null));
+    }
+
+    ProratedLoanTradeList trades = ProratedLoanTradeList.builder()
+        .trades(tradeList).build();
+
+    final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
+    final RatesProvider PROV = ImmutableRatesProvider.builder(
+        LocalDate.of(2018, 6, 15)).build();
+
+    AnnotatedCashFlows cashFlows = PRICER.cashFlows(trades, PROV, true);
+    String cfFileName = "src/test/resources/eab.json";
+
+    if (regenerate) {
+      try (FileWriter writer = new FileWriter(cfFileName)) {
+        writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
+        log.warn("regenerated " + cfFileName);
+      }
+    }
+
+    AnnotatedCashFlows expected = (AnnotatedCashFlows) JodaBeanSer.PRETTY
+        .jsonReader().read(new FileReader(cfFileName));
+    assertEquals(cashFlows, expected);
   }
 
 }

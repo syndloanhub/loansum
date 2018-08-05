@@ -71,6 +71,9 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
    * @return total amount of all active contracts as of date
    */
   public CurrencyAmount getFundedAmount(LocalDate date) {
+    if (facilityType == Term)
+      return getCommitmentAmount(date);
+    
     CurrencyAmount fundedAmount = CurrencyAmount.zero(originalCommitmentAmount.getCurrency());
 
     for (LoanContract contract : contracts) {

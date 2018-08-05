@@ -111,10 +111,18 @@ public class ProratedLoanTradePricer {
     if (trades.getTrades().isEmpty())
       return CurrencyAmount.zero(Currency.USD);
 
+    StandardId facilityId = null;
     CurrencyAmount pv = CurrencyAmount.zero(trades.getTrades().get(0).getProduct().getCurrency());
 
-    for (ProratedLoanTrade trade : trades.getTrades())
+    for (ProratedLoanTrade trade : trades.getTrades()) {
+      if (facilityId == null)
+        facilityId = trade.getProduct().getId();
+      else if (trade.getProduct().getId() != facilityId)
+        throw new IllegalArgumentException("Attempt to price multiple facilities given same clean price");
+
+      log.info("b/s=" + trade.getBuySell() + " pv=" + presentValueFromCleanPrice(trade, provider, cleanPrice, explainBuilder));
       pv = pv.plus(presentValueFromCleanPrice(trade, provider, cleanPrice, explainBuilder));
+    }
 
     return pv;
   }

@@ -342,9 +342,9 @@
       "value": [{
        "@bean": "ExplainMap",
        "map": {
-        "Share Amt": -25.216722621214643,
+        "Share Amt": -25.2167226212161,
         "Price": 1.00625,
-        "Trd Dt Funded": 1495965.3243806052,
+        "Trd Dt Funded": 1495965.3243806055,
         "Sett Dt Funded": 1495965.3243806055,
         "Trd Dt Repay": 4034.6756193945184,
         "Formula": "(Trd Dt Funded - Sett Dt Funded + Trd Dt Repay) x (1 - Price)"
@@ -356,8 +356,8 @@
   },
   "cashFlow": {
    "paymentDate": "2017-01-05",
-   "presentValue": "USD 25.216722621214643",
-   "forecastValue": "USD 25.216722621214643",
+   "presentValue": "USD 25.2167226212161",
+   "forecastValue": "USD 25.2167226212161",
    "discountFactor": 1.0
   }
  }]
