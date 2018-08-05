@@ -919,7 +919,7 @@
    "source": "contract~2",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
+   "payingCounterparty": "cpty~Cortland",
    "receivingCounterparty": "cpty~SELF",
    "explains": {
     "map": {
@@ -1004,7 +1004,7 @@
    "source": "contract~3",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
+   "payingCounterparty": "cpty~Cortland",
    "receivingCounterparty": "cpty~SELF",
    "explains": {
     "map": {
@@ -1077,7 +1077,7 @@
    "source": "contract~1",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
+   "payingCounterparty": "cpty~Cortland",
    "receivingCounterparty": "cpty~SELF",
    "explains": {
     "map": {

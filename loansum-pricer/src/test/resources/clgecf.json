@@ -5,8 +5,8 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
      "CashFlow": {
@@ -49,8 +49,8 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "Borrowing",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~AGENT"
+   "payingCounterparty": "cpty~Moneytown Investments",
+   "receivingCounterparty": "cpty~Cortland"
   },
   "cashFlow": {
    "paymentDate": "2017-04-26",
@@ -63,8 +63,8 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER"
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments"
   },
   "cashFlow": {
    "paymentDate": "2017-05-04",
@@ -77,8 +77,8 @@
    "source": "contract~3",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
      "CashFlow": {
@@ -121,8 +121,8 @@
    "source": "contract~3",
    "uncertain": false,
    "type": "Borrowing",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~AGENT"
+   "payingCounterparty": "cpty~Moneytown Investments",
+   "receivingCounterparty": "cpty~Cortland"
   },
   "cashFlow": {
    "paymentDate": "2017-05-03",
@@ -135,8 +135,8 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
      "CashFlow": {
@@ -179,8 +179,8 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "Borrowing",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~AGENT"
+   "payingCounterparty": "cpty~Moneytown Investments",
+   "receivingCounterparty": "cpty~Cortland"
   },
   "cashFlow": {
    "paymentDate": "2017-05-10",
@@ -193,8 +193,8 @@
    "source": "contract~5",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
      "CashFlow": {
@@ -237,8 +237,8 @@
    "source": "contract~5",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER"
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments"
   },
   "cashFlow": {
    "paymentDate": "2017-05-16",
@@ -251,8 +251,8 @@
    "source": "contract~6",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
      "CashFlow": {
@@ -295,8 +295,8 @@
    "source": "contract~6",
    "uncertain": false,
    "type": "Borrowing",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~AGENT"
+   "payingCounterparty": "cpty~Moneytown Investments",
+   "receivingCounterparty": "cpty~Cortland"
   },
   "cashFlow": {
    "paymentDate": "2017-05-17",
@@ -309,8 +309,8 @@
    "source": "contract~6",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER"
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments"
   },
   "cashFlow": {
    "paymentDate": "2017-06-06",
@@ -323,8 +323,8 @@
    "source": "contract~7",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
      "CashFlow": {
@@ -367,8 +367,8 @@
    "source": "contract~7",
    "uncertain": false,
    "type": "Borrowing",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~AGENT"
+   "payingCounterparty": "cpty~Moneytown Investments",
+   "receivingCounterparty": "cpty~Cortland"
   },
   "cashFlow": {
    "paymentDate": "2017-05-24",
@@ -381,8 +381,8 @@
    "source": "contract~7",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER"
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments"
   },
   "cashFlow": {
    "paymentDate": "2017-06-06",
@@ -395,8 +395,8 @@
    "source": "contract~8",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
      "CashFlow": {
@@ -439,8 +439,8 @@
    "source": "contract~8",
    "uncertain": false,
    "type": "Borrowing",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~AGENT"
+   "payingCounterparty": "cpty~Moneytown Investments",
+   "receivingCounterparty": "cpty~Cortland"
   },
   "cashFlow": {
    "paymentDate": "2017-05-31",
@@ -453,8 +453,8 @@
    "source": "contract~8",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER"
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments"
   },
   "cashFlow": {
    "paymentDate": "2017-06-06",
@@ -467,8 +467,8 @@
    "source": "contract~9",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
      "CashFlow": {
@@ -511,8 +511,8 @@
    "source": "contract~9",
    "uncertain": false,
    "type": "Borrowing",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~AGENT"
+   "payingCounterparty": "cpty~Moneytown Investments",
+   "receivingCounterparty": "cpty~Cortland"
   },
   "cashFlow": {
    "paymentDate": "2017-06-07",
@@ -525,8 +525,8 @@
    "source": "contract~10",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
      "CashFlow": {
@@ -569,8 +569,8 @@
    "source": "contract~10",
    "uncertain": false,
    "type": "Borrowing",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~AGENT"
+   "payingCounterparty": "cpty~Moneytown Investments",
+   "receivingCounterparty": "cpty~Cortland"
   },
   "cashFlow": {
    "paymentDate": "2017-06-14",

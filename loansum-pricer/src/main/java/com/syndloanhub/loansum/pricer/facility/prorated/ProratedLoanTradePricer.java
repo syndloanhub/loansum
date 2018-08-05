@@ -56,7 +56,6 @@ import com.opengamma.strata.market.explain.ExplainMapBuilder;
 import com.opengamma.strata.pricer.rate.RatesProvider;
 import com.opengamma.strata.product.TradeInfo;
 import com.opengamma.strata.product.common.BuySell;
-import com.syndloanhub.loansum.product.facility.Accrual;
 import com.syndloanhub.loansum.product.facility.AnnotatedCashFlow;
 import com.syndloanhub.loansum.product.facility.AnnotatedCashFlows;
 import com.syndloanhub.loansum.product.facility.CashFlowAnnotations;

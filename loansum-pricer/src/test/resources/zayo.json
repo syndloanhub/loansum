@@ -5,8 +5,8 @@
    "source": "contract~1",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Wesellin, Inc.",
+   "receivingCounterparty": "cpty~CLO Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -49,8 +49,8 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Wesellin, Inc.",
+   "receivingCounterparty": "cpty~CLO Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -93,8 +93,8 @@
    "source": "contract~3",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Wesellin, Inc.",
+   "receivingCounterparty": "cpty~CLO Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -137,8 +137,8 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Wesellin, Inc.",
+   "receivingCounterparty": "cpty~CLO Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -203,8 +203,8 @@
    "source": "contract~5",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Wesellin, Inc.",
+   "receivingCounterparty": "cpty~CLO Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -247,8 +247,8 @@
    "source": "contract~5",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~AGENT",
+   "payingCounterparty": "cpty~Wesellin, Inc.",
+   "receivingCounterparty": "cpty~Morgan Stanley",
    "explains": {
     "map": {
      "CashFlow": {
@@ -290,8 +290,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~CLO Group",
+   "receivingCounterparty": "cpty~Wesellin, Inc.",
    "explains": {
     "map": {
      "CashFlow": {
@@ -320,8 +320,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfCarry",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~CLO Group",
+   "receivingCounterparty": "cpty~Wesellin, Inc.",
    "explains": {
     "map": {
      "CashFlow": {
@@ -407,8 +407,8 @@
   "annotation": {
    "uncertain": false,
    "type": "EconomicBenefit",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~CLO Group",
+   "receivingCounterparty": "cpty~Wesellin, Inc.",
    "explains": {
     "map": {
      "CashFlow": {

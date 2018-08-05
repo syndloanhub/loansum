@@ -5,8 +5,8 @@
    "source": "contract~3",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Mama Luccia",
+   "receivingCounterparty": "cpty~Debt, Inc.",
    "explains": {
     "map": {
      "CashFlow": {
@@ -49,8 +49,8 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Mama Luccia",
+   "receivingCounterparty": "cpty~Debt, Inc.",
    "explains": {
     "map": {
      "CashFlow": {
@@ -93,8 +93,8 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~AGENT",
+   "payingCounterparty": "cpty~Mama Luccia",
+   "receivingCounterparty": "cpty~BONY",
    "explains": {
     "map": {
      "CashFlow": {
@@ -137,8 +137,8 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "PikInterest",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~AGENT",
+   "payingCounterparty": "cpty~Mama Luccia",
+   "receivingCounterparty": "cpty~BONY",
    "explains": {
     "map": {
      "CashFlow": {
@@ -180,8 +180,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Debt, Inc.",
+   "receivingCounterparty": "cpty~Mama Luccia",
    "explains": {
     "map": {
      "CashFlow": {
@@ -210,8 +210,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfCarry",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Debt, Inc.",
+   "receivingCounterparty": "cpty~Mama Luccia",
    "explains": {
     "map": {
      "CashFlow": {

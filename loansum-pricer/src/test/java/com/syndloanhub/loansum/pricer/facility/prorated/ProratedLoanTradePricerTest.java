@@ -41,6 +41,7 @@ import org.joda.beans.ser.JodaBeanSer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
+import org.testng.annotations.AfterSuite;
 
 import com.opengamma.strata.basics.StandardId;
 import com.opengamma.strata.basics.currency.Currency;
@@ -63,6 +64,7 @@ import com.syndloanhub.loansum.product.facility.FloatingRateAccrual;
 import com.syndloanhub.loansum.product.facility.LoanContract;
 import com.syndloanhub.loansum.product.facility.FacilityEvent;
 import com.syndloanhub.loansum.product.facility.LoanTrade;
+import com.syndloanhub.loansum.product.facility.LoanTradeList;
 import com.syndloanhub.loansum.product.facility.Repayment;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanTrade;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanTradeList;
@@ -75,6 +77,19 @@ public class ProratedLoanTradePricerTest {
   private static final Logger log = LoggerFactory
       .getLogger(ProratedLoanTradePricerTest.class);
   private static boolean regenerate = false;
+  private static boolean export = false;
+  private static List<LoanTrade> exported = new ArrayList<LoanTrade>();
+
+  @AfterSuite
+  public void exportTradeList() throws IOException {
+    if (export) {
+      log.info("exporting trades to /tmp/exported.json");
+      LoanTradeList list = LoanTradeList.builder().trades(exported).build();
+      try (FileWriter writer = new FileWriter("/tmp/exported.json")) {
+        writer.write(JodaBeanSer.PRETTY.jsonWriter().write(list));
+      }
+    }
+  }
 
   public void test_termLoan_1() throws IOException {
     final Repayment REPAYMENT_1 = Repayment.builder()
@@ -169,9 +184,9 @@ public class ProratedLoanTradePricerTest {
 
     final Facility LOAN = Facility
         .builder()
-        .id(StandardId.of("lid", "LOAN1"))
-        .agent(StandardId.of("cpty", "AGENT"))
-        .borrower(StandardId.of("cpty", "BORROWER"))
+        .id(StandardId.of("lid", "Evilcorp, TL A"))
+        .agent(StandardId.of("cpty", "Cortland"))
+        .borrower(StandardId.of("cpty", "Evilcorp, LLC"))
         .startDate(LocalDate.of(2017, 1, 24))
         .maturityDate(LocalDate.of(2022, 8, 14))
         .contracts(
@@ -188,13 +203,13 @@ public class ProratedLoanTradePricerTest {
         .build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
-        .id(StandardId.of("trade", "TRADE1"))
+        .id(StandardId.of("trade", "126838"))
         .tradeDate(LocalDate.of(2017, 3, 21))
         .settlementDate(LocalDate.of(2017, 4, 10)).build();
 
     LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
-        .info(TRADE_INFO).buyer(StandardId.of("cpty", "BUYER"))
-        .seller(StandardId.of("cpty", "SELLER")).amount(3000000)
+        .info(TRADE_INFO).buyer(StandardId.of("cpty", "SyndLoanHub"))
+        .seller(StandardId.of("cpty", "CLO Group")).amount(3000000)
         .price(101.125 / 100)
         .expectedSettlementDate(LocalDate.of(2017, 3, 30))
         .averageLibor(0.9834 / 100).buySell(BUY)
@@ -202,8 +217,9 @@ public class ProratedLoanTradePricerTest {
         .commitmentReductionCreditFlag(true).currency(Currency.USD)
         .delayedCompensationFlag(true).documentationType(Par)
         .formOfPurchase(Assignment).paydownOnTradeDate(false).build();
-    
-    // log.info("TRADE:\n" + JodaBeanSer.PRETTY.jsonWriter().write(LOAN_TRADE));
+
+    if (export)
+      exported.add(LOAN_TRADE);
 
     final ProratedLoanTrade PRORATED_LOAN_TRADE = LOAN_TRADE.prorate(null);
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
@@ -232,7 +248,7 @@ public class ProratedLoanTradePricerTest {
 
     String cfFileName = "src/test/resources/aliantcf.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -247,7 +263,7 @@ public class ProratedLoanTradePricerTest {
 
     cfFileName = "src/test/resources/aliantcf_ne.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -347,9 +363,9 @@ public class ProratedLoanTradePricerTest {
 
     final Facility LOAN = Facility
         .builder()
-        .id(StandardId.of("lid", "LOAN2"))
-        .agent(StandardId.of("cpty", "AGENT"))
-        .borrower(StandardId.of("cpty", "BORROWER"))
+        .id(StandardId.of("lid", "Morehead RC"))
+        .agent(StandardId.of("cpty", "Morgan Stanley"))
+        .borrower(StandardId.of("cpty", "Morehead Inc."))
         .startDate(LocalDate.of(2016, 7, 28))
         .maturityDate(LocalDate.of(2017, 3, 24))
         .contracts(
@@ -360,12 +376,13 @@ public class ProratedLoanTradePricerTest {
         .facilityType(Revolving).build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
+        .id(StandardId.of("trade", "98082"))
         .tradeDate(LocalDate.of(2016, 8, 1))
         .settlementDate(LocalDate.of(2016, 8, 1)).build();
 
     final LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
-        .info(TRADE_INFO).buyer(StandardId.of("cpty", "BUYER"))
-        .seller(StandardId.of("cpty", "SELLER")).amount(300000000)
+        .info(TRADE_INFO).buyer(StandardId.of("cpty", "The Cash Store"))
+        .seller(StandardId.of("cpty", "United Trust")).amount(300000000)
         .price(100 / 100)
         .expectedSettlementDate(TRADE_INFO.getSettlementDate().get())
         .buySell(BUY).accrualSettlementType(SettledWithoutAccrued)
@@ -373,6 +390,9 @@ public class ProratedLoanTradePricerTest {
         .currency(Currency.USD).delayedCompensationFlag(true)
         .documentationType(Par).formOfPurchase(Assignment)
         .paydownOnTradeDate(false).build();
+
+    if (export)
+      exported.add(LOAN_TRADE);
 
     final ProratedLoanTrade PRORATED_LOAN_TRADE = LOAN_TRADE.prorate(null);
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
@@ -383,7 +403,7 @@ public class ProratedLoanTradePricerTest {
         PROV, true);
     String cfFileName = "src/test/resources/stoneridgecf.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -397,7 +417,7 @@ public class ProratedLoanTradePricerTest {
     cashFlows = PRICER.cashFlows(PRORATED_LOAN_TRADE, PROV, false);
     cfFileName = "src/test/resources/stoneridgecf_ne.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -737,9 +757,9 @@ public class ProratedLoanTradePricerTest {
 
     final Facility LOAN = Facility
         .builder()
-        .id(StandardId.of("lid", "LOAN5"))
-        .agent(StandardId.of("cpty", "AGENT"))
-        .borrower(StandardId.of("cpty", "BORROWER"))
+        .id(StandardId.of("lid", "Pik Boys TL B"))
+        .agent(StandardId.of("cpty", "Cortland"))
+        .borrower(StandardId.of("cpty", "Pik Boys, LLC"))
         .startDate(LocalDate.of(2014, 4, 8))
         .maturityDate(LocalDate.of(2017, 9, 29))
         .contracts(contracts)
@@ -749,18 +769,22 @@ public class ProratedLoanTradePricerTest {
         .build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
+        .id(StandardId.of("trade",  "159778"))
         .tradeDate(LocalDate.of(2017, 1, 3))
         .settlementDate(LocalDate.of(2017, 1, 3)).build();
 
     final LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
-        .info(TRADE_INFO).buyer(StandardId.of("cpty", "BUYER"))
-        .seller(StandardId.of("cpty", "SELLER")).amount(15806946.89)
+        .info(TRADE_INFO).buyer(StandardId.of("cpty", "Sinhub, Inc."))
+        .seller(StandardId.of("cpty", "Equity Partners")).amount(15806946.89)
         .price(100.0 / 100)
         .expectedSettlementDate(LocalDate.of(2017, 1, 3)).buySell(BUY)
         .accrualSettlementType(SettledWithoutAccrued).association(LSTA)
         .commitmentReductionCreditFlag(true).currency(Currency.USD)
         .delayedCompensationFlag(true).documentationType(Par)
         .formOfPurchase(Assignment).paydownOnTradeDate(false).build();
+
+    if (export)
+      exported.add(LOAN_TRADE);
 
     final ProratedLoanTrade PRORATED_LOAN_TRADE = LOAN_TRADE.prorate(null);
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
@@ -772,7 +796,7 @@ public class ProratedLoanTradePricerTest {
 
     final String cfFileName = "src/test/resources/dorocf.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -857,9 +881,9 @@ public class ProratedLoanTradePricerTest {
 
     final Facility LOAN = Facility
         .builder()
-        .id(StandardId.of("lid", "LOAN6"))
-        .agent(StandardId.of("cpty", "AGENT"))
-        .borrower(StandardId.of("cpty", "BORROWER"))
+        .id(StandardId.of("lid", "ATM Energy TL A"))
+        .agent(StandardId.of("cpty", "BONY"))
+        .borrower(StandardId.of("cpty", "ATM Energy, LLC"))
         .startDate(LocalDate.of(2016, 5, 23))
         .maturityDate(LocalDate.of(2021, 5, 23))
         .contracts(
@@ -871,12 +895,13 @@ public class ProratedLoanTradePricerTest {
         .build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
+        .id(StandardId.of("trade",  "179020"))
         .tradeDate(LocalDate.of(2016, 7, 28))
         .settlementDate(LocalDate.of(2016, 9, 8)).build();
 
     final LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
-        .info(TRADE_INFO).buyer(StandardId.of("cpty", "BUYER"))
-        .seller(StandardId.of("cpty", "SELLER")).amount(1296133.536)
+        .info(TRADE_INFO).buyer(StandardId.of("cpty", "Debt, Inc."))
+        .seller(StandardId.of("cpty", "Mama Luccia")).amount(1296133.536)
         .price(70.0 / 100)
         .expectedSettlementDate(LocalDate.of(2016, 8, 8)).buySell(SELL)
         .accrualSettlementType(SettledWithoutAccrued).association(LSTA)
@@ -884,6 +909,9 @@ public class ProratedLoanTradePricerTest {
         .delayedCompensationFlag(true).documentationType(Par)
         .formOfPurchase(Assignment).paydownOnTradeDate(false)
         .averageLibor(0.51638 / 100).build();
+    
+    if (export)
+      exported.add(LOAN_TRADE);
 
     final ProratedLoanTrade PRORATED_LOAN_TRADE = LOAN_TRADE.prorate(null);
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
@@ -895,7 +923,7 @@ public class ProratedLoanTradePricerTest {
 
     final String cfFileName = "src/test/resources/areteccf.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -1019,9 +1047,9 @@ public class ProratedLoanTradePricerTest {
 
     final Facility LOAN = Facility
         .builder()
-        .id(StandardId.of("lid", "LOAN7"))
-        .agent(StandardId.of("cpty", "AGENT"))
-        .borrower(StandardId.of("cpty", "BORROWER"))
+        .id(StandardId.of("lid", "Badvision TL B2"))
+        .agent(StandardId.of("cpty", "Morgan Stanley"))
+        .borrower(StandardId.of("cpty", "Badvision, Inc."))
         .startDate(LocalDate.of(2013, 5, 29))
         .maturityDate(LocalDate.of(2020, 3, 1))
         .contracts(
@@ -1033,13 +1061,14 @@ public class ProratedLoanTradePricerTest {
         .build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
+        .id(StandardId.of("trade",  "132334"))
         .tradeDate(LocalDate.of(2016, 12, 22))
         .settlementDate(LocalDate.of(2017, 1, 5)).build();
 
     final LoanTrade LOAN_TRADE = LoanTrade.builder().buySell(SELL)
         .product(LOAN).info(TRADE_INFO)
-        .buyer(StandardId.of("cpty", "BUYER"))
-        .seller(StandardId.of("cpty", "SELLER")).amount(1500000)
+        .buyer(StandardId.of("cpty", "CLO Group II"))
+        .seller(StandardId.of("cpty", "The Short Fund")).amount(1500000)
         .price(100.625 / 100)
         .expectedSettlementDate(LocalDate.of(2017, 1, 4))
         .accrualSettlementType(SettledWithoutAccrued).association(LSTA)
@@ -1048,6 +1077,9 @@ public class ProratedLoanTradePricerTest {
         .formOfPurchase(Assignment).paydownOnTradeDate(true)
         .averageLibor(0.77167 / 100).build();
 
+    if (export)
+      exported.add(LOAN_TRADE);
+    
     final ProratedLoanTrade PRORATED_LOAN_TRADE = LOAN_TRADE.prorate(null);
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
     final RatesProvider PROV = ImmutableRatesProvider.builder(
@@ -1075,7 +1107,7 @@ public class ProratedLoanTradePricerTest {
 
     final String cfFileName = "src/test/resources/uvncf.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -1292,9 +1324,9 @@ public class ProratedLoanTradePricerTest {
 
     final Facility LOAN = Facility
         .builder()
-        .id(StandardId.of("lid", "LOAN8"))
-        .agent(StandardId.of("cpty", "AGENT"))
-        .borrower(StandardId.of("cpty", "BORROWER"))
+        .id(StandardId.of("lid", "Knowledge RC"))
+        .agent(StandardId.of("cpty", "Cortland"))
+        .borrower(StandardId.of("cpty", "Knowledge Industries, Inc."))
         .startDate(LocalDate.of(2017, 2, 7))
         .maturityDate(LocalDate.of(2018, 3, 3))
         .contracts(contracts)
@@ -1303,18 +1335,22 @@ public class ProratedLoanTradePricerTest {
         .facilityType(Revolving).build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
+        .id(StandardId.of("trade",  "107827"))
         .tradeDate(LocalDate.of(2017, 2, 7))
         .settlementDate(LocalDate.of(2017, 3, 3)).build();
 
     final LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
-        .info(TRADE_INFO).buyer(StandardId.of("cpty", "BUYER"))
-        .seller(StandardId.of("cpty", "SELLER")).amount(25000000)
+        .info(TRADE_INFO).buyer(StandardId.of("cpty", "Moneytown Investments"))
+        .seller(StandardId.of("cpty", "Divestnow, LLC")).amount(25000000)
         .price(100 / 100)
         .expectedSettlementDate(LocalDate.of(2017, 3, 23)).buySell(BUY)
         .accrualSettlementType(SettledWithoutAccrued).association(LSTA)
         .commitmentReductionCreditFlag(true).currency(Currency.USD)
         .delayedCompensationFlag(true).documentationType(Par)
         .formOfPurchase(Assignment).paydownOnTradeDate(false).build();
+
+    if (export)
+      exported.add(LOAN_TRADE);
 
     final ProratedLoanTrade PRORATED_LOAN_TRADE = LOAN_TRADE.prorate(null);
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
@@ -1326,7 +1362,7 @@ public class ProratedLoanTradePricerTest {
 
     final String cfFileName = "src/test/resources/clgecf.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -1627,9 +1663,9 @@ public class ProratedLoanTradePricerTest {
 
     final Facility LOAN = Facility
         .builder()
-        .id(StandardId.of("lid", "LOAN"))
-        .agent(StandardId.of("cpty", "AGENT"))
-        .borrower(StandardId.of("cpty", "BORROWER"))
+        .id(StandardId.of("lid", "Mayo TL B"))
+        .agent(StandardId.of("cpty", "Morgan Stanley"))
+        .borrower(StandardId.of("cpty", "Mayo Group, LLC"))
         .startDate(LocalDate.of(2017, 1, 19))
         .maturityDate(LocalDate.of(2024, 1, 19))
         .contracts(
@@ -1646,12 +1682,13 @@ public class ProratedLoanTradePricerTest {
         .build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
+        .id(StandardId.of("trade",  "21820"))
         .tradeDate(LocalDate.of(2017, 2, 2))
         .settlementDate(LocalDate.of(2017, 4, 28)).build();
 
     LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
-        .info(TRADE_INFO).buyer(StandardId.of("cpty", "BUYER"))
-        .seller(StandardId.of("cpty", "SELLER")).amount(500000)
+        .info(TRADE_INFO).buyer(StandardId.of("cpty", "CLO Group"))
+        .seller(StandardId.of("cpty", "Wesellin, Inc.")).amount(500000)
         .price(101.01 / 100)
         .expectedSettlementDate(LocalDate.of(2017, 2, 13))
         .averageLibor(0.90819 / 100).buySell(SELL)
@@ -1659,6 +1696,9 @@ public class ProratedLoanTradePricerTest {
         .commitmentReductionCreditFlag(true).currency(Currency.USD)
         .delayedCompensationFlag(true).documentationType(Par)
         .formOfPurchase(Assignment).paydownOnTradeDate(false).build();
+
+    if (export)
+      exported.add(LOAN_TRADE);
 
     final ProratedLoanTrade PRORATED_LOAN_TRADE = LOAN_TRADE.prorate(null);
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
@@ -1669,7 +1709,7 @@ public class ProratedLoanTradePricerTest {
         PRORATED_LOAN_TRADE, PROV, true);
     final String cfFileName = "src/test/resources/zayo.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -1954,9 +1994,9 @@ public class ProratedLoanTradePricerTest {
 
     final Facility LOAN = Facility
         .builder()
-        .id(StandardId.of("lid", "LOAN1"))
-        .agent(StandardId.of("cpty", "AGENT"))
-        .borrower(StandardId.of("cpty", "BORROWER"))
+        .id(StandardId.of("lid", "Arriant TL"))
+        .agent(StandardId.of("cpty", "Cortland"))
+        .borrower(StandardId.of("cpty", "Arriant, Inc."))
         .startDate(LocalDate.of(2017, 1, 24))
         .maturityDate(LocalDate.of(2022, 8, 14))
         .contracts(contracts)
@@ -1967,12 +2007,13 @@ public class ProratedLoanTradePricerTest {
         .identifiers(identifiers).build();
 
     final TradeInfo BUY_TRADE_INFO = TradeInfo.builder()
+        .id(StandardId.of("trade", "70913"))
         .tradeDate(LocalDate.of(2017, 4, 20))
         .settlementDate(LocalDate.of(2017, 5, 11)).build();
 
     LoanTrade BUY_LOAN_TRADE = LoanTrade.builder().product(LOAN)
-        .info(BUY_TRADE_INFO).buyer(StandardId.of("cpty", "BUYER"))
-        .seller(StandardId.of("cpty", "SELLER")).amount(500000)
+        .info(BUY_TRADE_INFO).buyer(StandardId.of("cpty", "Beaucoup Investors"))
+        .seller(StandardId.of("cpty", "Manuel Holdings")).amount(500000)
         .price(100.0 / 100)
         .expectedSettlementDate(LocalDate.of(2017, 5, 1)).buySell(BUY)
         .accrualSettlementType(SettledWithoutAccrued).association(LSTA)
@@ -1982,6 +2023,7 @@ public class ProratedLoanTradePricerTest {
         .adjustmentOnTradeDate(true).tradeType(Primary).build();
 
     final TradeInfo SELL_TRADE_INFO = TradeInfo.builder()
+        .id(StandardId.of("trade", "SELL"))
         .tradeDate(LocalDate.of(2017, 5, 30))
         .settlementDate(LocalDate.of(2017, 6, 9)).build();
 
@@ -1997,18 +2039,14 @@ public class ProratedLoanTradePricerTest {
         .adjustmentOnTradeDate(false).averageLibor(1.08867 / 100.0)
         .build();
 
-    final ProratedLoanTrade PRORATED_BUY_LOAN_TRADE = BUY_LOAN_TRADE
-        .prorate(null);
-    final ProratedLoanTrade PRORATED_SELL_LOAN_TRADE = SELL_LOAN_TRADE
-        .prorate(null);
+    final LoanTradeList portfolio = LoanTradeList.builder()
+        .trades(BUY_LOAN_TRADE, SELL_LOAN_TRADE)
+        .build();
+    
+    if (export)
+      exported.addAll(portfolio.getTrades());
 
-    List<ProratedLoanTrade> tradeList = new ArrayList<ProratedLoanTrade>();
-    tradeList.add(PRORATED_BUY_LOAN_TRADE);
-    tradeList.add(PRORATED_SELL_LOAN_TRADE);
-
-    ProratedLoanTradeList trades = ProratedLoanTradeList.builder()
-        .trades(tradeList).build();
-
+    final ProratedLoanTradeList trades = portfolio.prorate(null);
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
     final RatesProvider PROV = ImmutableRatesProvider.builder(
         LocalDate.now()).build();
@@ -2016,7 +2054,7 @@ public class ProratedLoanTradePricerTest {
     AnnotatedCashFlows cashFlows = PRICER.cashFlows(trades, PROV, false);
     String cfFileName = "src/test/resources/aliantbuysell_ne.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -2030,7 +2068,7 @@ public class ProratedLoanTradePricerTest {
     cashFlows = PRICER.cashFlows(trades, PROV, true);
     cfFileName = "src/test/resources/aliantbuysell.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -2103,9 +2141,9 @@ public class ProratedLoanTradePricerTest {
 
     final Facility LOAN = Facility
         .builder()
-        .id(StandardId.of("lid", "LOAN"))
-        .agent(StandardId.of("cpty", "AGENT"))
-        .borrower(StandardId.of("cpty", "BORROWER"))
+        .id(StandardId.of("lid", "Vista TL"))
+        .agent(StandardId.of("cpty", "Cortland"))
+        .borrower(StandardId.of("cpty", "Vista Green Energy, LLC"))
         .startDate(LocalDate.of(2018, 2, 6))
         .maturityDate(LocalDate.of(2025, 2, 10))
         .contracts(Arrays.asList(CONTRACT_1, CONTRACT_2, CONTRACT_3))
@@ -2127,7 +2165,7 @@ public class ProratedLoanTradePricerTest {
         .collect(Collectors.toList());
     br.close();
 
-    List<ProratedLoanTrade> tradeList = new ArrayList<ProratedLoanTrade>();
+    List<LoanTrade> tradeList = new ArrayList<LoanTrade>();
 
     final int MAX_TRADES = 10000;
     int tradeCount = 0;
@@ -2148,7 +2186,7 @@ public class ProratedLoanTradePricerTest {
       final TradeInfo TRADE_INFO = TradeInfo.builder()
           .tradeDate(tradeDate)
           .settlementDate(actualSettle)
-          .id(StandardId.of("trade", tid))
+          .id(StandardId.of("trade", dealNumber.replaceAll("HH_", "") + child))
           .build();
 
       LoanTrade LOAN_TRADE = LoanTrade
@@ -2166,11 +2204,17 @@ public class ProratedLoanTradePricerTest {
           .documentationType(Par).formOfPurchase(Assignment)
           .paydownOnTradeDate(false).build();
 
-      tradeList.add(LOAN_TRADE.prorate(null));
+      tradeList.add(LOAN_TRADE);
     }
+    
+    if (export)
+      exported.addAll(tradeList);
 
-    ProratedLoanTradeList trades = ProratedLoanTradeList.builder()
-        .trades(tradeList).build();
+    final LoanTradeList portfolio = LoanTradeList.builder()
+        .trades(tradeList)
+        .build();
+
+    ProratedLoanTradeList trades = portfolio.prorate(null);
 
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
     final RatesProvider PROV = ImmutableRatesProvider.builder(
@@ -2179,7 +2223,7 @@ public class ProratedLoanTradePricerTest {
     AnnotatedCashFlows cashFlows = PRICER.cashFlows(trades, PROV, true);
     String cfFileName = "src/test/resources/vist.json";
 
-    if (regenerate) {
+    if (regenerate || export) {
       try (FileWriter writer = new FileWriter(cfFileName)) {
         writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
         log.warn("regenerated " + cfFileName);
@@ -3150,33 +3194,8 @@ public class ProratedLoanTradePricerTest {
     RatesProvider PROV = ImmutableRatesProvider.builder(
         LocalDate.now()).build();
 
-    AnnotatedCashFlows cashFlows = PRICER.cashFlows(trades, PROV, false);
-    String cfFileName = "src/test/resources/aliantbuysell_ne.json";
+    AnnotatedCashFlows cashFlows = PRICER.cashFlows(trades, PROV, true);
 
-    if (regenerate) {
-      try (FileWriter writer = new FileWriter(cfFileName)) {
-        writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
-        log.warn("regenerated " + cfFileName);
-      }
-    }
-
-    AnnotatedCashFlows expected = (AnnotatedCashFlows) JodaBeanSer.PRETTY
-        .jsonReader().read(new FileReader(cfFileName));
-    assertEquals(cashFlows, expected);
-
-    cashFlows = PRICER.cashFlows(trades, PROV, true);
-    cfFileName = "src/test/resources/aliantbuysell.json";
-
-    if (regenerate) {
-      try (FileWriter writer = new FileWriter(cfFileName)) {
-        writer.write(JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
-        log.warn("regenerated " + cfFileName);
-      }
-    }
-
-    expected = (AnnotatedCashFlows) JodaBeanSer.PRETTY.jsonReader().read(
-        new FileReader(cfFileName));
-    assertEquals(cashFlows, expected);
 
     for (LocalDate date = SELL_TRADE_INFO.getSettlementDate().get(); !date
         .isEqual(CONTRACT_4.getAccrual().getEndDate().plusDays(2)); date =

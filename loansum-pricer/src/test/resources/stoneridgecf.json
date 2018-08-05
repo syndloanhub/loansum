@@ -5,8 +5,8 @@
    "source": "contract~1",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~The Cash Store",
    "explains": {
     "map": {
      "CashFlow": {
@@ -49,8 +49,8 @@
    "source": "contract~2",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~The Cash Store",
    "explains": {
     "map": {
      "CashFlow": {
@@ -93,8 +93,8 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "Borrowing",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~AGENT"
+   "payingCounterparty": "cpty~The Cash Store",
+   "receivingCounterparty": "cpty~Morgan Stanley"
   },
   "cashFlow": {
    "paymentDate": "2016-08-04",
@@ -107,8 +107,8 @@
    "source": "contract~3",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~The Cash Store",
    "explains": {
     "map": {
      "CashFlow": {
@@ -151,8 +151,8 @@
    "source": "contract~4",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~The Cash Store",
    "explains": {
     "map": {
      "CashFlow": {
@@ -195,8 +195,8 @@
    "source": "contract~5",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~The Cash Store",
    "explains": {
     "map": {
      "CashFlow": {
@@ -238,8 +238,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~The Cash Store",
+   "receivingCounterparty": "cpty~United Trust",
    "explains": {
     "map": {
      "CashFlow": {

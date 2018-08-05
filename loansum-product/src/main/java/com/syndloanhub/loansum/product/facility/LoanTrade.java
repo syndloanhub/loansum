@@ -15,7 +15,6 @@ import static com.syndloanhub.loansum.product.facility.LoanTradingType.Secondary
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 import org.joda.beans.ImmutableBean;
 import org.joda.beans.JodaBeanUtils;

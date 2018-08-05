@@ -5,8 +5,8 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~CLO Group",
+   "receivingCounterparty": "cpty~SyndLoanHub",
    "explains": {
     "map": {}
    }
@@ -22,8 +22,8 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~SyndLoanHub",
    "explains": {
     "map": {}
    }
@@ -39,8 +39,8 @@
    "source": "contract~3",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~SyndLoanHub",
    "explains": {
     "map": {}
    }
@@ -56,8 +56,8 @@
    "source": "contract~4",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~SyndLoanHub",
    "explains": {
     "map": {}
    }
@@ -73,8 +73,8 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~AGENT",
-   "receivingCounterparty": "cpty~BUYER"
+   "payingCounterparty": "cpty~Cortland",
+   "receivingCounterparty": "cpty~SyndLoanHub"
   },
   "cashFlow": {
    "paymentDate": "2017-06-30",
@@ -86,8 +86,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~SyndLoanHub",
+   "receivingCounterparty": "cpty~CLO Group",
    "explains": {
     "map": {}
    }
@@ -102,8 +102,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfCarry",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~SyndLoanHub",
+   "receivingCounterparty": "cpty~CLO Group",
    "explains": {
     "map": {}
    }
@@ -118,8 +118,8 @@
   "annotation": {
    "uncertain": false,
    "type": "EconomicBenefit",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~SyndLoanHub",
+   "receivingCounterparty": "cpty~CLO Group",
    "explains": {
     "map": {}
    }

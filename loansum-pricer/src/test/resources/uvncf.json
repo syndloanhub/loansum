@@ -5,8 +5,8 @@
    "source": "contract~3",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~The Short Fund",
+   "receivingCounterparty": "cpty~CLO Group II",
    "explains": {
     "map": {
      "CashFlow": {
@@ -49,8 +49,8 @@
    "source": "contract~3",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~AGENT",
+   "payingCounterparty": "cpty~The Short Fund",
+   "receivingCounterparty": "cpty~Morgan Stanley",
    "explains": {
     "map": {
      "CashFlow": {
@@ -93,8 +93,8 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~AGENT",
+   "payingCounterparty": "cpty~The Short Fund",
+   "receivingCounterparty": "cpty~Morgan Stanley",
    "explains": {
     "map": {
      "CashFlow": {
@@ -137,8 +137,8 @@
    "source": "contract~5",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~AGENT",
+   "payingCounterparty": "cpty~The Short Fund",
+   "receivingCounterparty": "cpty~Morgan Stanley",
    "explains": {
     "map": {
      "CashFlow": {
@@ -181,8 +181,8 @@
    "source": "contract~6",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~AGENT",
+   "payingCounterparty": "cpty~The Short Fund",
+   "receivingCounterparty": "cpty~Morgan Stanley",
    "explains": {
     "map": {
      "CashFlow": {
@@ -247,8 +247,8 @@
    "source": "contract~6",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~AGENT"
+   "payingCounterparty": "cpty~The Short Fund",
+   "receivingCounterparty": "cpty~Morgan Stanley"
   },
   "cashFlow": {
    "paymentDate": "2017-03-24",
@@ -260,8 +260,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~CLO Group II",
+   "receivingCounterparty": "cpty~The Short Fund",
    "explains": {
     "map": {
      "CashFlow": {
@@ -290,8 +290,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfCarry",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~CLO Group II",
+   "receivingCounterparty": "cpty~The Short Fund",
    "explains": {
     "map": {
      "CashFlow": {
@@ -333,8 +333,8 @@
   "annotation": {
    "uncertain": false,
    "type": "EconomicBenefit",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~CLO Group II",
+   "receivingCounterparty": "cpty~The Short Fund",
    "explains": {
     "map": {
      "CashFlow": {
