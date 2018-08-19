@@ -384,7 +384,7 @@ public class ProratedLoanTradePricerTest {
     final LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
         .info(TRADE_INFO).buyer(StandardId.of("cpty", "The Cash Store"))
         .seller(StandardId.of("cpty", "United Trust")).amount(300000000)
-        .price(100 / 100)
+        .price(100.0 / 100)
         .expectedSettlementDate(TRADE_INFO.getSettlementDate().get())
         .buySell(BUY).accrualSettlementType(SettledWithoutAccrued)
         .association(LSTA).commitmentReductionCreditFlag(true)
@@ -522,7 +522,7 @@ public class ProratedLoanTradePricerTest {
     final LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
         .info(TRADE_INFO).buyer(StandardId.of("cpty", "BUYER"))
         .seller(StandardId.of("cpty", "SELLER")).amount(300000000)
-        .price(100 / 100)
+        .price(100.0 / 100)
         .expectedSettlementDate(TRADE_INFO.getSettlementDate().get())
         .buySell(BUY).accrualSettlementType(SettledWithoutAccrued)
         .association(LSTA).commitmentReductionCreditFlag(true)
@@ -624,7 +624,7 @@ public class ProratedLoanTradePricerTest {
     final LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
         .info(TRADE_INFO).buyer(StandardId.of("cpty", "BUYER"))
         .seller(StandardId.of("cpty", "SELLER")).amount(50000000)
-        .price(100 / 100)
+        .price(100.0 / 100)
         .expectedSettlementDate(TRADE_INFO.getSettlementDate().get())
         .buySell(BUY).accrualSettlementType(SettledWithoutAccrued)
         .association(LSTA).commitmentReductionCreditFlag(true)
@@ -951,7 +951,7 @@ public class ProratedLoanTradePricerTest {
         .effectiveDate(LocalDate.of(2017, 3, 24))
         .interestOnPaydown(true)
         .amount(CurrencyAmount.of(Currency.USD, 3223683.88))
-        .price(100 / 100).build();
+        .price(100.0 / 100).build();
 
     final LoanContract CONTRACT_1 = LoanContract
         .builder()
@@ -1343,7 +1343,7 @@ public class ProratedLoanTradePricerTest {
     final LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
         .info(TRADE_INFO).buyer(StandardId.of("cpty", "Moneytown Investments"))
         .seller(StandardId.of("cpty", "Divestnow, LLC")).amount(25000000)
-        .price(100 / 100)
+        .price(101.0 / 100)
         .expectedSettlementDate(LocalDate.of(2017, 3, 23)).buySell(BUY)
         .accrualSettlementType(SettledWithoutAccrued).association(LSTA)
         .commitmentReductionCreditFlag(true).currency(Currency.USD)
@@ -1505,7 +1505,7 @@ public class ProratedLoanTradePricerTest {
     final LoanTrade LOAN_TRADE = LoanTrade.builder().product(LOAN)
         .info(TRADE_INFO).buyer(StandardId.of("cpty", "BUYER"))
         .seller(StandardId.of("cpty", "SELLER")).amount(500000000)
-        .price(100 / 100)
+        .price(100.0 / 100)
         .expectedSettlementDate(TRADE_INFO.getSettlementDate().get())
         .buySell(BUY).accrualSettlementType(SettledWithoutAccrued)
         .association(LSTA).commitmentReductionCreditFlag(true)
