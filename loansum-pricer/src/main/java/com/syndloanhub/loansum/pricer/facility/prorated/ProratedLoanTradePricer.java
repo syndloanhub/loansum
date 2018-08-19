@@ -249,7 +249,8 @@ public class ProratedLoanTradePricer {
    * @param provider
    * @return benefit of unfunded in settlement currency
    */
-  public CurrencyAmount benefitOfUnfunded(ProratedLoanTrade trade, RatesProvider provider, LocalDate settle) {
+  public CurrencyAmount benefitOfUnfunded(ProratedLoanTrade trade, RatesProvider provider, LocalDate settle,
+      Optional<ExplainMapBuilder> explains) {
     CurrencyAmount benefitOfUnfunded = CurrencyAmount.zero(trade.getProduct().getCurrency());
     TradeInfo info = trade.getInfo();
 
@@ -258,6 +259,16 @@ public class ProratedLoanTradePricer {
       double cost = unfunded * (1 - trade.getPrice());
 
       benefitOfUnfunded = CurrencyAmount.of(trade.getProduct().getCurrency(), cost);
+
+      if (explains.isPresent()) {
+        ExplainMapBuilder explainsBuilder = explains.get();
+        explainsBuilder = explainsBuilder.openListEntry(CASHFLOW);
+        explainsBuilder.put(SHARE_AMOUNT, benefitOfUnfunded.getAmount());
+        explainsBuilder.put(UNFUNDED_AMOUNT, unfunded);
+        explainsBuilder.put(PRICE, trade.getPrice());
+        explainsBuilder.put(FORMULA, UNFUNDED_AMOUNT.getName() + " x " + "(1 - " + PRICE.getName() + ")");
+        explainsBuilder = explainsBuilder.closeListEntry(CASHFLOW);
+      }
     }
 
     return benefitOfUnfunded;
@@ -518,7 +529,7 @@ public class ProratedLoanTradePricer {
    */
   public CurrencyAmount purchasePrice(ProratedLoanTrade trade, RatesProvider provider, LocalDate settle) {
     return costOfFunded(trade, provider, settle, Optional.empty())
-        .minus(benefitOfUnfunded(trade, provider, settle))
+        .minus(benefitOfUnfunded(trade, provider, settle, Optional.empty()))
         .minus(economicBenefit(trade, provider, settle, Optional.empty()));
   }
 
@@ -760,7 +771,8 @@ public class ProratedLoanTradePricer {
         builder.add(cashFlow);
       }
 
-      CurrencyAmount benefitOfUnfunded = benefitOfUnfunded(trade, provider, info.getSettlementDate().get());
+      explainBuilder = explain ? Optional.of(ExplainMap.builder()) : Optional.empty();
+      CurrencyAmount benefitOfUnfunded = benefitOfUnfunded(trade, provider, info.getSettlementDate().get(), explainBuilder);
 
       if (Math.abs(benefitOfUnfunded.getAmount()) > EPSILON_1) {
         builder.add(AnnotatedCashFlow.builder()
@@ -771,6 +783,7 @@ public class ProratedLoanTradePricer {
                 .payingCounterparty(benefitOfUnfunded.getAmount() < 0 ? trade.getSeller() : trade.getBuyer())
                 .receivingCounterparty(benefitOfUnfunded.getAmount() < 0 ? trade.getBuyer() : trade.getSeller())
                 .type(BenefitOfUnfunded)
+                .explains(explainBuilder.orElse(ExplainMap.builder()).build())
                 .build())
             .build());
       }

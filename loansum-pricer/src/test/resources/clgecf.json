@@ -583,7 +583,23 @@
    "uncertain": false,
    "type": "BenefitOfUnfunded",
    "payingCounterparty": "cpty~Divestnow, LLC",
-   "receivingCounterparty": "cpty~Moneytown Investments"
+   "receivingCounterparty": "cpty~Moneytown Investments",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": -250000.00000000023,
+        "Unfunded Amt": 2.5E7,
+        "Price": 1.01,
+        "Formula": "Unfunded Amt x (1 - Price)"
+       }
+      }]
+     }
+    }
+   }
   },
   "cashFlow": {
    "paymentDate": "2017-03-03",

@@ -59,6 +59,7 @@ final public class Explain {
   public static final ExplainKey<Double> SETT_DT_FUNDED = ExplainKey.of("Sett Dt Funded");
   public static final ExplainKey<Double> TRD_DT_REPAY = ExplainKey.of("Trd Dt Repay");
   public static final ExplainKey<Double> FUNDED_AMOUNT = ExplainKey.of("Funded Amt");
+  public static final ExplainKey<Double> UNFUNDED_AMOUNT = ExplainKey.of("Unfunded Amt");
   public static final ExplainKey<Double> PAYDOWN_CREDIT = ExplainKey.of("Paydown Crdt");
   public static final ExplainKey<Double> UNFUNDED_CREDIT = ExplainKey.of("Unfunded Crdt");
 
