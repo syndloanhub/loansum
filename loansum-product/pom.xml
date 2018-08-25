@@ -17,12 +17,12 @@
       <dependency>
         <groupId>com.opengamma.strata</groupId>
 	<artifactId>strata-product</artifactId>
-        <version>1.7.0</version>
+        <version>2.0.0</version>
       </dependency>
      <dependency>
        <groupId>com.opengamma.strata</groupId>
        <artifactId>strata-market</artifactId>
-       <version>1.7.0</version>
+       <version>2.0.0</version>
      </dependency>
   </dependencies>
 
