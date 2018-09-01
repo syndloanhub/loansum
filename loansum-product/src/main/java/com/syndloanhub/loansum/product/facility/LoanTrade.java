@@ -173,9 +173,9 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
 
     double adjustedAmount = getAmount();
     final Facility loan = getProduct();
+    final LocalDate tradeDate = getInfo().getTradeDate().get();
 
-    if (isPaydownOnTradeDate() || isAdjustmentOnTradeDate()) {
-      LocalDate tradeDate = getInfo().getTradeDate().get();
+    if ((isPaydownOnTradeDate() || isAdjustmentOnTradeDate()) && tradeDate.isAfter(loan.getStartDate())) {
       double commitmentOnTrade = loan.getCommitmentAmount(tradeDate).getAmount();
       double commitmentBeforeTrade = loan.getCommitmentAmount(tradeDate.minusDays(1)).getAmount();
 

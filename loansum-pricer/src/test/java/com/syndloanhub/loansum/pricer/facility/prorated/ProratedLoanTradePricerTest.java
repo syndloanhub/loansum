@@ -92,6 +92,16 @@ public class ProratedLoanTradePricerTest {
     }
   }
 
+  private void test_importedLoan() throws IOException {
+    LoanTrade trade = (LoanTrade) JodaBeanSer.PRETTY
+        .jsonReader().read(new FileReader("/tmp/trade.json"));
+    ProratedLoanTrade proratedTrade = trade.prorate(null);
+    ProratedLoanTradePricer pricer = ProratedLoanTradePricer.DEFAULT;
+    RatesProvider rates = ImmutableRatesProvider.builder(LocalDate.now()).build();
+    AnnotatedCashFlows cashFlows = pricer.cashFlows(proratedTrade, rates, true);
+    log.info("cashFlows=" + JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
+  }
+
   public void test_termLoan_1() throws IOException {
     final Repayment REPAYMENT_1 = Repayment.builder()
         .effectiveDate(LocalDate.of(2017, 3, 31))
@@ -219,6 +229,8 @@ public class ProratedLoanTradePricerTest {
         .delayedCompensationFlag(true).documentationType(Par)
         .formOfPurchase(Assignment).paydownOnTradeDate(false).build();
 
+    //log.info(JodaBeanSer.PRETTY.jsonWriter().write(LOAN_TRADE));
+    
     if (export)
       exported.add(LOAN_TRADE);
 
@@ -770,7 +782,7 @@ public class ProratedLoanTradePricerTest {
         .build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
-        .id(StandardId.of("trade",  "159778"))
+        .id(StandardId.of("trade", "159778"))
         .tradeDate(LocalDate.of(2017, 1, 3))
         .settlementDate(LocalDate.of(2017, 1, 3)).build();
 
@@ -896,7 +908,7 @@ public class ProratedLoanTradePricerTest {
         .build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
-        .id(StandardId.of("trade",  "179020"))
+        .id(StandardId.of("trade", "179020"))
         .tradeDate(LocalDate.of(2016, 7, 28))
         .settlementDate(LocalDate.of(2016, 9, 8)).build();
 
@@ -910,7 +922,7 @@ public class ProratedLoanTradePricerTest {
         .delayedCompensationFlag(true).documentationType(Par)
         .formOfPurchase(Assignment).paydownOnTradeDate(false)
         .averageLibor(0.51638 / 100).build();
-    
+
     if (export)
       exported.add(LOAN_TRADE);
 
@@ -1062,7 +1074,7 @@ public class ProratedLoanTradePricerTest {
         .build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
-        .id(StandardId.of("trade",  "132334"))
+        .id(StandardId.of("trade", "132334"))
         .tradeDate(LocalDate.of(2016, 12, 22))
         .settlementDate(LocalDate.of(2017, 1, 5)).build();
 
@@ -1080,7 +1092,7 @@ public class ProratedLoanTradePricerTest {
 
     if (export)
       exported.add(LOAN_TRADE);
-    
+
     final ProratedLoanTrade PRORATED_LOAN_TRADE = LOAN_TRADE.prorate(null);
     final ProratedLoanTradePricer PRICER = ProratedLoanTradePricer.DEFAULT;
     final RatesProvider PROV = ImmutableRatesProvider.builder(
@@ -1336,7 +1348,7 @@ public class ProratedLoanTradePricerTest {
         .facilityType(Revolving).build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
-        .id(StandardId.of("trade",  "107827"))
+        .id(StandardId.of("trade", "107827"))
         .tradeDate(LocalDate.of(2017, 2, 7))
         .settlementDate(LocalDate.of(2017, 3, 3)).build();
 
@@ -1683,7 +1695,7 @@ public class ProratedLoanTradePricerTest {
         .build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder()
-        .id(StandardId.of("trade",  "21820"))
+        .id(StandardId.of("trade", "21820"))
         .tradeDate(LocalDate.of(2017, 2, 2))
         .settlementDate(LocalDate.of(2017, 4, 28)).build();
 
@@ -2043,7 +2055,7 @@ public class ProratedLoanTradePricerTest {
     final LoanTradeList portfolio = LoanTradeList.builder()
         .trades(BUY_LOAN_TRADE, SELL_LOAN_TRADE)
         .build();
-    
+
     if (export)
       exported.addAll(portfolio.getTrades());
 
@@ -2207,7 +2219,7 @@ public class ProratedLoanTradePricerTest {
 
       tradeList.add(LOAN_TRADE);
     }
-    
+
     if (export)
       exported.addAll(tradeList);
 
@@ -3196,7 +3208,6 @@ public class ProratedLoanTradePricerTest {
         LocalDate.now()).build();
 
     AnnotatedCashFlows cashFlows = PRICER.cashFlows(trades, PROV, true);
-
 
     StandardId cpty = StandardId.of("cpty", "BUYER");
 
