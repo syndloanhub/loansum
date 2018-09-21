@@ -34,6 +34,11 @@ public interface Accrual extends Proratable<ProratedAccrual> {
   public abstract LocalDate getEndDate();
 
   /**
+   * @return if accrual pays on on end date, used for interest-on-paydown accruals
+   */
+  public abstract boolean isPayOnEndDate();
+
+  /**
    * @return total annual cash interest rate, this DOES NOT include the PIK spread
    */
   public abstract double getAllInRate();
@@ -87,5 +92,5 @@ public interface Accrual extends Proratable<ProratedAccrual> {
    * @param accrualAmount
    * @return accrual with revised period and amount
    */
-  public abstract Accrual rebuild(LocalDate startDate, LocalDate endDate, CurrencyAmount accrualAmount);
+  public abstract Accrual rebuild(LocalDate startDate, LocalDate endDate, CurrencyAmount accrualAmount, boolean payOnEndDate);
 }

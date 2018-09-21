@@ -865,25 +865,44 @@ public class ProratedLoanTradePricer {
     for (ProratedAccrual accrual : contract.getAccrualSchedule()) {
       CurrencyAmount cashProjection = accrual.getPaymentProjection();
 
-      if (cashProjection.getAmount() > EPSILON_1) {
-        boolean isDelayedCompensation = accrual.getStartDate().isBefore(info.getSettlementDate().get());
+      // Repayment with interest-on-paydown
+      if (accrual.isPayOnEndDate()) {
+        Optional<ExplainMapBuilder> accrualExplainBuilder = explain ? Optional.of(ExplainMap.builder()) : Optional.empty();
 
-        if (isDelayedCompensation)
-          delayedCompensation = delayedCompensation.plus(cashProjection);
-        else
-          interest = interest.plus(cashProjection);
+        explainAccrual(accrualExplainBuilder.get(), accrual, false);
 
-        if (explain)
-          explainAccrual(isDelayedCompensation ? dcExplainBuilder.get() : interestExplainBuilder.get(), accrual, false);
-      }
+        builder.add(AnnotatedCashFlow.builder()
+            .cashFlow(CashFlow.ofForecastValue(accrual.getEndDate(), currency, cashProjection.getAmount(), 1))
+            .annotation(CashFlowAnnotations.builder()
+                .source(contract.getId())
+                .uncertain(accrual.getEndDate().isAfter(provider.getValuationDate()))
+                .payingCounterparty(payingCounterparty)
+                .receivingCounterparty(receivingCounterparty)
+                .type(Interest)
+                .explains(accrualExplainBuilder.orElse(ExplainMap.builder()).build())
+                .build())
+            .build());
+      } else {
+        if (cashProjection.getAmount() > EPSILON_1) {
+          boolean isDelayedCompensation = accrual.getStartDate().isBefore(info.getSettlementDate().get());
 
-      CurrencyAmount pikProjection = accrual.getPikProjection();
+          if (isDelayedCompensation)
+            delayedCompensation = delayedCompensation.plus(cashProjection);
+          else
+            interest = interest.plus(cashProjection);
 
-      if (pikProjection.getAmount() > EPSILON_1) {
-        pik = pik.plus(pikProjection);
+          if (explain)
+            explainAccrual(isDelayedCompensation ? dcExplainBuilder.get() : interestExplainBuilder.get(), accrual, false);
+        }
 
-        if (explain)
-          explainAccrual(pikExplainBuilder.get(), accrual, true);
+        CurrencyAmount pikProjection = accrual.getPikProjection();
+
+        if (pikProjection.getAmount() > EPSILON_1) {
+          pik = pik.plus(pikProjection);
+
+          if (explain)
+            explainAccrual(pikExplainBuilder.get(), accrual, true);
+        }
       }
     }
 

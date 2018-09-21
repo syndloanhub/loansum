@@ -66,6 +66,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
         .allInRate(allInRate)
         .dayCount(dayCount)
         .endDate(endDate)
+        .payOnEndDate(payOnEndDate)
         .paymentFrequency(paymentFrequency)
         .pikSpread(pikSpread)
         .startDate(startDate)
@@ -78,13 +79,14 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
    * Construct a modified instance of this accrual given the new period and amount.
    */
   @Override
-  public Accrual rebuild(LocalDate startDate, LocalDate endDate, CurrencyAmount accrualAmount) {
+  public Accrual rebuild(LocalDate startDate, LocalDate endDate, CurrencyAmount accrualAmount, boolean payOnEndDate) {
     return FixedRateAccrual.builder()
         .accrualAmount(accrualAmount)
         .allInRate(allInRate)
         .dayCount(dayCount)
         .startDate(startDate)
         .endDate(endDate)
+        .payOnEndDate(payOnEndDate)
         .paymentFrequency(paymentFrequency)
         .paymentProjection(paymentProjection)
         .pikProjection(pikProjection)
@@ -135,6 +137,14 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
    */
   @PropertyDefinition(validate = "notNull")
   private final LocalDate endDate;
+  
+  /**
+   * Flag indicating this accrual pays on it's end date.
+   * <p>
+   * Used for interest-on-paydown accruals.
+   */
+  @PropertyDefinition(validate = "")
+  private final boolean payOnEndDate;
 
   /**
    * The cash rate of the accrual.
@@ -215,7 +225,8 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     builder
         .pikSpread(0)
         .paymentFrequency(Frequency.P1M)
-        .dayCount(DayCounts.ACT_360);
+        .dayCount(DayCounts.ACT_360)
+        .payOnEndDate(false);
   }
 
   /**
@@ -251,6 +262,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
   private FixedRateAccrual(
       LocalDate startDate,
       LocalDate endDate,
+      boolean payOnEndDate,
       double allInRate,
       double pikSpread,
       CurrencyAmount accrualAmount,
@@ -267,6 +279,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     JodaBeanUtils.notNull(paymentFrequency, "paymentFrequency");
     this.startDate = startDate;
     this.endDate = endDate;
+    this.payOnEndDate = payOnEndDate;
     this.allInRate = allInRate;
     this.pikSpread = pikSpread;
     this.accrualAmount = accrualAmount;
@@ -302,6 +315,17 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
    */
   public LocalDate getEndDate() {
     return endDate;
+  }
+
+  //-----------------------------------------------------------------------
+  /**
+   * Gets flag indicating this accrual pays on it's end date.
+   * <p>
+   * Used for interest-on-paydown accruals.
+   * @return the value of the property
+   */
+  public boolean isPayOnEndDate() {
+    return payOnEndDate;
   }
 
   //-----------------------------------------------------------------------
@@ -397,6 +421,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
       FixedRateAccrual other = (FixedRateAccrual) obj;
       return JodaBeanUtils.equal(startDate, other.startDate) &&
           JodaBeanUtils.equal(endDate, other.endDate) &&
+          (payOnEndDate == other.payOnEndDate) &&
           JodaBeanUtils.equal(allInRate, other.allInRate) &&
           JodaBeanUtils.equal(pikSpread, other.pikSpread) &&
           JodaBeanUtils.equal(accrualAmount, other.accrualAmount) &&
@@ -413,6 +438,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     int hash = getClass().hashCode();
     hash = hash * 31 + JodaBeanUtils.hashCode(startDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(endDate);
+    hash = hash * 31 + JodaBeanUtils.hashCode(payOnEndDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(allInRate);
     hash = hash * 31 + JodaBeanUtils.hashCode(pikSpread);
     hash = hash * 31 + JodaBeanUtils.hashCode(accrualAmount);
@@ -425,10 +451,11 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
 
   @Override
   public String toString() {
-    StringBuilder buf = new StringBuilder(320);
+    StringBuilder buf = new StringBuilder(352);
     buf.append("FixedRateAccrual{");
     buf.append("startDate").append('=').append(startDate).append(',').append(' ');
     buf.append("endDate").append('=').append(endDate).append(',').append(' ');
+    buf.append("payOnEndDate").append('=').append(payOnEndDate).append(',').append(' ');
     buf.append("allInRate").append('=').append(allInRate).append(',').append(' ');
     buf.append("pikSpread").append('=').append(pikSpread).append(',').append(' ');
     buf.append("accrualAmount").append('=').append(accrualAmount).append(',').append(' ');
@@ -460,6 +487,11 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
      */
     private final MetaProperty<LocalDate> _endDate = DirectMetaProperty.ofImmutable(
         this, "endDate", FixedRateAccrual.class, LocalDate.class);
+    /**
+     * The meta-property for the {@code payOnEndDate} property.
+     */
+    private final MetaProperty<Boolean> _payOnEndDate = DirectMetaProperty.ofImmutable(
+        this, "payOnEndDate", FixedRateAccrual.class, Boolean.TYPE);
     /**
      * The meta-property for the {@code allInRate} property.
      */
@@ -502,6 +534,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
         this, null,
         "startDate",
         "endDate",
+        "payOnEndDate",
         "allInRate",
         "pikSpread",
         "accrualAmount",
@@ -523,6 +556,8 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
           return _startDate;
         case -1607727319:  // endDate
           return _endDate;
+        case -1504004990:  // payOnEndDate
+          return _payOnEndDate;
         case -724263770:  // allInRate
           return _allInRate;
         case 696818085:  // pikSpread
@@ -571,6 +606,14 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
      */
     public MetaProperty<LocalDate> endDate() {
       return _endDate;
+    }
+
+    /**
+     * The meta-property for the {@code payOnEndDate} property.
+     * @return the meta-property, not null
+     */
+    public MetaProperty<Boolean> payOnEndDate() {
+      return _payOnEndDate;
     }
 
     /**
@@ -637,6 +680,8 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
           return ((FixedRateAccrual) bean).getStartDate();
         case -1607727319:  // endDate
           return ((FixedRateAccrual) bean).getEndDate();
+        case -1504004990:  // payOnEndDate
+          return ((FixedRateAccrual) bean).isPayOnEndDate();
         case -724263770:  // allInRate
           return ((FixedRateAccrual) bean).getAllInRate();
         case 696818085:  // pikSpread
@@ -674,6 +719,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
 
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean payOnEndDate;
     private double allInRate;
     private double pikSpread;
     private CurrencyAmount accrualAmount;
@@ -696,6 +742,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     private Builder(FixedRateAccrual beanToCopy) {
       this.startDate = beanToCopy.getStartDate();
       this.endDate = beanToCopy.getEndDate();
+      this.payOnEndDate = beanToCopy.isPayOnEndDate();
       this.allInRate = beanToCopy.getAllInRate();
       this.pikSpread = beanToCopy.getPikSpread();
       this.accrualAmount = beanToCopy.getAccrualAmount();
@@ -713,6 +760,8 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
           return startDate;
         case -1607727319:  // endDate
           return endDate;
+        case -1504004990:  // payOnEndDate
+          return payOnEndDate;
         case -724263770:  // allInRate
           return allInRate;
         case 696818085:  // pikSpread
@@ -740,6 +789,9 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
           break;
         case -1607727319:  // endDate
           this.endDate = (LocalDate) newValue;
+          break;
+        case -1504004990:  // payOnEndDate
+          this.payOnEndDate = (Boolean) newValue;
           break;
         case -724263770:  // allInRate
           this.allInRate = (Double) newValue;
@@ -780,6 +832,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
       return new FixedRateAccrual(
           startDate,
           endDate,
+          payOnEndDate,
           allInRate,
           pikSpread,
           accrualAmount,
@@ -813,6 +866,18 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     public Builder endDate(LocalDate endDate) {
       JodaBeanUtils.notNull(endDate, "endDate");
       this.endDate = endDate;
+      return this;
+    }
+
+    /**
+     * Sets flag indicating this accrual pays on it's end date.
+     * <p>
+     * Used for interest-on-paydown accruals.
+     * @param payOnEndDate  the new value
+     * @return this, for chaining, not null
+     */
+    public Builder payOnEndDate(boolean payOnEndDate) {
+      this.payOnEndDate = payOnEndDate;
       return this;
     }
 
@@ -906,10 +971,11 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     //-----------------------------------------------------------------------
     @Override
     public String toString() {
-      StringBuilder buf = new StringBuilder(320);
+      StringBuilder buf = new StringBuilder(352);
       buf.append("FixedRateAccrual.Builder{");
       buf.append("startDate").append('=').append(JodaBeanUtils.toString(startDate)).append(',').append(' ');
       buf.append("endDate").append('=').append(JodaBeanUtils.toString(endDate)).append(',').append(' ');
+      buf.append("payOnEndDate").append('=').append(JodaBeanUtils.toString(payOnEndDate)).append(',').append(' ');
       buf.append("allInRate").append('=').append(JodaBeanUtils.toString(allInRate)).append(',').append(' ');
       buf.append("pikSpread").append('=').append(JodaBeanUtils.toString(pikSpread)).append(',').append(' ');
       buf.append("accrualAmount").append('=').append(JodaBeanUtils.toString(accrualAmount)).append(',').append(' ');

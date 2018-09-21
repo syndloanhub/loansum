@@ -29,6 +29,11 @@ public interface ProratedAccrual {
    * @return accrual period end date which may or may not coincide with payment date
    */
   public abstract LocalDate getEndDate();
+  
+  /**
+   * @return if accrual pays on on end date, used for interest-on-paydown accruals
+   */
+  public abstract boolean isPayOnEndDate();
 
   /**
    * @return total annual cash interest rate, this DOES NOT include the PIK spread

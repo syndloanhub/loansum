@@ -209,7 +209,29 @@
         "Share Not": 4011.8399756687645,
         "Formula": "Share Not x All-in Rt x Days / DIY"
        }
-      }, {
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-03-24",
+   "presentValue": "USD 4.011839975668765",
+   "forecastValue": "USD 4.011839975668765",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "source": "contract~6",
+   "uncertain": false,
+   "type": "Interest",
+   "payingCounterparty": "cpty~The Short Fund",
+   "receivingCounterparty": "cpty~Morgan Stanley",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
        "@bean": "ExplainMap",
        "map": {
         "Share Amt": 5470.496109484767,
@@ -238,8 +260,8 @@
   },
   "cashFlow": {
    "paymentDate": "2017-04-17",
-   "presentValue": "USD 5474.507949460435",
-   "forecastValue": "USD 5474.507949460435",
+   "presentValue": "USD 5470.496109484767",
+   "forecastValue": "USD 5470.496109484767",
    "discountFactor": 1.0
   }
  }, {

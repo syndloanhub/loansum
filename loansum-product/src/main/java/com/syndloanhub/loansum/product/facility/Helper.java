@@ -189,14 +189,14 @@ public final class Helper {
         // First pass handles repayments with interest to get accrual explains correct.
         for (Repayment repayment : partitionedRepayments.get(true)) {
           accrualSchedule.add(accrual.rebuild(accrual.getStartDate(), repayment.getEffectiveDate(),
-              repayment.getAmount()));
+              repayment.getAmount(), true));
           rollingAmount -= repayment.getAmount().getAmount();
         }
 
         // Second pass handles remaining repayments.
         for (Repayment repayment : partitionedRepayments.get(false)) {
           accrualSchedule.add(accrual.rebuild(rollingStartDate, repayment.getEffectiveDate(),
-              CurrencyAmount.of(currency, rollingAmount)));
+              CurrencyAmount.of(currency, rollingAmount), false));
           rollingStartDate = repayment.getEffectiveDate();
           rollingAmount -= repayment.getAmount().getAmount();
         }
@@ -204,7 +204,7 @@ public final class Helper {
         // Handle last sub-accrual if residual.
         if (rollingStartDate.isBefore(accrual.getEndDate()) && rollingAmount > 0)
           accrualSchedule.add(accrual.rebuild(rollingStartDate, accrual.getEndDate(),
-              CurrencyAmount.of(currency, rollingAmount)));
+              CurrencyAmount.of(currency, rollingAmount), false));
       }
     }
 
@@ -259,14 +259,14 @@ public final class Helper {
       LocalDate startDate = accrual.getStartDate();
       for (LocalDate endDate : dates) {
         accrualSchedule.add(accrual.rebuild(startDate, endDate, CurrencyAmount.of(accrual.getAccrualAmount().getCurrency(),
-            loan.getUnfundedAmount(startDate).getAmount())));
+            loan.getUnfundedAmount(startDate).getAmount()), false));
         startDate = endDate;
       }
 
       if (loan.getUnfundedAmount(startDate).getAmount() > EPSILON_1)
         accrualSchedule
             .add(accrual.rebuild(startDate, accrual.getEndDate(), CurrencyAmount.of(accrual.getAccrualAmount().getCurrency(),
-                loan.getUnfundedAmount(startDate).getAmount())));
+                loan.getUnfundedAmount(startDate).getAmount()), false));
     }
 
     return accrualSchedule;

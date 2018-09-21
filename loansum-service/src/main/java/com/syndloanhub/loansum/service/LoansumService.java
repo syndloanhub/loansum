@@ -23,7 +23,9 @@ import com.opengamma.strata.pricer.rate.ImmutableRatesProvider;
 import com.opengamma.strata.pricer.rate.RatesProvider;
 import com.syndloanhub.loansum.pricer.facility.prorated.ProratedLoanTradePricer;
 import com.syndloanhub.loansum.product.facility.LoanTrade;
+import com.syndloanhub.loansum.product.facility.LoanTradeList;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanTrade;
+import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanTradeList;
 
 import javax.ws.rs.Path;
 
@@ -33,15 +35,15 @@ public class LoansumService {
   @Path("/calculateCashflows")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Bean cashflow(Result<Bean> trade) {
-    if (trade.isSuccess()) {
-      ProratedLoanTrade proratedTrade = ((LoanTrade) trade.getValue()).prorate(null);
+  public Bean cashflow(Result<Bean> tradeList) {
+    if (tradeList.isSuccess()) {
+      ProratedLoanTradeList proratedTradeList = ((LoanTradeList) tradeList.getValue()).prorate(null);
       ProratedLoanTradePricer pricer = ProratedLoanTradePricer.DEFAULT;
       RatesProvider rates = ImmutableRatesProvider.builder(LocalDate.now()).build();
 
-      return pricer.cashFlows(proratedTrade, rates, true);
+      return pricer.cashFlows(proratedTradeList, rates, true);
     } else
-      return trade.getFailure();
+      return tradeList.getFailure();
   }
 
   @POST

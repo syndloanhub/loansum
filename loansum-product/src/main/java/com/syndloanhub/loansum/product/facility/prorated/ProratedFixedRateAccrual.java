@@ -57,6 +57,14 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
   private final LocalDate endDate;
 
   /**
+   * Flag indicating this accrual pays on it's end date.
+   * <p>
+   * Used for interest-on-paydown accruals.
+   */
+  @PropertyDefinition(validate = "")
+  private final boolean payOnEndDate;
+  
+  /**
    * The cash rate of the accrual.
    * <p>
    * Cash interest "all-in" rate. Does NOT include PIK.
@@ -146,6 +154,7 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
   private ProratedFixedRateAccrual(
       LocalDate startDate,
       LocalDate endDate,
+      boolean payOnEndDate,
       double allInRate,
       double pikSpread,
       CurrencyAmount accrualAmount,
@@ -158,6 +167,7 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
     JodaBeanUtils.notNull(dayCount, "dayCount");
     this.startDate = startDate;
     this.endDate = endDate;
+    this.payOnEndDate = payOnEndDate;
     this.allInRate = allInRate;
     this.pikSpread = pikSpread;
     this.accrualAmount = accrualAmount;
@@ -192,6 +202,17 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
    */
   public LocalDate getEndDate() {
     return endDate;
+  }
+
+  //-----------------------------------------------------------------------
+  /**
+   * Gets flag indicating this accrual pays on it's end date.
+   * <p>
+   * Used for interest-on-paydown accruals.
+   * @return the value of the property
+   */
+  public boolean isPayOnEndDate() {
+    return payOnEndDate;
   }
 
   //-----------------------------------------------------------------------
@@ -287,6 +308,7 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
       ProratedFixedRateAccrual other = (ProratedFixedRateAccrual) obj;
       return JodaBeanUtils.equal(startDate, other.startDate) &&
           JodaBeanUtils.equal(endDate, other.endDate) &&
+          (payOnEndDate == other.payOnEndDate) &&
           JodaBeanUtils.equal(allInRate, other.allInRate) &&
           JodaBeanUtils.equal(pikSpread, other.pikSpread) &&
           JodaBeanUtils.equal(accrualAmount, other.accrualAmount) &&
@@ -303,6 +325,7 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
     int hash = getClass().hashCode();
     hash = hash * 31 + JodaBeanUtils.hashCode(startDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(endDate);
+    hash = hash * 31 + JodaBeanUtils.hashCode(payOnEndDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(allInRate);
     hash = hash * 31 + JodaBeanUtils.hashCode(pikSpread);
     hash = hash * 31 + JodaBeanUtils.hashCode(accrualAmount);
@@ -315,10 +338,11 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
 
   @Override
   public String toString() {
-    StringBuilder buf = new StringBuilder(320);
+    StringBuilder buf = new StringBuilder(352);
     buf.append("ProratedFixedRateAccrual{");
     buf.append("startDate").append('=').append(startDate).append(',').append(' ');
     buf.append("endDate").append('=').append(endDate).append(',').append(' ');
+    buf.append("payOnEndDate").append('=').append(payOnEndDate).append(',').append(' ');
     buf.append("allInRate").append('=').append(allInRate).append(',').append(' ');
     buf.append("pikSpread").append('=').append(pikSpread).append(',').append(' ');
     buf.append("accrualAmount").append('=').append(accrualAmount).append(',').append(' ');
@@ -350,6 +374,11 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
      */
     private final MetaProperty<LocalDate> _endDate = DirectMetaProperty.ofImmutable(
         this, "endDate", ProratedFixedRateAccrual.class, LocalDate.class);
+    /**
+     * The meta-property for the {@code payOnEndDate} property.
+     */
+    private final MetaProperty<Boolean> _payOnEndDate = DirectMetaProperty.ofImmutable(
+        this, "payOnEndDate", ProratedFixedRateAccrual.class, Boolean.TYPE);
     /**
      * The meta-property for the {@code allInRate} property.
      */
@@ -392,6 +421,7 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
         this, null,
         "startDate",
         "endDate",
+        "payOnEndDate",
         "allInRate",
         "pikSpread",
         "accrualAmount",
@@ -413,6 +443,8 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
           return _startDate;
         case -1607727319:  // endDate
           return _endDate;
+        case -1504004990:  // payOnEndDate
+          return _payOnEndDate;
         case -724263770:  // allInRate
           return _allInRate;
         case 696818085:  // pikSpread
@@ -461,6 +493,14 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
      */
     public MetaProperty<LocalDate> endDate() {
       return _endDate;
+    }
+
+    /**
+     * The meta-property for the {@code payOnEndDate} property.
+     * @return the meta-property, not null
+     */
+    public MetaProperty<Boolean> payOnEndDate() {
+      return _payOnEndDate;
     }
 
     /**
@@ -527,6 +567,8 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
           return ((ProratedFixedRateAccrual) bean).getStartDate();
         case -1607727319:  // endDate
           return ((ProratedFixedRateAccrual) bean).getEndDate();
+        case -1504004990:  // payOnEndDate
+          return ((ProratedFixedRateAccrual) bean).isPayOnEndDate();
         case -724263770:  // allInRate
           return ((ProratedFixedRateAccrual) bean).getAllInRate();
         case 696818085:  // pikSpread
@@ -564,6 +606,7 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
 
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean payOnEndDate;
     private double allInRate;
     private double pikSpread;
     private CurrencyAmount accrualAmount;
@@ -585,6 +628,7 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
     private Builder(ProratedFixedRateAccrual beanToCopy) {
       this.startDate = beanToCopy.getStartDate();
       this.endDate = beanToCopy.getEndDate();
+      this.payOnEndDate = beanToCopy.isPayOnEndDate();
       this.allInRate = beanToCopy.getAllInRate();
       this.pikSpread = beanToCopy.getPikSpread();
       this.accrualAmount = beanToCopy.getAccrualAmount();
@@ -602,6 +646,8 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
           return startDate;
         case -1607727319:  // endDate
           return endDate;
+        case -1504004990:  // payOnEndDate
+          return payOnEndDate;
         case -724263770:  // allInRate
           return allInRate;
         case 696818085:  // pikSpread
@@ -629,6 +675,9 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
           break;
         case -1607727319:  // endDate
           this.endDate = (LocalDate) newValue;
+          break;
+        case -1504004990:  // payOnEndDate
+          this.payOnEndDate = (Boolean) newValue;
           break;
         case -724263770:  // allInRate
           this.allInRate = (Double) newValue;
@@ -669,6 +718,7 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
       return new ProratedFixedRateAccrual(
           startDate,
           endDate,
+          payOnEndDate,
           allInRate,
           pikSpread,
           accrualAmount,
@@ -702,6 +752,18 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
     public Builder endDate(LocalDate endDate) {
       JodaBeanUtils.notNull(endDate, "endDate");
       this.endDate = endDate;
+      return this;
+    }
+
+    /**
+     * Sets flag indicating this accrual pays on it's end date.
+     * <p>
+     * Used for interest-on-paydown accruals.
+     * @param payOnEndDate  the new value
+     * @return this, for chaining, not null
+     */
+    public Builder payOnEndDate(boolean payOnEndDate) {
+      this.payOnEndDate = payOnEndDate;
       return this;
     }
 
@@ -791,10 +853,11 @@ public final class ProratedFixedRateAccrual implements ProratedAccrual, Immutabl
     //-----------------------------------------------------------------------
     @Override
     public String toString() {
-      StringBuilder buf = new StringBuilder(320);
+      StringBuilder buf = new StringBuilder(352);
       buf.append("ProratedFixedRateAccrual.Builder{");
       buf.append("startDate").append('=').append(JodaBeanUtils.toString(startDate)).append(',').append(' ');
       buf.append("endDate").append('=').append(JodaBeanUtils.toString(endDate)).append(',').append(' ');
+      buf.append("payOnEndDate").append('=').append(JodaBeanUtils.toString(payOnEndDate)).append(',').append(' ');
       buf.append("allInRate").append('=').append(JodaBeanUtils.toString(allInRate)).append(',').append(' ');
       buf.append("pikSpread").append('=').append(JodaBeanUtils.toString(pikSpread)).append(',').append(' ');
       buf.append("accrualAmount").append('=').append(JodaBeanUtils.toString(accrualAmount)).append(',').append(' ');
