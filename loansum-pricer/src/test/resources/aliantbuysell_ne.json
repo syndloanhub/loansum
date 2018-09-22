@@ -4,34 +4,6 @@
   "annotation": {
    "source": "contract~4",
    "uncertain": false,
-   "type": "Repayment",
-   "payingCounterparty": "cpty~Cortland",
-   "receivingCounterparty": "cpty~Beaucoup Investors"
-  },
-  "cashFlow": {
-   "paymentDate": "2017-06-30",
-   "presentValue": "USD 1270.030418791273",
-   "forecastValue": "USD 1270.030418791273",
-   "discountFactor": 1.0
-  }
- }, {
-  "annotation": {
-   "source": "contract~4",
-   "uncertain": false,
-   "type": "Repayment",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~Cortland"
-  },
-  "cashFlow": {
-   "paymentDate": "2017-06-30",
-   "presentValue": "USD 1270.030418791273",
-   "forecastValue": "USD 1270.030418791273",
-   "discountFactor": 1.0
-  }
- }, {
-  "annotation": {
-   "source": "contract~4",
-   "uncertain": false,
    "type": "DelayedCompensation",
    "payingCounterparty": "cpty~Manuel Holdings",
    "receivingCounterparty": "cpty~Beaucoup Investors",
@@ -66,33 +38,13 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
-   "receivingCounterparty": "cpty~Beaucoup Investors",
-   "explains": {
-    "map": {}
-   }
+   "payingCounterparty": "cpty~Ortland",
+   "receivingCounterparty": "cpty~Beaucoup Investors"
   },
   "cashFlow": {
    "paymentDate": "2017-07-26",
-   "presentValue": "USD 4657.810102140017",
-   "forecastValue": "USD 4657.810102140017",
-   "discountFactor": 1.0
-  }
- }, {
-  "annotation": {
-   "source": "contract~4",
-   "uncertain": false,
-   "type": "Interest",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~Cortland",
-   "explains": {
-    "map": {}
-   }
-  },
-  "cashFlow": {
-   "paymentDate": "2017-07-26",
-   "presentValue": "USD 2878.9420465844614",
-   "forecastValue": "USD 2878.9420465844614",
+   "presentValue": "USD 1778.8680555555557",
+   "forecastValue": "USD 1778.8680555555557",
    "discountFactor": 1.0
   }
  }, {
@@ -100,8 +52,8 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Beaucoup Investors",
+   "receivingCounterparty": "cpty~Acme Hedge Fund",
    "explains": {
     "map": {}
    }
@@ -116,8 +68,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Acme Hedge Fund",
+   "receivingCounterparty": "cpty~Beaucoup Investors",
    "explains": {
     "map": {}
    }
@@ -132,8 +84,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfCarry",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Acme Hedge Fund",
+   "receivingCounterparty": "cpty~Beaucoup Investors",
    "explains": {
     "map": {}
    }

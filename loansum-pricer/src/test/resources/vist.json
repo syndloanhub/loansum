@@ -4,8 +4,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -34,8 +34,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -64,8 +64,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -94,8 +94,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -124,8 +124,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -154,8 +154,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -184,8 +184,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -214,8 +214,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -244,8 +244,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -274,8 +274,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -304,8 +304,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -334,8 +334,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -364,8 +364,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -394,8 +394,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -424,8 +424,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -454,8 +454,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -484,8 +484,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -514,8 +514,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -544,8 +544,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -574,8 +574,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -604,8 +604,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~Acme Investors",
    "explains": {
     "map": {
      "CashFlow": {
@@ -634,8 +634,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~Acme Investors",
    "explains": {
     "map": {
      "CashFlow": {
@@ -664,8 +664,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~Acme Investors",
    "explains": {
     "map": {
      "CashFlow": {
@@ -694,8 +694,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -724,8 +724,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -755,8 +755,8 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~BUYER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~CLO Trust",
    "explains": {
     "map": {
      "CashFlow": {
@@ -798,8 +798,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -828,8 +828,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~Acme Investors",
    "explains": {
     "map": {
      "CashFlow": {
@@ -858,8 +858,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~Acme Investors",
    "explains": {
     "map": {
      "CashFlow": {
@@ -888,8 +888,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~BUYER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~CLO Trust",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -919,8 +919,8 @@
    "source": "contract~2",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~Ortland",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -1004,8 +1004,8 @@
    "source": "contract~3",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~Ortland",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -1046,8 +1046,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~Acme Investors",
    "explains": {
     "map": {
      "CashFlow": {
@@ -1077,8 +1077,8 @@
    "source": "contract~1",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~Ortland",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -1183,8 +1183,8 @@
    "source": "contract~1",
    "uncertain": false,
    "type": "DelayedCompensation",
-   "payingCounterparty": "cpty~SELLER",
-   "receivingCounterparty": "cpty~SELF",
+   "payingCounterparty": "cpty~Acme Investors",
+   "receivingCounterparty": "cpty~Lackstone Group",
    "explains": {
     "map": {
      "CashFlow": {
@@ -1204,8 +1204,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~Acme Investors",
    "explains": {
     "map": {
      "CashFlow": {
@@ -1234,8 +1234,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~Acme Investors",
    "explains": {
     "map": {
      "CashFlow": {
@@ -1264,8 +1264,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~Acme Investors",
    "explains": {
     "map": {
      "CashFlow": {
@@ -1294,8 +1294,8 @@
   "annotation": {
    "uncertain": false,
    "type": "CostOfFunded",
-   "payingCounterparty": "cpty~SELF",
-   "receivingCounterparty": "cpty~SELLER",
+   "payingCounterparty": "cpty~Lackstone Group",
+   "receivingCounterparty": "cpty~Acme Investors",
    "explains": {
     "map": {
      "CashFlow": {

@@ -22,7 +22,7 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~SyndLoanHub",
    "explains": {
     "map": {}
@@ -39,7 +39,7 @@
    "source": "contract~3",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~SyndLoanHub",
    "explains": {
     "map": {}
@@ -56,7 +56,7 @@
    "source": "contract~4",
    "uncertain": true,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~SyndLoanHub",
    "explains": {
     "map": {}
@@ -73,7 +73,7 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~SyndLoanHub"
   },
   "cashFlow": {

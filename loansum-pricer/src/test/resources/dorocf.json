@@ -5,7 +5,7 @@
    "source": "contract~1",
    "uncertain": false,
    "type": "PikInterest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Sinhub, Inc.",
    "explains": {
     "map": {
@@ -49,7 +49,7 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "PikInterest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Sinhub, Inc.",
    "explains": {
     "map": {
@@ -93,7 +93,7 @@
    "source": "contract~3",
    "uncertain": false,
    "type": "PikInterest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Sinhub, Inc.",
    "explains": {
     "map": {
@@ -137,7 +137,7 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "PikInterest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Sinhub, Inc.",
    "explains": {
     "map": {
@@ -181,7 +181,7 @@
    "source": "contract~5",
    "uncertain": false,
    "type": "PikInterest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Sinhub, Inc.",
    "explains": {
     "map": {
@@ -225,7 +225,7 @@
    "source": "contract~6",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Sinhub, Inc.",
    "explains": {
     "map": {

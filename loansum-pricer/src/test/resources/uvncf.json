@@ -50,7 +50,7 @@
    "uncertain": false,
    "type": "Interest",
    "payingCounterparty": "cpty~The Short Fund",
-   "receivingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~Organ Stanley",
    "explains": {
     "map": {
      "CashFlow": {
@@ -94,7 +94,7 @@
    "uncertain": false,
    "type": "Interest",
    "payingCounterparty": "cpty~The Short Fund",
-   "receivingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~Organ Stanley",
    "explains": {
     "map": {
      "CashFlow": {
@@ -138,7 +138,7 @@
    "uncertain": false,
    "type": "Interest",
    "payingCounterparty": "cpty~The Short Fund",
-   "receivingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~Organ Stanley",
    "explains": {
     "map": {
      "CashFlow": {
@@ -182,7 +182,7 @@
    "uncertain": false,
    "type": "Interest",
    "payingCounterparty": "cpty~The Short Fund",
-   "receivingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~Organ Stanley",
    "explains": {
     "map": {
      "CashFlow": {
@@ -226,7 +226,7 @@
    "uncertain": false,
    "type": "Interest",
    "payingCounterparty": "cpty~The Short Fund",
-   "receivingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~Organ Stanley",
    "explains": {
     "map": {
      "CashFlow": {
@@ -270,7 +270,7 @@
    "uncertain": false,
    "type": "Repayment",
    "payingCounterparty": "cpty~The Short Fund",
-   "receivingCounterparty": "cpty~Morgan Stanley"
+   "receivingCounterparty": "cpty~Organ Stanley"
   },
   "cashFlow": {
    "paymentDate": "2017-03-24",

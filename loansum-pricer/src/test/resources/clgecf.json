@@ -5,7 +5,7 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
@@ -50,7 +50,7 @@
    "uncertain": false,
    "type": "Borrowing",
    "payingCounterparty": "cpty~Moneytown Investments",
-   "receivingCounterparty": "cpty~Cortland"
+   "receivingCounterparty": "cpty~Ortland"
   },
   "cashFlow": {
    "paymentDate": "2017-04-26",
@@ -63,7 +63,7 @@
    "source": "contract~2",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments"
   },
   "cashFlow": {
@@ -77,7 +77,7 @@
    "source": "contract~3",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
@@ -122,7 +122,7 @@
    "uncertain": false,
    "type": "Borrowing",
    "payingCounterparty": "cpty~Moneytown Investments",
-   "receivingCounterparty": "cpty~Cortland"
+   "receivingCounterparty": "cpty~Ortland"
   },
   "cashFlow": {
    "paymentDate": "2017-05-03",
@@ -135,7 +135,7 @@
    "source": "contract~4",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
@@ -180,7 +180,7 @@
    "uncertain": false,
    "type": "Borrowing",
    "payingCounterparty": "cpty~Moneytown Investments",
-   "receivingCounterparty": "cpty~Cortland"
+   "receivingCounterparty": "cpty~Ortland"
   },
   "cashFlow": {
    "paymentDate": "2017-05-10",
@@ -193,7 +193,7 @@
    "source": "contract~5",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
@@ -237,7 +237,7 @@
    "source": "contract~5",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments"
   },
   "cashFlow": {
@@ -251,7 +251,7 @@
    "source": "contract~6",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
@@ -296,7 +296,7 @@
    "uncertain": false,
    "type": "Borrowing",
    "payingCounterparty": "cpty~Moneytown Investments",
-   "receivingCounterparty": "cpty~Cortland"
+   "receivingCounterparty": "cpty~Ortland"
   },
   "cashFlow": {
    "paymentDate": "2017-05-17",
@@ -309,7 +309,7 @@
    "source": "contract~6",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments"
   },
   "cashFlow": {
@@ -323,7 +323,7 @@
    "source": "contract~7",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
@@ -368,7 +368,7 @@
    "uncertain": false,
    "type": "Borrowing",
    "payingCounterparty": "cpty~Moneytown Investments",
-   "receivingCounterparty": "cpty~Cortland"
+   "receivingCounterparty": "cpty~Ortland"
   },
   "cashFlow": {
    "paymentDate": "2017-05-24",
@@ -381,7 +381,7 @@
    "source": "contract~7",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments"
   },
   "cashFlow": {
@@ -395,7 +395,7 @@
    "source": "contract~8",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
@@ -440,7 +440,7 @@
    "uncertain": false,
    "type": "Borrowing",
    "payingCounterparty": "cpty~Moneytown Investments",
-   "receivingCounterparty": "cpty~Cortland"
+   "receivingCounterparty": "cpty~Ortland"
   },
   "cashFlow": {
    "paymentDate": "2017-05-31",
@@ -453,7 +453,7 @@
    "source": "contract~8",
    "uncertain": false,
    "type": "Repayment",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments"
   },
   "cashFlow": {
@@ -467,7 +467,7 @@
    "source": "contract~9",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
@@ -512,7 +512,7 @@
    "uncertain": false,
    "type": "Borrowing",
    "payingCounterparty": "cpty~Moneytown Investments",
-   "receivingCounterparty": "cpty~Cortland"
+   "receivingCounterparty": "cpty~Ortland"
   },
   "cashFlow": {
    "paymentDate": "2017-06-07",
@@ -525,7 +525,7 @@
    "source": "contract~10",
    "uncertain": false,
    "type": "Interest",
-   "payingCounterparty": "cpty~Cortland",
+   "payingCounterparty": "cpty~Ortland",
    "receivingCounterparty": "cpty~Moneytown Investments",
    "explains": {
     "map": {
@@ -570,7 +570,7 @@
    "uncertain": false,
    "type": "Borrowing",
    "payingCounterparty": "cpty~Moneytown Investments",
-   "receivingCounterparty": "cpty~Cortland"
+   "receivingCounterparty": "cpty~Ortland"
   },
   "cashFlow": {
    "paymentDate": "2017-06-14",

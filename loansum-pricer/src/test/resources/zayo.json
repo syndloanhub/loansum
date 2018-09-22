@@ -248,7 +248,7 @@
    "uncertain": false,
    "type": "Interest",
    "payingCounterparty": "cpty~Wesellin, Inc.",
-   "receivingCounterparty": "cpty~Morgan Stanley",
+   "receivingCounterparty": "cpty~Organ Stanley",
    "explains": {
     "map": {
      "CashFlow": {

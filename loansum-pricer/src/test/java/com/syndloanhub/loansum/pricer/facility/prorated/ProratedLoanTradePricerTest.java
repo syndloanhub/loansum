@@ -196,7 +196,7 @@ public class ProratedLoanTradePricerTest {
     final Facility LOAN = Facility
         .builder()
         .id(StandardId.of("lid", "Evilcorp, TL A"))
-        .agent(StandardId.of("cpty", "Cortland"))
+        .agent(StandardId.of("cpty", "Ortland"))
         .borrower(StandardId.of("cpty", "Evilcorp, LLC"))
         .startDate(LocalDate.of(2017, 1, 24))
         .maturityDate(LocalDate.of(2022, 8, 14))
@@ -230,7 +230,7 @@ public class ProratedLoanTradePricerTest {
         .formOfPurchase(Assignment).paydownOnTradeDate(false).build();
 
     //log.info(JodaBeanSer.PRETTY.jsonWriter().write(LOAN_TRADE));
-    
+
     if (export)
       exported.add(LOAN_TRADE);
 
@@ -377,7 +377,7 @@ public class ProratedLoanTradePricerTest {
     final Facility LOAN = Facility
         .builder()
         .id(StandardId.of("lid", "Morehead RC"))
-        .agent(StandardId.of("cpty", "Morgan Stanley"))
+        .agent(StandardId.of("cpty", "Organ Stanley"))
         .borrower(StandardId.of("cpty", "Morehead Inc."))
         .startDate(LocalDate.of(2016, 7, 28))
         .maturityDate(LocalDate.of(2017, 3, 24))
@@ -771,7 +771,7 @@ public class ProratedLoanTradePricerTest {
     final Facility LOAN = Facility
         .builder()
         .id(StandardId.of("lid", "Pik Boys TL B"))
-        .agent(StandardId.of("cpty", "Cortland"))
+        .agent(StandardId.of("cpty", "Ortland"))
         .borrower(StandardId.of("cpty", "Pik Boys, LLC"))
         .startDate(LocalDate.of(2014, 4, 8))
         .maturityDate(LocalDate.of(2017, 9, 29))
@@ -1061,7 +1061,7 @@ public class ProratedLoanTradePricerTest {
     final Facility LOAN = Facility
         .builder()
         .id(StandardId.of("lid", "Badvision TL B2"))
-        .agent(StandardId.of("cpty", "Morgan Stanley"))
+        .agent(StandardId.of("cpty", "Organ Stanley"))
         .borrower(StandardId.of("cpty", "Badvision, Inc."))
         .startDate(LocalDate.of(2013, 5, 29))
         .maturityDate(LocalDate.of(2020, 3, 1))
@@ -1338,7 +1338,7 @@ public class ProratedLoanTradePricerTest {
     final Facility LOAN = Facility
         .builder()
         .id(StandardId.of("lid", "Knowledge RC"))
-        .agent(StandardId.of("cpty", "Cortland"))
+        .agent(StandardId.of("cpty", "Ortland"))
         .borrower(StandardId.of("cpty", "Knowledge Industries, Inc."))
         .startDate(LocalDate.of(2017, 2, 7))
         .maturityDate(LocalDate.of(2018, 3, 3))
@@ -1677,7 +1677,7 @@ public class ProratedLoanTradePricerTest {
     final Facility LOAN = Facility
         .builder()
         .id(StandardId.of("lid", "Mayo TL B"))
-        .agent(StandardId.of("cpty", "Morgan Stanley"))
+        .agent(StandardId.of("cpty", "Organ Stanley"))
         .borrower(StandardId.of("cpty", "Mayo Group, LLC"))
         .startDate(LocalDate.of(2017, 1, 19))
         .maturityDate(LocalDate.of(2024, 1, 19))
@@ -2008,7 +2008,7 @@ public class ProratedLoanTradePricerTest {
     final Facility LOAN = Facility
         .builder()
         .id(StandardId.of("lid", "Arriant TL"))
-        .agent(StandardId.of("cpty", "Cortland"))
+        .agent(StandardId.of("cpty", "Ortland"))
         .borrower(StandardId.of("cpty", "Arriant, Inc."))
         .startDate(LocalDate.of(2017, 1, 24))
         .maturityDate(LocalDate.of(2022, 8, 14))
@@ -2036,13 +2036,13 @@ public class ProratedLoanTradePricerTest {
         .adjustmentOnTradeDate(true).tradeType(Primary).build();
 
     final TradeInfo SELL_TRADE_INFO = TradeInfo.builder()
-        .id(StandardId.of("trade", "SELL"))
+        .id(StandardId.of("trade", "83561"))
         .tradeDate(LocalDate.of(2017, 5, 30))
         .settlementDate(LocalDate.of(2017, 6, 9)).build();
 
     LoanTrade SELL_LOAN_TRADE = LoanTrade.builder().product(LOAN)
-        .info(SELL_TRADE_INFO).buyer(StandardId.of("cpty", "SELLER"))
-        .seller(StandardId.of("cpty", "BUYER")).amount(500000)
+        .info(SELL_TRADE_INFO).buyer(StandardId.of("cpty", "Acme Hedge Fund"))
+        .seller(StandardId.of("cpty", "Beaucoup Investors")).amount(500000)
         .price(100.375 / 100)
         .expectedSettlementDate(LocalDate.of(2017, 6, 8)).buySell(SELL)
         .accrualSettlementType(SettledWithoutAccrued).association(LSTA)
@@ -2155,7 +2155,7 @@ public class ProratedLoanTradePricerTest {
     final Facility LOAN = Facility
         .builder()
         .id(StandardId.of("lid", "Vista TL"))
-        .agent(StandardId.of("cpty", "Cortland"))
+        .agent(StandardId.of("cpty", "Ortland"))
         .borrower(StandardId.of("cpty", "Vista Green Energy, LLC"))
         .startDate(LocalDate.of(2018, 2, 6))
         .maturityDate(LocalDate.of(2025, 2, 10))
@@ -2206,8 +2206,8 @@ public class ProratedLoanTradePricerTest {
           .builder()
           .product(LOAN)
           .info(TRADE_INFO)
-          .buyer(amount < 0 ? StandardId.of("cpty", "BUYER") : StandardId.of("cpty", "SELF"))
-          .seller(amount > 0 ? StandardId.of("cpty", "SELLER") : StandardId.of("cpty", "SELF"))
+          .buyer(amount < 0 ? StandardId.of("cpty", "CLO Trust") : StandardId.of("cpty", "Lackstone Group"))
+          .seller(amount > 0 ? StandardId.of("cpty", "Acme Investors") : StandardId.of("cpty", "Lackstone Group"))
           .amount(Math.abs(amount)).price(price / 100)
           .expectedSettlementDate(expectedSettle)
           .buySell(amount > 0 ? BUY : SELL)
