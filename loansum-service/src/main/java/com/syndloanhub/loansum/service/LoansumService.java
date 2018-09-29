@@ -13,15 +13,24 @@ package com.syndloanhub.loansum.service;
 import javax.ws.rs.POST;
 
 import java.time.LocalDate;
+import java.util.stream.Collectors;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.joda.beans.Bean;
+import org.joda.beans.ser.JodaBeanSer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.opengamma.strata.collect.result.Result;
 import com.opengamma.strata.pricer.rate.ImmutableRatesProvider;
 import com.opengamma.strata.pricer.rate.RatesProvider;
 import com.syndloanhub.loansum.pricer.facility.prorated.ProratedLoanTradePricer;
+import com.syndloanhub.loansum.product.facility.Commitment;
+import com.syndloanhub.loansum.product.facility.Facility;
+import com.syndloanhub.loansum.product.facility.Helper;
 import com.syndloanhub.loansum.product.facility.LoanTrade;
 import com.syndloanhub.loansum.product.facility.LoanTradeList;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanTrade;
@@ -31,6 +40,8 @@ import javax.ws.rs.Path;
 
 @Path("/")
 public class LoansumService {
+  private static final Logger log = LoggerFactory.getLogger(LoansumService.class);
+
   @POST
   @Path("/calculateCashflows")
   @Consumes(MediaType.APPLICATION_JSON)
@@ -59,6 +70,21 @@ public class LoansumService {
       return pricer.proceeds(proratedTrade, rates, true);
     } else
       return trade.getFailure();
+  }
+
+  @POST
+  @Path("/calculateCommitment")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Bean commitment(Result<Bean> bean) {
+    if (bean.isSuccess()) {
+      Facility loan = (Facility) bean.getValue();
+      Commitment commitment = Helper.generateCommitment(loan.getFacilityType(), loan.getStartDate(),
+          loan.getOriginalCommitmentAmount().getAmount(),
+          loan.getContracts(), loan.getEvents().stream().collect(Collectors.toList()));
+      return commitment;
+    } else
+      return bean.getFailure();
   }
 
 }

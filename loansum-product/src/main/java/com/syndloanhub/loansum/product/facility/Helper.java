@@ -11,14 +11,18 @@
 package com.syndloanhub.loansum.product.facility;
 
 import static com.syndloanhub.loansum.product.facility.FacilityType.Revolving;
+import static com.syndloanhub.loansum.product.facility.FacilityType.Term;
 import static com.syndloanhub.loansum.product.facility.LoanContractEventType.RepaymentEvent;
+import static com.syndloanhub.loansum.product.facility.LoanContractEventType.BorrowingEvent;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,6 +35,7 @@ import com.opengamma.strata.basics.currency.Currency;
 import com.opengamma.strata.basics.currency.CurrencyAmount;
 import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeries;
 import com.opengamma.strata.collect.tuple.Pair;
+import com.syndloanhub.loansum.product.facility.CommitmentRecord.Builder;
 
 /**
  * A class containing basic static helper functions.
@@ -380,6 +385,85 @@ public final class Helper {
     }
 
     return LocalDateDoubleTimeSeries.builder().putAll(dates, values).build();
+  }
+
+  static public Commitment generateCommitment(FacilityType facilityType, LocalDate commitmentAmountStartDate,
+      double commitmentAmount,
+      List<LoanContract> contracts, List<FacilityEvent> events) {
+    LocalDateDoubleTimeSeries commitmentSchedule =
+        generateCommitmentSchedule(facilityType, commitmentAmountStartDate, commitmentAmount, contracts, events);
+    CommitmentRecord.Builder recordBuilder = CommitmentRecord.builder();
+
+    // TODO: delayed draw handling?
+    if (facilityType == Term)
+      return Commitment.builder()
+          .commitment(
+              commitmentSchedule
+                  .stream()
+                  .map(p -> recordBuilder
+                      .effectiveDate(p.getDate())
+                      .total(p.getValue())
+                      .funded(p.getValue())
+                      .unfunded(0)
+                      .undrawnlc(0)
+                      .build())
+                  .collect(Collectors.toList()))
+          .build();
+
+    List<CommitmentRecord> commitment = new LinkedList<CommitmentRecord>();
+
+    commitment.add(recordBuilder
+        .effectiveDate(commitmentAmountStartDate)
+        .funded(0)
+        .unfunded(commitmentAmount)
+        .undrawnlc(0)
+        .total(commitmentAmount)
+        .build());
+
+    List<LoanContractEvent> contractEvents = contracts
+        .stream()
+        .map(contract -> contract.getEvents())
+        .flatMap(Collection::stream)
+        .sorted(Comparator.comparing(LoanContractEvent::getEffectiveDate))
+        .collect(Collectors.toList());
+
+    for (LoanContractEvent event : contractEvents) {
+      List<LocalDate> dates = commitment
+          .stream()
+          .map(c -> c.getEffectiveDate())
+          .collect(Collectors.toList());
+      int i = Collections.binarySearch(dates, event.getEffectiveDate());
+
+      if (i < 0) {
+        i = -i - 1;
+
+        CommitmentRecord pred = commitment.get(i - 1);
+        CommitmentRecord succ = recordBuilder
+            .effectiveDate(event.getEffectiveDate())
+            .total(pred.getTotal())
+            .funded(pred.getFunded())
+            .unfunded(pred.getUnfunded())
+            .undrawnlc(pred.getUndrawnlc())
+            .build();
+
+        commitment.add(i, succ);
+      }
+
+      for (; i < commitment.size(); i++) {
+        double fundedChange = event.getAmount().getAmount() * (event.getType() == BorrowingEvent ? 1 : -1);
+        CommitmentRecord curr = commitment.get(i);
+
+        commitment.set(i, recordBuilder
+            .effectiveDate(curr.getEffectiveDate())
+            .total(curr.getTotal())
+            .funded(curr.getFunded() + fundedChange)
+            .unfunded(curr.getUnfunded() - fundedChange)
+            .undrawnlc(curr.getUndrawnlc())
+            .build());
+      }
+    }
+
+    return Commitment.builder().commitment(commitment).build();
   }
 
 }
