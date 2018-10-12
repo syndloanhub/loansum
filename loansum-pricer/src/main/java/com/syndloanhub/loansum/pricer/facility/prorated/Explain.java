@@ -285,6 +285,7 @@ final public class Explain {
         explainsBuilder.put(DAY_COUNT, dayCount);
         explainsBuilder.put(ALLIN_RATE, first.get(ALLIN_RATE).get());
         explainsBuilder.put(SHARE_NOTIONAL, aggregateShareNotional);
+        explainsBuilder.put(FORMULA, first.get(FORMULA).get());
         merged.add(explainsBuilder.build());
 
         log.debug("merged explain" + JodaBeanSer.PRETTY.jsonWriter().write(explainsBuilder.build()));

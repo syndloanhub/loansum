@@ -944,7 +944,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0571131,
-        "Share Not": 2250000.0
+        "Share Not": 2250000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }, {
        "@bean": "ExplainMap",
@@ -965,7 +966,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0571131,
-        "Share Not": 3000000.0
+        "Share Not": 3000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }, {
        "@bean": "ExplainMap",
@@ -986,7 +988,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0571131,
-        "Share Not": 2000000.0
+        "Share Not": 2000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }]
      }
@@ -1029,7 +1032,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0589519,
-        "Share Not": 2250000.0
+        "Share Not": 2250000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }]
      }
@@ -1102,7 +1106,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0557926,
-        "Share Not": 1000000.0
+        "Share Not": 1000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }, {
        "@bean": "ExplainMap",
@@ -1123,7 +1128,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0557926,
-        "Share Not": 4000000.0
+        "Share Not": 4000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }, {
        "@bean": "ExplainMap",
@@ -1144,7 +1150,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0557926,
-        "Share Not": 2000000.0
+        "Share Not": 2000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }, {
        "@bean": "ExplainMap",
@@ -1165,7 +1172,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0557926,
-        "Share Not": 3000000.0
+        "Share Not": 3000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }]
      }

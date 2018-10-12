@@ -644,7 +644,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0466418,
-        "Share Not": 4669214.0
+        "Share Not": 4669214.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }, {
        "@bean": "ExplainMap",
@@ -665,7 +666,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0466418,
-        "Share Not": 3990000.0
+        "Share Not": 3990000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }, {
        "@bean": "ExplainMap",
@@ -686,7 +688,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0466418,
-        "Share Not": 4000000.0
+        "Share Not": 4000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }]
      }
@@ -729,7 +732,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0488688,
-        "Share Not": 3990000.0
+        "Share Not": 3990000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }]
      }
@@ -890,7 +894,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0449,
-        "Share Not": 9669214.0
+        "Share Not": 9669214.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }, {
        "@bean": "ExplainMap",
@@ -911,7 +916,8 @@
          "value": "Act/360"
         },
         "All-in Rt": 0.0449,
-        "Share Not": 669214.0
+        "Share Not": 669214.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
        }
       }]
      }
