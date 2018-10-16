@@ -629,7 +629,7 @@ public class ProratedLoanTradePricer {
                     .payingCounterparty(cashFlow.getAnnotation().getPayingCounterparty())
                     .receivingCounterparty(cashFlow.getAnnotation().getReceivingCounterparty())
                     .uncertain(flow.getAnnotation().isUncertain() || cashFlow.getAnnotation().isUncertain())
-                    .explains(mergeExplains(cashFlow.getAnnotation().getExplains(), flow.getAnnotation().getExplains(), false,
+                    .explains(mergeExplains(flow.getAnnotation().getExplains(), cashFlow.getAnnotation().getExplains(), false,
                         cashFlow.getAnnotation().getType()).orElse(null))
                     .build();
               }
