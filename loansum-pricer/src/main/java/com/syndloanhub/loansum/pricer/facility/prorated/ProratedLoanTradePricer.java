@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2018 SyndLoanHub, LLC and contributors
  * 
@@ -623,15 +622,19 @@ public class ProratedLoanTradePricer {
                     .build();
               else {
                 net = net.positive();
-                mergedAnnotations = CashFlowAnnotations.builder()
-                    .type(flow.getAnnotation().getType())
-                    .source(flow.getAnnotation().getSource())
-                    .payingCounterparty(cashFlow.getAnnotation().getPayingCounterparty())
-                    .receivingCounterparty(cashFlow.getAnnotation().getReceivingCounterparty())
-                    .uncertain(flow.getAnnotation().isUncertain() || cashFlow.getAnnotation().isUncertain())
-                    .explains(mergeExplains(flow.getAnnotation().getExplains(), cashFlow.getAnnotation().getExplains(), false,
-                        cashFlow.getAnnotation().getType()).orElse(null))
-                    .build();
+                mergedAnnotations =
+                    CashFlowAnnotations
+                        .builder()
+                        .type(flow.getAnnotation().getType())
+                        .source(flow.getAnnotation().getSource())
+                        .payingCounterparty(cashFlow.getAnnotation().getPayingCounterparty())
+                        .receivingCounterparty(cashFlow.getAnnotation().getReceivingCounterparty())
+                        .uncertain(flow.getAnnotation().isUncertain() || cashFlow.getAnnotation().isUncertain())
+                        .explains(
+                            mergeExplains(cashFlow.getAnnotation().getExplains(),
+                                reverseExplains(flow.getAnnotation().getExplains(), cashFlow.getAnnotation().getType()), true,
+                                cashFlow.getAnnotation().getType()).orElse(null))
+                        .build();
               }
 
               CashFlow mergedFlow = CashFlow.ofForecastValue(flow.getCashFlow().getPaymentDate(), net, 1);

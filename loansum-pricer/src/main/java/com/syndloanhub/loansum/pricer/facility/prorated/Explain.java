@@ -102,8 +102,7 @@ final public class Explain {
    * @return merged map
    */
   protected static Optional<ExplainMap> mergeExplains(Optional<ExplainMap> newOptExpl, Optional<ExplainMap> existingOptExpl,
-      boolean add,
-      CashFlowType cashFlowType) {
+      boolean add, CashFlowType cashFlowType) {
     log.debug("enter merge explains, add=" + add);
 
     if (!newOptExpl.isPresent() || !existingOptExpl.isPresent()) {
@@ -296,4 +295,30 @@ final public class Explain {
     return Optional.of(merged);
   }
 
+  protected static Optional<ExplainMap> reverseExplains(Optional<ExplainMap> expl, CashFlowType cashFlowType) {
+    if (cashFlowType != Interest)
+      return expl;
+
+    if (!expl.isPresent() || expl.get().getMap().size() == 0)
+      return Optional.empty();
+
+    List<ExplainMap> reversedExplains = new ArrayList<ExplainMap>();
+
+    for (ListIterator<ExplainMap> it = expl.get().get(CASHFLOW).get().listIterator(); it.hasNext();) {
+      ExplainMap em = it.next();
+      ExplainMapBuilder explainsBuilder = ExplainMap.builder();
+      explainsBuilder.put(SHARE_AMOUNT, -em.get(SHARE_AMOUNT).get());
+      explainsBuilder.put(START_DATE, em.get(START_DATE).get());
+      explainsBuilder.put(END_DATE, em.get(END_DATE).get());
+      explainsBuilder.put(DAYS, em.get(DAYS).get());
+      explainsBuilder.put(DIY, em.get(DIY).get());
+      explainsBuilder.put(DAY_COUNT, em.get(DAY_COUNT).get());
+      explainsBuilder.put(ALLIN_RATE, em.get(ALLIN_RATE).get());
+      explainsBuilder.put(SHARE_NOTIONAL, -em.get(SHARE_NOTIONAL).get());
+      explainsBuilder.put(FORMULA, em.get(FORMULA).get());
+      reversedExplains.add(explainsBuilder.build());
+    }
+
+    return Optional.of(ExplainMap.builder().put(CASHFLOW, reversedExplains).build());
+  }
 }
