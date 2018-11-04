@@ -581,6 +581,36 @@
  }, {
   "annotation": {
    "uncertain": false,
+   "type": "CostOfFunded",
+   "payingCounterparty": "cpty~Moneytown Investments",
+   "receivingCounterparty": "cpty~Divestnow, LLC",
+   "explains": {
+    "map": {
+     "CashFlow": {
+      "@meta": "List",
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 0.0,
+        "Share Not": 0.0,
+        "Price": 1.01,
+        "Sett Per PIK": 0.0,
+        "Formula": "Share Not x Price - Sett Per PIK"
+       }
+      }]
+     }
+    }
+   }
+  },
+  "cashFlow": {
+   "paymentDate": "2017-03-03",
+   "presentValue": "USD 0",
+   "forecastValue": "USD 0",
+   "discountFactor": 1.0
+  }
+ }, {
+  "annotation": {
+   "uncertain": false,
    "type": "BenefitOfUnfunded",
    "payingCounterparty": "cpty~Divestnow, LLC",
    "receivingCounterparty": "cpty~Moneytown Investments",

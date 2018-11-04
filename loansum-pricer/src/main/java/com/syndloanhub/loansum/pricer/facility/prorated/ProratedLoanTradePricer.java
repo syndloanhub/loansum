@@ -772,6 +772,20 @@ public class ProratedLoanTradePricer {
                 .build())
             .build();
         builder.add(cashFlow);
+      } else {
+        // An unfunded revolver at par has no proceeds so just force a zero flow to ensure
+        // we never have an empty proceeds cash flow.
+        AnnotatedCashFlow cashFlow = AnnotatedCashFlow.builder()
+            .cashFlow(CashFlow.ofForecastValue(info.getSettlementDate().get(), costOfFunded.getCurrency(), 0.0, 1.0))
+            .annotation(CashFlowAnnotations.builder()
+                .uncertain(false)
+                .payingCounterparty(trade.getBuyer())
+                .receivingCounterparty(trade.getSeller())
+                .type(CostOfFunded)
+                .explains(explainBuilder.orElse(ExplainMap.builder()).build())
+                .build())
+            .build();
+        builder.add(cashFlow);
       }
 
       explainBuilder = explain ? Optional.of(ExplainMap.builder()) : Optional.empty();
