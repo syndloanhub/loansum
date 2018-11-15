@@ -87,9 +87,11 @@ public interface Accrual extends Proratable<ProratedAccrual> {
    * the contract accrual is split into a 10MM accrual up to the repayment and a 9MM accrual from the
    * repayment until the end of the contract.
    * 
-   * @param startDate
-   * @param endDate
-   * @param accrualAmount
+   * @param startDate revised start date
+   * @param endDate revised end date
+   * @param accrualAmount revised accrual amount
+   * @param payOnEndDate revised force payment on end date flag
+   * 
    * @return accrual with revised period and amount
    */
   public abstract Accrual rebuild(LocalDate startDate, LocalDate endDate, CurrencyAmount accrualAmount, boolean payOnEndDate);

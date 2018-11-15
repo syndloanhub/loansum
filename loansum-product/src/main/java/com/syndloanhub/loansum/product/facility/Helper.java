@@ -47,8 +47,8 @@ public final class Helper {
   /**
    * Return the larger of two dates
    * 
-   * @param d1
-   * @param d2
+   * @param d1 first date
+   * @param d2 second date
    * @return max of dates d1 and d2
    */
   public final static LocalDate max(LocalDate d1, LocalDate d2) {
@@ -57,9 +57,10 @@ public final class Helper {
 
   /**
    * Return the smaller of two dates
-   * @param d1
-   * @param d2
-   * @return min or dates d1 and d2
+   * 
+   * @param d1 first date
+   * @param d2 second date
+   * @return min of dates d1 and d2
    */
   public final static LocalDate min(LocalDate d1, LocalDate d2) {
     return d2.isBefore(d1) ? d2 : d1;
@@ -95,8 +96,8 @@ public final class Helper {
   /**
    * Return true if date is within the interval exclusive of interval end date
    * 
-   * @param date
-   * @param interval
+   * @param date date to check if within interval
+   * @param interval boundries of interval
    * @return true if date intersects the interval else false
    */
   public final static boolean intersects(LocalDate date, Pair<LocalDate, LocalDate> interval) {
@@ -127,8 +128,8 @@ public final class Helper {
   /**
    * Generate set of accruals given two intersecting intervals.
    * 
-   * @param first
-   * @param second
+   * @param first first period
+   * @param second second period
    * @return set of intervals formed from two intersecting intervals
    */
   public final static List<Pair<LocalDate, LocalDate>> accruals(Pair<LocalDate, LocalDate> first,
@@ -153,7 +154,7 @@ public final class Helper {
    * Given a single loan contract, generate an equivalent set of sub-accruals from
    * the single contract accrual and repayment events.
    * 
-   * @param contract
+   * @param contract loan contract
    * @return list of equivalent sub-accruals
    */
   public final static List<Accrual> generateContractAccrualSchedule(LoanContract contract) {
@@ -282,11 +283,11 @@ public final class Helper {
    * amount as of a certain date, the type of facility, a set of non-prorated contracts, and a
    * schedule of commitment events.
    * 
-   * @param facilityType
-   * @param commitmentAmountStartDate
-   * @param commitmentAmount
-   * @param contracts
-   * @param events
+   * @param facilityType type of facility
+   * @param commitmentAmountStartDate start date
+   * @param commitmentAmount amount on start date
+   * @param contracts list of contracts
+   * @param events list of facility events
    * @return commitment schedule
    */
   static public LocalDateDoubleTimeSeries generateCommitmentSchedule(FacilityType facilityType,
@@ -387,6 +388,16 @@ public final class Helper {
     return LocalDateDoubleTimeSeries.builder().putAll(dates, values).build();
   }
 
+  /**
+   * Generate commitment schedule.
+   * 
+   * @param facilityType type of facility
+   * @param commitmentAmountStartDate commitment start date
+   * @param commitmentAmount amount as of start date
+   * @param contracts contract list
+   * @param events facility event list
+   * @return commitment schedule
+   */
   static public Commitment generateCommitment(FacilityType facilityType, LocalDate commitmentAmountStartDate,
       double commitmentAmount,
       List<LoanContract> contracts, List<FacilityEvent> events) {

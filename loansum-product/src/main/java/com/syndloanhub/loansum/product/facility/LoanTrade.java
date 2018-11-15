@@ -52,6 +52,92 @@ import org.joda.beans.gen.PropertyDefinition;
 public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTrade>, ImmutableBean {
 
   /**
+   * Prorate trade and associated global facility with itself. This is mainly for prorating the 
+   * facility but the trade amount itself may be adjusted if there was a repayment on
+   * trade date that needs to be recognized.
+   */
+  @Override
+  public ProratedLoanTrade prorate(ProductTrade trade) {
+    assert (trade == null || trade == this);
+
+    // Adjust trade amount if necessary due to trade date repayment or adjustment.
+
+    double adjustedAmount = getAmount();
+    final Facility loan = getProduct();
+    final LocalDate tradeDate = getInfo().getTradeDate().get();
+
+    if ((isPaydownOnTradeDate() || isAdjustmentOnTradeDate()) && tradeDate.isAfter(loan.getStartDate())) {
+      double commitmentOnTrade = loan.getCommitmentAmount(tradeDate).getAmount();
+      double commitmentBeforeTrade = loan.getCommitmentAmount(tradeDate.minusDays(1)).getAmount();
+
+      if (Math.abs(commitmentBeforeTrade - commitmentOnTrade) > 0)
+        adjustedAmount *= commitmentOnTrade / commitmentBeforeTrade;
+    }
+
+    // Build penultimate trade used to prorate penultimate loan.
+
+    LoanTrade penultimateTrade = LoanTrade.builder()
+        .accrualSettlementType(accrualSettlementType)
+        .amount(adjustedAmount)
+        .association(association)
+        .averageLibor(averageLibor)
+        .buyer(buyer)
+        .seller(seller)
+        .buySell(buySell)
+        .commitmentReductionCreditFlag(commitmentReductionCreditFlag)
+        .currency(currency)
+        .delayedCompensationFlag(delayedCompensationFlag)
+        .documentationType(documentationType)
+        .expectedSettlementDate(expectedSettlementDate)
+        .paydownOnTradeDate(false)
+        .formOfPurchase(formOfPurchase)
+        .info(info)
+        .price(price)
+        .product(loan)
+        .tradeType(tradeType)
+        .build();
+
+    // Return final trade with prorated loan.
+
+    return ProratedLoanTrade.builder()
+        .accrualSettlementType(accrualSettlementType)
+        .association(association)
+        .buyer(buyer)
+        .seller(seller)
+        .formOfPurchase(formOfPurchase)
+        .documentationType(documentationType)
+        .commitmentReductionCreditFlag(commitmentReductionCreditFlag)
+        .currency(currency)
+        .paydownOnTradeDate(paydownOnTradeDate)
+        .buySell(buySell)
+        .amount(adjustedAmount)
+        .originalAmount(amount)
+        .price(price)
+        .expectedSettlementDate(expectedSettlementDate)
+        .delayedCompensationFlag(delayedCompensationFlag)
+        .averageLibor(averageLibor)
+        .tradeType(tradeType)
+        .info(info)
+        .product(loan.prorate(penultimateTrade))
+        .pctShare(penultimateTrade.getPctShare())
+        .build();
+  }
+
+  /**
+   * The additional trade information, defaulted to an empty instance.
+   * <p>
+   * This allows additional information to be attached to the trade.
+   */
+  @PropertyDefinition(overrideGet = true)
+  private final TradeInfo info;
+
+  /**
+   * The loan product that was agreed when the trade occurred.
+   */
+  @PropertyDefinition(validate = "notNull", overrideGet = true)
+  private final Facility product;
+
+  /**
    * Whether the trade is 'Buy' or 'Sell'.
    */
   @PropertyDefinition(validate = "notNull")
@@ -161,92 +247,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
   private final double averageLibor;
 
   /**
-   * Prorate trade and associated global facility with itself. This is mainly for prorating the 
-   * facility but the trade amount itself may be adjusted if there was a repayment on
-   * trade date that needs to be recognized.
-   */
-  @Override
-  public ProratedLoanTrade prorate(ProductTrade trade) {
-    assert (trade == null || trade == this);
-
-    // Adjust trade amount if necessary due to trade date repayment or adjustment.
-
-    double adjustedAmount = getAmount();
-    final Facility loan = getProduct();
-    final LocalDate tradeDate = getInfo().getTradeDate().get();
-
-    if ((isPaydownOnTradeDate() || isAdjustmentOnTradeDate()) && tradeDate.isAfter(loan.getStartDate())) {
-      double commitmentOnTrade = loan.getCommitmentAmount(tradeDate).getAmount();
-      double commitmentBeforeTrade = loan.getCommitmentAmount(tradeDate.minusDays(1)).getAmount();
-
-      if (Math.abs(commitmentBeforeTrade - commitmentOnTrade) > 0)
-        adjustedAmount *= commitmentOnTrade / commitmentBeforeTrade;
-    }
-
-    // Build penultimate trade used to prorate penultimate loan.
-
-    LoanTrade penultimateTrade = LoanTrade.builder()
-        .accrualSettlementType(accrualSettlementType)
-        .amount(adjustedAmount)
-        .association(association)
-        .averageLibor(averageLibor)
-        .buyer(buyer)
-        .seller(seller)
-        .buySell(buySell)
-        .commitmentReductionCreditFlag(commitmentReductionCreditFlag)
-        .currency(currency)
-        .delayedCompensationFlag(delayedCompensationFlag)
-        .documentationType(documentationType)
-        .expectedSettlementDate(expectedSettlementDate)
-        .paydownOnTradeDate(false)
-        .formOfPurchase(formOfPurchase)
-        .info(info)
-        .price(price)
-        .product(loan)
-        .tradeType(tradeType)
-        .build();
-
-    // Return final trade with prorated loan.
-
-    return ProratedLoanTrade.builder()
-        .accrualSettlementType(accrualSettlementType)
-        .association(association)
-        .buyer(buyer)
-        .seller(seller)
-        .formOfPurchase(formOfPurchase)
-        .documentationType(documentationType)
-        .commitmentReductionCreditFlag(commitmentReductionCreditFlag)
-        .currency(currency)
-        .paydownOnTradeDate(paydownOnTradeDate)
-        .buySell(buySell)
-        .amount(adjustedAmount)
-        .originalAmount(amount)
-        .price(price)
-        .expectedSettlementDate(expectedSettlementDate)
-        .delayedCompensationFlag(delayedCompensationFlag)
-        .averageLibor(averageLibor)
-        .tradeType(tradeType)
-        .info(info)
-        .product(loan.prorate(penultimateTrade))
-        .pctShare(penultimateTrade.getPctShare())
-        .build();
-  }
-
-  /**
-   * The additional trade information, defaulted to an empty instance.
-   * <p>
-   * This allows additional information to be attached to the trade.
-   */
-  @PropertyDefinition(overrideGet = true)
-  private final TradeInfo info;
-
-  /**
-   * The loan product that was agreed when the trade occurred.
-   */
-  @PropertyDefinition(validate = "notNull", overrideGet = true)
-  private final Facility product;
-
-  /*
    * Calculated series of prorated share of global facility.
    */
   @PropertyDefinition(validate = "")
@@ -369,6 +369,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
   }
 
   private LoanTrade(
+      TradeInfo info,
+      Facility product,
       BuySell buySell,
       StandardId buyer,
       StandardId seller,
@@ -387,16 +389,16 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
       boolean adjustmentOnTradeDate,
       LoanTradingAccrualSettlement accrualSettlementType,
       double averageLibor,
-      TradeInfo info,
-      Facility product,
       LocalDateDoubleTimeSeries pctShare) {
+    JodaBeanUtils.notNull(product, "product");
     JodaBeanUtils.notNull(buySell, "buySell");
     JodaBeanUtils.notNull(buyer, "buyer");
     JodaBeanUtils.notNull(seller, "seller");
     ArgChecker.notNegativeOrZero(amount, "amount");
     ArgChecker.notNegative(price, "price");
     JodaBeanUtils.notNull(expectedSettlementDate, "expectedSettlementDate");
-    JodaBeanUtils.notNull(product, "product");
+    this.info = info;
+    this.product = product;
     this.buySell = buySell;
     this.buyer = buyer;
     this.seller = seller;
@@ -415,8 +417,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     this.adjustmentOnTradeDate = adjustmentOnTradeDate;
     this.accrualSettlementType = accrualSettlementType;
     this.averageLibor = averageLibor;
-    this.info = info;
-    this.product = product;
     this.pctShare = pctShare;
     validate();
   }
@@ -424,6 +424,28 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
   @Override
   public LoanTrade.Meta metaBean() {
     return LoanTrade.Meta.INSTANCE;
+  }
+
+  //-----------------------------------------------------------------------
+  /**
+   * Gets the additional trade information, defaulted to an empty instance.
+   * <p>
+   * This allows additional information to be attached to the trade.
+   * @return the value of the property
+   */
+  @Override
+  public TradeInfo getInfo() {
+    return info;
+  }
+
+  //-----------------------------------------------------------------------
+  /**
+   * Gets the loan product that was agreed when the trade occurred.
+   * @return the value of the property, not null
+   */
+  @Override
+  public Facility getProduct() {
+    return product;
   }
 
   //-----------------------------------------------------------------------
@@ -591,35 +613,7 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
 
   //-----------------------------------------------------------------------
   /**
-   * Gets the additional trade information, defaulted to an empty instance.
-   * <p>
-   * This allows additional information to be attached to the trade.
-   * @return the value of the property
-   */
-  @Override
-  public TradeInfo getInfo() {
-    return info;
-  }
-
-  //-----------------------------------------------------------------------
-  /**
-   * Gets the loan product that was agreed when the trade occurred.
-   * @return the value of the property, not null
-   */
-  @Override
-  public Facility getProduct() {
-    return product;
-  }
-
-  //-----------------------------------------------------------------------
-  /**
-   * Gets the loan product that was agreed when the trade occurred.
-   * /
-   * @PropertyDefinition(validate = "notNull", overrideGet = true)
-   * private final Facility product;
-   * 
-   * /*
-   * Calculated series of prorated share of global facility.
+   * Gets calculated series of prorated share of global facility.
    * @return the value of the property
    */
   public LocalDateDoubleTimeSeries getPctShare() {
@@ -642,7 +636,9 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     }
     if (obj != null && obj.getClass() == this.getClass()) {
       LoanTrade other = (LoanTrade) obj;
-      return JodaBeanUtils.equal(buySell, other.buySell) &&
+      return JodaBeanUtils.equal(info, other.info) &&
+          JodaBeanUtils.equal(product, other.product) &&
+          JodaBeanUtils.equal(buySell, other.buySell) &&
           JodaBeanUtils.equal(buyer, other.buyer) &&
           JodaBeanUtils.equal(seller, other.seller) &&
           JodaBeanUtils.equal(amount, other.amount) &&
@@ -660,8 +656,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
           (adjustmentOnTradeDate == other.adjustmentOnTradeDate) &&
           JodaBeanUtils.equal(accrualSettlementType, other.accrualSettlementType) &&
           JodaBeanUtils.equal(averageLibor, other.averageLibor) &&
-          JodaBeanUtils.equal(info, other.info) &&
-          JodaBeanUtils.equal(product, other.product) &&
           JodaBeanUtils.equal(pctShare, other.pctShare);
     }
     return false;
@@ -670,6 +664,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
   @Override
   public int hashCode() {
     int hash = getClass().hashCode();
+    hash = hash * 31 + JodaBeanUtils.hashCode(info);
+    hash = hash * 31 + JodaBeanUtils.hashCode(product);
     hash = hash * 31 + JodaBeanUtils.hashCode(buySell);
     hash = hash * 31 + JodaBeanUtils.hashCode(buyer);
     hash = hash * 31 + JodaBeanUtils.hashCode(seller);
@@ -688,8 +684,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     hash = hash * 31 + JodaBeanUtils.hashCode(adjustmentOnTradeDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(accrualSettlementType);
     hash = hash * 31 + JodaBeanUtils.hashCode(averageLibor);
-    hash = hash * 31 + JodaBeanUtils.hashCode(info);
-    hash = hash * 31 + JodaBeanUtils.hashCode(product);
     hash = hash * 31 + JodaBeanUtils.hashCode(pctShare);
     return hash;
   }
@@ -698,6 +692,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
   public String toString() {
     StringBuilder buf = new StringBuilder(704);
     buf.append("LoanTrade{");
+    buf.append("info").append('=').append(info).append(',').append(' ');
+    buf.append("product").append('=').append(product).append(',').append(' ');
     buf.append("buySell").append('=').append(buySell).append(',').append(' ');
     buf.append("buyer").append('=').append(buyer).append(',').append(' ');
     buf.append("seller").append('=').append(seller).append(',').append(' ');
@@ -716,8 +712,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     buf.append("adjustmentOnTradeDate").append('=').append(adjustmentOnTradeDate).append(',').append(' ');
     buf.append("accrualSettlementType").append('=').append(accrualSettlementType).append(',').append(' ');
     buf.append("averageLibor").append('=').append(averageLibor).append(',').append(' ');
-    buf.append("info").append('=').append(info).append(',').append(' ');
-    buf.append("product").append('=').append(product).append(',').append(' ');
     buf.append("pctShare").append('=').append(JodaBeanUtils.toString(pctShare));
     buf.append('}');
     return buf.toString();
@@ -733,6 +727,16 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
      */
     static final Meta INSTANCE = new Meta();
 
+    /**
+     * The meta-property for the {@code info} property.
+     */
+    private final MetaProperty<TradeInfo> _info = DirectMetaProperty.ofImmutable(
+        this, "info", LoanTrade.class, TradeInfo.class);
+    /**
+     * The meta-property for the {@code product} property.
+     */
+    private final MetaProperty<Facility> _product = DirectMetaProperty.ofImmutable(
+        this, "product", LoanTrade.class, Facility.class);
     /**
      * The meta-property for the {@code buySell} property.
      */
@@ -824,16 +828,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     private final MetaProperty<Double> _averageLibor = DirectMetaProperty.ofImmutable(
         this, "averageLibor", LoanTrade.class, Double.TYPE);
     /**
-     * The meta-property for the {@code info} property.
-     */
-    private final MetaProperty<TradeInfo> _info = DirectMetaProperty.ofImmutable(
-        this, "info", LoanTrade.class, TradeInfo.class);
-    /**
-     * The meta-property for the {@code product} property.
-     */
-    private final MetaProperty<Facility> _product = DirectMetaProperty.ofImmutable(
-        this, "product", LoanTrade.class, Facility.class);
-    /**
      * The meta-property for the {@code pctShare} property.
      */
     private final MetaProperty<LocalDateDoubleTimeSeries> _pctShare = DirectMetaProperty.ofImmutable(
@@ -843,6 +837,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
      */
     private final Map<String, MetaProperty<?>> _metaPropertyMap$ = new DirectMetaPropertyMap(
         this, null,
+        "info",
+        "product",
         "buySell",
         "buyer",
         "seller",
@@ -861,8 +857,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
         "adjustmentOnTradeDate",
         "accrualSettlementType",
         "averageLibor",
-        "info",
-        "product",
         "pctShare");
 
     /**
@@ -874,6 +868,10 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     @Override
     protected MetaProperty<?> metaPropertyGet(String propertyName) {
       switch (propertyName.hashCode()) {
+        case 3237038:  // info
+          return _info;
+        case -309474065:  // product
+          return _product;
         case 244977400:  // buySell
           return _buySell;
         case 94110131:  // buyer
@@ -910,10 +908,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
           return _accrualSettlementType;
         case 1222287115:  // averageLibor
           return _averageLibor;
-        case 3237038:  // info
-          return _info;
-        case -309474065:  // product
-          return _product;
         case -1304358018:  // pctShare
           return _pctShare;
       }
@@ -936,6 +930,22 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * The meta-property for the {@code info} property.
+     * @return the meta-property, not null
+     */
+    public MetaProperty<TradeInfo> info() {
+      return _info;
+    }
+
+    /**
+     * The meta-property for the {@code product} property.
+     * @return the meta-property, not null
+     */
+    public MetaProperty<Facility> product() {
+      return _product;
+    }
+
     /**
      * The meta-property for the {@code buySell} property.
      * @return the meta-property, not null
@@ -1081,22 +1091,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     }
 
     /**
-     * The meta-property for the {@code info} property.
-     * @return the meta-property, not null
-     */
-    public MetaProperty<TradeInfo> info() {
-      return _info;
-    }
-
-    /**
-     * The meta-property for the {@code product} property.
-     * @return the meta-property, not null
-     */
-    public MetaProperty<Facility> product() {
-      return _product;
-    }
-
-    /**
      * The meta-property for the {@code pctShare} property.
      * @return the meta-property, not null
      */
@@ -1108,6 +1102,10 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     @Override
     protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
       switch (propertyName.hashCode()) {
+        case 3237038:  // info
+          return ((LoanTrade) bean).getInfo();
+        case -309474065:  // product
+          return ((LoanTrade) bean).getProduct();
         case 244977400:  // buySell
           return ((LoanTrade) bean).getBuySell();
         case 94110131:  // buyer
@@ -1144,10 +1142,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
           return ((LoanTrade) bean).getAccrualSettlementType();
         case 1222287115:  // averageLibor
           return ((LoanTrade) bean).getAverageLibor();
-        case 3237038:  // info
-          return ((LoanTrade) bean).getInfo();
-        case -309474065:  // product
-          return ((LoanTrade) bean).getProduct();
         case -1304358018:  // pctShare
           return ((LoanTrade) bean).getPctShare();
       }
@@ -1171,6 +1165,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
    */
   public static final class Builder extends DirectFieldsBeanBuilder<LoanTrade> {
 
+    private TradeInfo info;
+    private Facility product;
     private BuySell buySell;
     private StandardId buyer;
     private StandardId seller;
@@ -1189,8 +1185,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     private boolean adjustmentOnTradeDate;
     private LoanTradingAccrualSettlement accrualSettlementType;
     private double averageLibor;
-    private TradeInfo info;
-    private Facility product;
     private LocalDateDoubleTimeSeries pctShare;
 
     /**
@@ -1205,6 +1199,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
      * @param beanToCopy  the bean to copy from, not null
      */
     private Builder(LoanTrade beanToCopy) {
+      this.info = beanToCopy.getInfo();
+      this.product = beanToCopy.getProduct();
       this.buySell = beanToCopy.getBuySell();
       this.buyer = beanToCopy.getBuyer();
       this.seller = beanToCopy.getSeller();
@@ -1223,8 +1219,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
       this.adjustmentOnTradeDate = beanToCopy.isAdjustmentOnTradeDate();
       this.accrualSettlementType = beanToCopy.getAccrualSettlementType();
       this.averageLibor = beanToCopy.getAverageLibor();
-      this.info = beanToCopy.getInfo();
-      this.product = beanToCopy.getProduct();
       this.pctShare = beanToCopy.getPctShare();
     }
 
@@ -1232,6 +1226,10 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     @Override
     public Object get(String propertyName) {
       switch (propertyName.hashCode()) {
+        case 3237038:  // info
+          return info;
+        case -309474065:  // product
+          return product;
         case 244977400:  // buySell
           return buySell;
         case 94110131:  // buyer
@@ -1268,10 +1266,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
           return accrualSettlementType;
         case 1222287115:  // averageLibor
           return averageLibor;
-        case 3237038:  // info
-          return info;
-        case -309474065:  // product
-          return product;
         case -1304358018:  // pctShare
           return pctShare;
         default:
@@ -1282,6 +1276,12 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     @Override
     public Builder set(String propertyName, Object newValue) {
       switch (propertyName.hashCode()) {
+        case 3237038:  // info
+          this.info = (TradeInfo) newValue;
+          break;
+        case -309474065:  // product
+          this.product = (Facility) newValue;
+          break;
         case 244977400:  // buySell
           this.buySell = (BuySell) newValue;
           break;
@@ -1336,12 +1336,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
         case 1222287115:  // averageLibor
           this.averageLibor = (Double) newValue;
           break;
-        case 3237038:  // info
-          this.info = (TradeInfo) newValue;
-          break;
-        case -309474065:  // product
-          this.product = (Facility) newValue;
-          break;
         case -1304358018:  // pctShare
           this.pctShare = (LocalDateDoubleTimeSeries) newValue;
           break;
@@ -1361,6 +1355,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     public LoanTrade build() {
       preBuild(this);
       return new LoanTrade(
+          info,
+          product,
           buySell,
           buyer,
           seller,
@@ -1379,12 +1375,33 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
           adjustmentOnTradeDate,
           accrualSettlementType,
           averageLibor,
-          info,
-          product,
           pctShare);
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Sets the additional trade information, defaulted to an empty instance.
+     * <p>
+     * This allows additional information to be attached to the trade.
+     * @param info  the new value
+     * @return this, for chaining, not null
+     */
+    public Builder info(TradeInfo info) {
+      this.info = info;
+      return this;
+    }
+
+    /**
+     * Sets the loan product that was agreed when the trade occurred.
+     * @param product  the new value, not null
+     * @return this, for chaining, not null
+     */
+    public Builder product(Facility product) {
+      JodaBeanUtils.notNull(product, "product");
+      this.product = product;
+      return this;
+    }
+
     /**
      * Sets whether the trade is 'Buy' or 'Sell'.
      * @param buySell  the new value, not null
@@ -1573,36 +1590,7 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     }
 
     /**
-     * Sets the additional trade information, defaulted to an empty instance.
-     * <p>
-     * This allows additional information to be attached to the trade.
-     * @param info  the new value
-     * @return this, for chaining, not null
-     */
-    public Builder info(TradeInfo info) {
-      this.info = info;
-      return this;
-    }
-
-    /**
-     * Sets the loan product that was agreed when the trade occurred.
-     * @param product  the new value, not null
-     * @return this, for chaining, not null
-     */
-    public Builder product(Facility product) {
-      JodaBeanUtils.notNull(product, "product");
-      this.product = product;
-      return this;
-    }
-
-    /**
-     * Sets the loan product that was agreed when the trade occurred.
-     * /
-     * @PropertyDefinition(validate = "notNull", overrideGet = true)
-     * private final Facility product;
-     * 
-     * /*
-     * Calculated series of prorated share of global facility.
+     * Sets calculated series of prorated share of global facility.
      * @param pctShare  the new value
      * @return this, for chaining, not null
      */
@@ -1616,6 +1604,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     public String toString() {
       StringBuilder buf = new StringBuilder(704);
       buf.append("LoanTrade.Builder{");
+      buf.append("info").append('=').append(JodaBeanUtils.toString(info)).append(',').append(' ');
+      buf.append("product").append('=').append(JodaBeanUtils.toString(product)).append(',').append(' ');
       buf.append("buySell").append('=').append(JodaBeanUtils.toString(buySell)).append(',').append(' ');
       buf.append("buyer").append('=').append(JodaBeanUtils.toString(buyer)).append(',').append(' ');
       buf.append("seller").append('=').append(JodaBeanUtils.toString(seller)).append(',').append(' ');
@@ -1634,8 +1624,6 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
       buf.append("adjustmentOnTradeDate").append('=').append(JodaBeanUtils.toString(adjustmentOnTradeDate)).append(',').append(' ');
       buf.append("accrualSettlementType").append('=').append(JodaBeanUtils.toString(accrualSettlementType)).append(',').append(' ');
       buf.append("averageLibor").append('=').append(JodaBeanUtils.toString(averageLibor)).append(',').append(' ');
-      buf.append("info").append('=').append(JodaBeanUtils.toString(info)).append(',').append(' ');
-      buf.append("product").append('=').append(JodaBeanUtils.toString(product)).append(',').append(' ');
       buf.append("pctShare").append('=').append(JodaBeanUtils.toString(pctShare));
       buf.append('}');
       return buf.toString();
