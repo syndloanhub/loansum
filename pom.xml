@@ -6,7 +6,7 @@
 
   <groupId>com.syndloanhub.loansum</groupId>
   <artifactId>loansum-parent</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.1.0</version>
   <packaging>pom</packaging>
   <name>LoanSUM-Parent</name>
 
@@ -82,6 +82,9 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>2.9.1</version>
+          <configuration>
+            <doctitle>SyndLoanHub loansum</doctitle>
+          </configuration>
           <executions>
             <execution>
               <id>attach-javadocs</id>

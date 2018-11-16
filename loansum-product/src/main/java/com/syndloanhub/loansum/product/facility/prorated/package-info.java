@@ -8,7 +8,6 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 /**
- * Cash flow and pricing functions applied to prorated loan trades.
+ * Traded share (prorated) representations of loan facility types.
  */
-
-package com.syndloanhub.loansum.pricer.facility.prorated;
+package com.syndloanhub.loansum.product.facility.prorated;
