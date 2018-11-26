@@ -93,9 +93,9 @@ public class ProratedLoanTradePricerTest {
   }
 
   private void test_importedLoan() throws IOException {
-    LoanTrade trade = (LoanTrade) JodaBeanSer.PRETTY
-        .jsonReader().read(new FileReader("/tmp/trade.json"));
-    ProratedLoanTrade proratedTrade = trade.prorate(null);
+    LoanTradeList trade = (LoanTradeList) JodaBeanSer.PRETTY
+        .jsonReader().read(new FileReader("/tmp/tradelist.json"));
+    ProratedLoanTradeList proratedTrade = trade.prorate(null);
     ProratedLoanTradePricer pricer = ProratedLoanTradePricer.DEFAULT;
     RatesProvider rates = ImmutableRatesProvider.builder(LocalDate.now()).build();
     AnnotatedCashFlows cashFlows = pricer.cashFlows(proratedTrade, rates, true);

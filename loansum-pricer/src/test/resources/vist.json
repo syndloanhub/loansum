@@ -1197,7 +1197,29 @@
     "map": {
      "CashFlow": {
       "@meta": "List",
-      "value": []
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 309.9588888888889,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-03-01"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-03-02"
+        },
+        "Days": 1,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0557926,
+        "Share Not": 2000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
      }
     }
    }

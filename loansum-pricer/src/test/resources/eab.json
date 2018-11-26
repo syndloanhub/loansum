@@ -115,7 +115,29 @@
     "map": {
      "CashFlow": {
       "@meta": "List",
-      "value": []
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 291.15444444444444,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2017-12-28"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2017-12-29"
+        },
+        "Days": 1,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0524078,
+        "Share Not": 2000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
      }
     }
    }
@@ -421,7 +443,29 @@
     "map": {
      "CashFlow": {
       "@meta": "List",
-      "value": []
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 1371.02,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-01-22"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-01-25"
+        },
+        "Days": 3,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.054840799999999995,
+        "Share Not": 3000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
      }
     }
    }
@@ -807,7 +851,29 @@
     "map": {
      "CashFlow": {
       "@meta": "List",
-      "value": []
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 436.7316666666666,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-01-17"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-01-18"
+        },
+        "Days": 1,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0524078,
+        "Share Not": 3000000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
      }
     }
    }
@@ -1457,7 +1523,29 @@
     "map": {
      "CashFlow": {
       "@meta": "List",
-      "value": []
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 145.57722222222222,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2018-01-09"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-01-11"
+        },
+        "Days": 2,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0524078,
+        "Share Not": 500000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
      }
     }
    }
@@ -2319,7 +2407,29 @@
     "map": {
      "CashFlow": {
       "@meta": "List",
-      "value": []
+      "value": [{
+       "@bean": "ExplainMap",
+       "map": {
+        "Share Amt": 582.3088888888889,
+        "Start": {
+         "@type": "LocalDate",
+         "value": "2017-12-28"
+        },
+        "End": {
+         "@type": "LocalDate",
+         "value": "2018-01-05"
+        },
+        "Days": 8,
+        "DIY": 360.0,
+        "Day Cnt": {
+         "@type": "DayCount",
+         "value": "Act/360"
+        },
+        "All-in Rt": 0.0524078,
+        "Share Not": 500000.0,
+        "Formula": "Share Not x All-in Rt x Days / DIY"
+       }
+      }]
      }
     }
    }

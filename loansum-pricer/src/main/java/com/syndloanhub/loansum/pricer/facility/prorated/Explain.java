@@ -1,6 +1,7 @@
 package com.syndloanhub.loansum.pricer.facility.prorated;
 
 import static com.syndloanhub.loansum.product.facility.CashFlowType.Interest;
+import static com.syndloanhub.loansum.product.facility.CashFlowType.DelayedCompensation;
 import static com.syndloanhub.loansum.product.facility.Helper.EPSILON_1;
 import static com.syndloanhub.loansum.product.facility.Helper.intersection;
 
@@ -64,6 +65,16 @@ final public class Explain {
   public static final ExplainKey<Double> UNFUNDED_CREDIT = ExplainKey.of("Unfunded Crdt");
 
   /**
+   * Return true if cash flow type has accrual explains.
+   * 
+   * @param type cash flow type
+   * @return true if cash flow type has accrual explains
+   */
+  private static boolean isAccrual(CashFlowType type) {
+    return type == Interest || type == DelayedCompensation;
+  }
+
+  /**
    * Helper function to add explain map list for an accrual which is optionally attached to corresponding
    * cash flow annotation.
    * 
@@ -123,7 +134,7 @@ final public class Explain {
 
     List<ExplainMap> mergedExplains = new ArrayList<ExplainMap>();
 
-    if (cashFlowType == Interest) {
+    if (isAccrual(cashFlowType)) {
       // Attempt to merge each new explain against each existing explain.
       for (ListIterator<ExplainMap> newit = newExpl.get(CASHFLOW).get().listIterator(); newit.hasNext();) {
         ExplainMap newex = newit.next();
@@ -296,7 +307,7 @@ final public class Explain {
   }
 
   protected static Optional<ExplainMap> reverseExplains(Optional<ExplainMap> expl, CashFlowType cashFlowType) {
-    if (cashFlowType != Interest)
+    if (!isAccrual(cashFlowType))
       return expl;
 
     if (!expl.isPresent() || expl.get().getMap().size() == 0)
