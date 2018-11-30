@@ -883,16 +883,16 @@ public class ProratedLoanTradePricer {
       CurrencyAmount cashProjection = accrual.getPaymentProjection();
 
       // Repayment with interest-on-paydown
-      if (accrual.isPayOnEndDate()) {
+      if (accrual.getPaymentDate().isPresent()) {
         Optional<ExplainMapBuilder> accrualExplainBuilder = explain ? Optional.of(ExplainMap.builder()) : Optional.empty();
 
         explainAccrual(accrualExplainBuilder.get(), accrual, false);
 
         builder.add(AnnotatedCashFlow.builder()
-            .cashFlow(CashFlow.ofForecastValue(accrual.getEndDate(), currency, cashProjection.getAmount(), 1))
+            .cashFlow(CashFlow.ofForecastValue(accrual.getPaymentDate().get(), currency, cashProjection.getAmount(), 1))
             .annotation(CashFlowAnnotations.builder()
                 .source(contract.getId())
-                .uncertain(accrual.getEndDate().isAfter(provider.getValuationDate()))
+                .uncertain(accrual.getPaymentDate().get().isAfter(provider.getValuationDate()))
                 .payingCounterparty(payingCounterparty)
                 .receivingCounterparty(receivingCounterparty)
                 .type(Interest)
@@ -941,7 +941,6 @@ public class ProratedLoanTradePricer {
           .cashFlow(CashFlow.ofForecastValue(contract.getPaymentDate(), currency, interest.getAmount(), 1))
           .annotation(CashFlowAnnotations.builder()
               .source(contract.getId())
-              //.source(trade.getId())
               .uncertain(contract.getAccrual().getEndDate().isAfter(provider.getValuationDate()))
               .payingCounterparty(payingCounterparty)
               .receivingCounterparty(receivingCounterparty)

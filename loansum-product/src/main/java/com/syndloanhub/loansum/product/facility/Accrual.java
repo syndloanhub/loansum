@@ -11,6 +11,7 @@
 package com.syndloanhub.loansum.product.facility;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import com.opengamma.strata.basics.currency.CurrencyAmount;
 import com.opengamma.strata.basics.date.DayCount;
@@ -34,9 +35,9 @@ public interface Accrual extends Proratable<ProratedAccrual> {
   public abstract LocalDate getEndDate();
 
   /**
-   * @return if accrual pays on on end date, used for interest-on-paydown accruals
+   * @return optional payment date, for implementing interest-on-paydown sub-accrual exception
    */
-  public abstract boolean isPayOnEndDate();
+  public abstract Optional<LocalDate> getPaymentDate();
 
   /**
    * @return total annual cash interest rate, this DOES NOT include the PIK spread
@@ -90,9 +91,9 @@ public interface Accrual extends Proratable<ProratedAccrual> {
    * @param startDate revised start date
    * @param endDate revised end date
    * @param accrualAmount revised accrual amount
-   * @param payOnEndDate revised force payment on end date flag
+   * @param paymentDate revised payment date, may be null
    * 
    * @return accrual with revised period and amount
    */
-  public abstract Accrual rebuild(LocalDate startDate, LocalDate endDate, CurrencyAmount accrualAmount, boolean payOnEndDate);
+  public abstract Accrual rebuild(LocalDate startDate, LocalDate endDate, CurrencyAmount accrualAmount, LocalDate paymentDate);
 }

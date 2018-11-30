@@ -97,11 +97,11 @@ public final class LoanContract implements ImmutableBean, Proratable<ProratedLoa
 
         if (intersection != null) {
           proratedAccrualSchedule.add(accrual.rebuild(intersection.getFirst(), intersection.getSecond(),
-              accrual.getAccrualAmount(), false).prorate(trade));
+              accrual.getAccrualAmount(), null).prorate(trade));
 
           if (accrual.getEndDate().isAfter(actualSettlementDate))
             proratedAccrualSchedule.add(accrual.rebuild(actualSettlementDate,
-                accrual.getEndDate(), accrual.getAccrualAmount(), false).prorate(trade));
+                accrual.getEndDate(), accrual.getAccrualAmount(), null).prorate(trade));
           accrualProrated = true;
         }
       }
@@ -110,7 +110,7 @@ public final class LoanContract implements ImmutableBean, Proratable<ProratedLoa
         if (accrual.getEndDate().isAfter(actualSettlementDate)) {
           if (accrual.getStartDate().isBefore(actualSettlementDate) && !isPikAccrual)
             accrual =
-                accrual.rebuild(actualSettlementDate, accrual.getEndDate(), accrual.getAccrualAmount(), false);
+                accrual.rebuild(actualSettlementDate, accrual.getEndDate(), accrual.getAccrualAmount(), null);
 
           proratedAccrualSchedule.add(accrual.prorate(trade));
         }
