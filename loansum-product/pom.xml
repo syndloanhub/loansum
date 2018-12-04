@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.syndloanhub.loansum</groupId>
     <artifactId>loansum-parent</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.0-beta</version>
   </parent>
 
   <artifactId>loansum-product</artifactId>
