@@ -7,7 +7,7 @@
  <parent>
   <groupId>com.syndloanhub.loansum</groupId>
   <artifactId>loansum-parent</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>0.1.1-beta</version>
  </parent>
 
  <artifactId>loansum-service</artifactId>
@@ -37,7 +37,7 @@
   <dependency>
    <groupId>com.syndloanhub.loansum</groupId>
    <artifactId>loansum-pricer</artifactId>
-   <version>0.2.0-SNAPSHOT</version>
+   <version>0.1.1-beta</version>
   </dependency>
  </dependencies>
 
