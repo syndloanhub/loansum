@@ -21,6 +21,9 @@ import static com.syndloanhub.loansum.product.facility.LoanTradingFormOfPurchase
 import static com.syndloanhub.loansum.product.facility.LoanTradingType.Primary;
 import static com.syndloanhub.loansum.product.facility.LoanTradingAssoc.LSTA;
 
+import static com.syndloanhub.loansum.product.facility.FpMLHelper.exportCurrencyElement;
+import static com.syndloanhub.loansum.product.facility.FpMLHelper.exportCurrencyAmountElement;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +41,13 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.namespace.QName;
+
 import org.joda.beans.ser.JodaBeanSer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +64,9 @@ import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeries;
 import com.opengamma.strata.pricer.rate.ImmutableRatesProvider;
 import com.opengamma.strata.pricer.rate.RatesProvider;
 import com.opengamma.strata.product.TradeInfo;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingAccrualSettlementEnum;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.NonNegativeMoney;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
 import com.syndloanhub.loansum.pricer.facility.prorated.ProratedLoanTradePricer;
 import com.syndloanhub.loansum.product.facility.AccruingFee;
 import com.syndloanhub.loansum.product.facility.AnnotatedCashFlows;
@@ -102,7 +115,7 @@ public class ProratedLoanTradePricerTest {
     log.info("cashFlows=" + JodaBeanSer.PRETTY.jsonWriter().write(cashFlows));
   }
 
-  public void test_termLoan_1() throws IOException {
+  public void test_termLoan_1() throws IOException, JAXBException, DatatypeConfigurationException {
     final Repayment REPAYMENT_1 = Repayment.builder()
         .effectiveDate(LocalDate.of(2017, 3, 31))
         .amount(CurrencyAmount.of(Currency.USD, 4050000)).build();
@@ -228,6 +241,28 @@ public class ProratedLoanTradePricerTest {
         .commitmentReductionCreditFlag(true).currency(Currency.USD)
         .delayedCompensationFlag(true).documentationType(Par)
         .formOfPurchase(Assignment).paydownOnTradeDate(false).build();
+
+    ////
+    log.info("JAXB!");
+    JAXBElement<com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency> element = exportCurrencyElement(LOAN_TRADE.getCurrency());
+    JAXBContext context = JAXBContext.newInstance(com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency .class);
+    Marshaller marshaller = context.createMarshaller();
+    marshaller.setProperty("jaxb.formatted.output", Boolean.TRUE);
+    marshaller.marshal(element, System.out);
+    
+    JAXBElement<NonNegativeMoney> e = exportCurrencyAmountElement(CONTRACT_1.getAccrual().getAccrualAmount());
+    context = JAXBContext.newInstance(NonNegativeMoney.class);
+    marshaller = context.createMarshaller();
+    marshaller.setProperty("jaxb.formatted.output", Boolean.TRUE);
+    marshaller.marshal(e, System.out);
+    
+    JAXBElement<com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade> e2 = LOAN_TRADE.exportElement();
+    context = JAXBContext.newInstance(com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade.class);
+    marshaller = context.createMarshaller();
+    marshaller.setProperty("jaxb.formatted.output", Boolean.TRUE);
+    marshaller.marshal(e2, System.out);
+    
+    ////
 
     //log.info(JodaBeanSer.PRETTY.jsonWriter().write(LOAN_TRADE));
 

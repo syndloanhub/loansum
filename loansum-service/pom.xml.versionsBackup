@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<project
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+ xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <modelVersion>4.0.0</modelVersion>
+
+ <parent>
+  <groupId>com.syndloanhub.loansum</groupId>
+  <artifactId>loansum-parent</artifactId>
+  <version>0.1.0-beta</version>
+ </parent>
+
+ <artifactId>loansum-service</artifactId>
+ <packaging>war</packaging>
+ <name>LoanSUM-Service</name>
+
+ <properties>
+  <resteasy.version>3.0.19.Final</resteasy.version>
+ </properties>
+
+ <dependencies>
+  <dependency>
+   <groupId>org.jboss.resteasy</groupId>
+   <artifactId>resteasy-jaxrs</artifactId>
+   <version>${resteasy.version}</version>
+  </dependency>
+  <dependency>
+   <groupId>org.jboss.resteasy</groupId>
+   <artifactId>resteasy-servlet-initializer</artifactId>
+   <version>${resteasy.version}</version>
+  </dependency>
+  <dependency>
+   <groupId>javax.json</groupId>
+   <artifactId>javax.json-api</artifactId>
+   <version>1.0</version>
+  </dependency>
+  <dependency>
+   <groupId>com.syndloanhub.loansum</groupId>
+   <artifactId>loansum-pricer</artifactId>
+   <version>0.1.0-beta</version>
+  </dependency>
+ </dependencies>
+
+</project>
