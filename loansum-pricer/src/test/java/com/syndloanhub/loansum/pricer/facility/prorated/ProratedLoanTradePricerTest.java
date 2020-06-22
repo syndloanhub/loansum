@@ -64,6 +64,7 @@ import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeries;
 import com.opengamma.strata.pricer.rate.ImmutableRatesProvider;
 import com.opengamma.strata.pricer.rate.RatesProvider;
 import com.opengamma.strata.product.TradeInfo;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradeNotification;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingAccrualSettlementEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.NonNegativeMoney;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
@@ -242,7 +243,7 @@ public class ProratedLoanTradePricerTest {
         .delayedCompensationFlag(true).documentationType(Par)
         .formOfPurchase(Assignment).paydownOnTradeDate(false).build();
 
-    ////
+    /*
     log.info("JAXB!");
     JAXBElement<com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency> element = exportCurrencyElement(LOAN_TRADE.getCurrency());
     JAXBContext context = JAXBContext.newInstance(com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency .class);
@@ -256,13 +257,13 @@ public class ProratedLoanTradePricerTest {
     marshaller.setProperty("jaxb.formatted.output", Boolean.TRUE);
     marshaller.marshal(e, System.out);
     
-    JAXBElement<com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade> e2 = LOAN_TRADE.exportElement();
-    context = JAXBContext.newInstance(com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade.class);
+    JAXBElement<LoanTradeNotification> e2 = LOAN_TRADE.exportElement();
+    context = JAXBContext.newInstance(LoanTradeNotification.class);
     marshaller = context.createMarshaller();
     marshaller.setProperty("jaxb.formatted.output", Boolean.TRUE);
     marshaller.marshal(e2, System.out);
     
-    ////
+    */
 
     //log.info(JodaBeanSer.PRETTY.jsonWriter().write(LOAN_TRADE));
 

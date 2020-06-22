@@ -38,6 +38,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.opengamma.strata.basics.StandardId;
@@ -49,24 +51,28 @@ import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeriesBuilder;
 import com.opengamma.strata.collect.tuple.Pair;
 import com.opengamma.strata.product.Product;
 import com.opengamma.strata.product.ProductTrade;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityIdentifier;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.OutstandingContractsStatement;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedFacility;
 
 /**
  * A loan facility, e.g. revolver, term, delayed draw, or letter of credit.
  * <p>
- * A loan facility, or tranche, has terms defined under a credit agreement. Cash flows related
- * to a loan facility may be one-off fees or payments that accrue over time.
+ * A loan facility, or tranche, has terms defined under a credit agreement. Cash
+ * flows related to a loan facility may be one-off fees or payments that accrue
+ * over time.
  * <p>
- * The amounts defined by a loan facility are so-called global amounts which may then
- * be prorated based on a participant's share, defined by a loan trade.
+ * The amounts defined by a loan facility are so-called global amounts which may
+ * then be prorated based on a participant's share, defined by a loan trade.
  */
 @BeanDefinition
 public final class Facility implements Product, Proratable<ProratedFacility>, ImmutableBean {
 
   /**
-   * Return the global funded amount as of a specific date by
-   * simply summing the global amount of each active contract on that date,
-   * accounting for any repayments.
+   * Return the global funded amount as of a specific date by simply summing the
+   * global amount of each active contract on that date, accounting for any
+   * repayments.
    * 
    * @param date to return funded amount.
    * @return total amount of all active contracts as of date
@@ -143,35 +149,19 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
 
     builder.put(trade.getInfo().getTradeDate().get(), loanTrade.getAmount());
 
-    return ProratedFacility.builder()
-        .id(id)
-        .identifiers(identifiers)
-        .agent(agent)
-        .borrower(borrower)
-        .contracts(contracts
-            .stream()
-            .map(contract -> contract.prorate(trade))
-            .collect(Collectors.toList()))
-        .fees(fees
-            .stream()
-            .map(fee -> fee.prorate(trade))
-            .collect(Collectors.toList()))
-        .startDate(startDate)
-        .maturityDate(maturityDate)
-        .facilityType(facilityType)
-        .commitment(builder.build())
-        .events(events
-            .stream()
-            .map(event -> event.prorate(trade))
-            .collect(Collectors.toList()))
-        .currency(originalCommitmentAmount.getCurrency())
-        .build();
+    return ProratedFacility.builder().id(id).identifiers(identifiers).agent(agent).borrower(borrower)
+        .contracts(contracts.stream().map(contract -> contract.prorate(trade)).collect(Collectors.toList()))
+        .fees(fees.stream().map(fee -> fee.prorate(trade)).collect(Collectors.toList())).startDate(startDate)
+        .maturityDate(maturityDate).facilityType(facilityType).commitment(builder.build())
+        .events(events.stream().map(event -> event.prorate(trade)).collect(Collectors.toList()))
+        .currency(originalCommitmentAmount.getCurrency()).build();
   }
 
   /**
    * Unique loan identifier.
    * <p>
-   * A public (e.g. LXID) or internal id which uniquely identifies a loan facility.
+   * A public (e.g. LXID) or internal id which uniquely identifies a loan
+   * facility.
    */
   @PropertyDefinition(validate = "notNull")
   private final StandardId id;
@@ -243,7 +233,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
   private final ImmutableList<AccruingFee> fees;
 
   /**
-   * Given or generated total commitment schedule for this loan in the loan currency.
+   * Given or generated total commitment schedule for this loan in the loan
+   * currency.
    */
   @PropertyDefinition(validate = "")
   private final LocalDateDoubleTimeSeries totalCommitmentSchedule;
@@ -275,23 +266,26 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
 
     for (LoanContract contract : contracts) {
       ArgChecker.isFalse(contract.getAccrual().getStartDate().isBefore(startDate),
-          "Contract " + contract.getId() +
-              " start date " + contract.getAccrual().getStartDate() + " is prior to facility start date " + startDate);
+          "Contract " + contract.getId() + " start date " + contract.getAccrual().getStartDate()
+              + " is prior to facility start date " + startDate);
       ArgChecker.isFalse(contract.getAccrual().getEndDate().isAfter(maturityDate),
-          "Contract " + contract.getId() +
-              " end date " + contract.getAccrual().getEndDate() + " is after facility maturity date " + maturityDate);
+          "Contract " + contract.getId() + " end date " + contract.getAccrual().getEndDate()
+              + " is after facility maturity date " + maturityDate);
       ArgChecker.isFalse(contract.getPaymentDate().isAfter(maturityDate),
-          "Contract " + contract.getId() +
-              " payment date " + contract.getPaymentDate() + " is after facility maturity date " + maturityDate);
+          "Contract " + contract.getId() + " payment date " + contract.getPaymentDate()
+              + " is after facility maturity date " + maturityDate);
 
       // TODO: figure out how to apply below, maybe as an option.
       /*
-      ArgChecker.isFalse(facilityType == Term && Math.abs(getFundedAmount(contract.getAccrual().getStartDate()).getAmount() -
-          getCommitmentAmount(contract.getAccrual().getStartDate()).getAmount()) > EPSILON_1,
-          "Funded amount " + getFundedAmount(contract.getAccrual().getStartDate()) + " as of " +
-              contract.getAccrual().getStartDate() +
-              " not equal to totalCommitmentSchedule amount " + getCommitmentAmount(contract.getAccrual().getStartDate()));
-              */
+       * ArgChecker.isFalse(facilityType == Term &&
+       * Math.abs(getFundedAmount(contract.getAccrual().getStartDate()).getAmount() -
+       * getCommitmentAmount(contract.getAccrual().getStartDate()).getAmount()) >
+       * EPSILON_1, "Funded amount " +
+       * getFundedAmount(contract.getAccrual().getStartDate()) + " as of " +
+       * contract.getAccrual().getStartDate() +
+       * " not equal to totalCommitmentSchedule amount " +
+       * getCommitmentAmount(contract.getAccrual().getStartDate()));
+       */
     }
 
   }
@@ -303,15 +297,14 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
    */
   @ImmutableDefaults
   private static void applyDefaults(Builder builder) {
-    builder
-        .totalCommitmentSchedule(LocalDateDoubleTimeSeries.builder().build())
-        .events(new ArrayList<FacilityEvent>())
-        .contracts(new ArrayList<LoanContract>())
+    builder.totalCommitmentSchedule(LocalDateDoubleTimeSeries.builder().build())
+        .events(new ArrayList<FacilityEvent>()).contracts(new ArrayList<LoanContract>())
         .fees(new ArrayList<AccruingFee>());
   }
 
   /**
-   * Complete construction of Facility, in particular building commitment schedule if incomplete.
+   * Complete construction of Facility, in particular building commitment schedule
+   * if incomplete.
    * 
    * @param builder
    */
@@ -319,7 +312,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
   private static void preBuild(Builder builder) {
     if (builder.totalCommitmentSchedule == null || builder.totalCommitmentSchedule.isEmpty()) {
       builder.totalCommitmentSchedule(generateCommitmentSchedule(builder.facilityType, builder.startDate,
-          builder.originalCommitmentAmount.getAmount(), builder.contracts.stream().collect(Collectors.toList()),
+          builder.originalCommitmentAmount.getAmount(),
+          builder.contracts.stream().collect(Collectors.toList()),
           builder.events.stream().collect(Collectors.toList())));
     }
   }
@@ -334,6 +328,13 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
   public ImmutableSet<Currency> allCurrencies() {
     return ImmutableSet.of(originalCommitmentAmount.getCurrency());
   }
+  /*
+   * @Override public OutstandingContractsStatement
+   * export(OutstandingContractsStatement fpml) throws
+   * DatatypeConfigurationException { fpml.setFpmlVersion("5-11");
+   * fpml.setHeader(FpMLHelper.getHeader(factory));
+   * fpml.setStatementDate(LocalDate.now()); return fpml; }
+   */
 
   //------------------------- AUTOGENERATED START -------------------------
   /**
@@ -400,7 +401,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
   /**
    * Gets unique loan identifier.
    * <p>
-   * A public (e.g. LXID) or internal id which uniquely identifies a loan facility.
+   * A public (e.g. LXID) or internal id which uniquely identifies a loan
+   * facility.
    * @return the value of the property, not null
    */
   public StandardId getId() {
@@ -502,7 +504,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
 
   //-----------------------------------------------------------------------
   /**
-   * Gets given or generated total commitment schedule for this loan in the loan currency.
+   * Gets given or generated total commitment schedule for this loan in the loan
+   * currency.
    * @return the value of the property
    */
   public LocalDateDoubleTimeSeries getTotalCommitmentSchedule() {
@@ -1026,7 +1029,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     /**
      * Sets unique loan identifier.
      * <p>
-     * A public (e.g. LXID) or internal id which uniquely identifies a loan facility.
+     * A public (e.g. LXID) or internal id which uniquely identifies a loan
+     * facility.
      * @param id  the new value, not null
      * @return this, for chaining, not null
      */
@@ -1175,7 +1179,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     }
 
     /**
-     * Sets given or generated total commitment schedule for this loan in the loan currency.
+     * Sets given or generated total commitment schedule for this loan in the loan
+     * currency.
      * @param totalCommitmentSchedule  the new value
      * @return this, for chaining, not null
      */

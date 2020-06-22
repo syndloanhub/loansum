@@ -37,6 +37,7 @@ import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeriesBuilder;
 import com.opengamma.strata.product.ProductTrade;
 import com.opengamma.strata.product.TradeInfo;
 import com.opengamma.strata.product.common.BuySell;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradeNotification;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.NonNegativeMoney;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanTrade;
@@ -53,17 +54,17 @@ import org.joda.beans.gen.PropertyDefinition;
 /**
  * A loan trade.
  * <p>
- * A loan trade represents the purchase or sale of a loan facility. The prorating of a loan
- * trade accounts just for paydown-on-trade-date behavior.
+ * A loan trade represents the purchase or sale of a loan facility. The
+ * prorating of a loan trade accounts just for paydown-on-trade-date behavior.
  */
 @BeanDefinition
-public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTrade>,
-    FpMLExportable<com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade>, ImmutableBean {
+public final class LoanTrade
+    implements ProductTrade, Proratable<ProratedLoanTrade>, FpMLExportable<LoanTradeNotification>, ImmutableBean {
 
   /**
-   * Prorate trade and associated global facility with itself. This is mainly for prorating the 
-   * facility but the trade amount itself may be adjusted if there was a repayment on
-   * trade date that needs to be recognized.
+   * Prorate trade and associated global facility with itself. This is mainly for
+   * prorating the facility but the trade amount itself may be adjusted if there
+   * was a repayment on trade date that needs to be recognized.
    */
   @Override
   public ProratedLoanTrade prorate(ProductTrade trade) {
@@ -85,67 +86,39 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
 
     // Build penultimate trade used to prorate penultimate loan.
 
-    LoanTrade penultimateTrade = LoanTrade.builder()
-        .accrualSettlementType(accrualSettlementType)
-        .amount(adjustedAmount)
-        .association(association)
-        .averageLibor(averageLibor)
-        .buyer(buyer)
-        .seller(seller)
-        .buySell(buySell)
-        .commitmentReductionCreditFlag(commitmentReductionCreditFlag)
-        .currency(currency)
-        .delayedCompensationFlag(delayedCompensationFlag)
-        .documentationType(documentationType)
-        .expectedSettlementDate(expectedSettlementDate)
-        .paydownOnTradeDate(false)
-        .formOfPurchase(formOfPurchase)
-        .info(info)
-        .price(price)
-        .product(loan)
-        .tradeType(tradeType)
-        .build();
+    LoanTrade penultimateTrade = LoanTrade.builder().accrualSettlementType(accrualSettlementType)
+        .amount(adjustedAmount).association(association).averageLibor(averageLibor).buyer(buyer).seller(seller)
+        .buySell(buySell).commitmentReductionCreditFlag(commitmentReductionCreditFlag).currency(currency)
+        .delayedCompensationFlag(delayedCompensationFlag).documentationType(documentationType)
+        .expectedSettlementDate(expectedSettlementDate).paydownOnTradeDate(false).formOfPurchase(formOfPurchase)
+        .info(info).price(price).product(loan).tradeType(tradeType).build();
 
     // Return final trade with prorated loan.
 
-    return ProratedLoanTrade.builder()
-        .accrualSettlementType(accrualSettlementType)
-        .association(association)
-        .buyer(buyer)
-        .seller(seller)
-        .formOfPurchase(formOfPurchase)
-        .documentationType(documentationType)
-        .commitmentReductionCreditFlag(commitmentReductionCreditFlag)
-        .currency(currency)
-        .paydownOnTradeDate(paydownOnTradeDate)
-        .buySell(buySell)
-        .amount(adjustedAmount)
-        .originalAmount(amount)
-        .price(price)
-        .expectedSettlementDate(expectedSettlementDate)
-        .delayedCompensationFlag(delayedCompensationFlag)
-        .averageLibor(averageLibor)
-        .tradeType(tradeType)
-        .info(info)
-        .product(loan.prorate(penultimateTrade))
-        .pctShare(penultimateTrade.getPctShare())
-        .build();
+    return ProratedLoanTrade.builder().accrualSettlementType(accrualSettlementType).association(association)
+        .buyer(buyer).seller(seller).formOfPurchase(formOfPurchase).documentationType(documentationType)
+        .commitmentReductionCreditFlag(commitmentReductionCreditFlag).currency(currency)
+        .paydownOnTradeDate(paydownOnTradeDate).buySell(buySell).amount(adjustedAmount).originalAmount(amount)
+        .price(price).expectedSettlementDate(expectedSettlementDate)
+        .delayedCompensationFlag(delayedCompensationFlag).averageLibor(averageLibor).tradeType(tradeType)
+        .info(info).product(loan.prorate(penultimateTrade)).pctShare(penultimateTrade.getPctShare()).build();
   }
 
   @Override
-  public com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade export() throws DatatypeConfigurationException {
+  public LoanTradeNotification export() throws DatatypeConfigurationException {
     ObjectFactory factory = new ObjectFactory();
-    com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade fpml = factory.createLoanTrade();
-    
-    // LoanTrade-level attributes.
-    fpml.setPrice(BigDecimal.valueOf(price * 100.0));
-    
-    ////
-    fpml.setAccrualSettlementType(accrualSettlementType.export());
-    fpml.setAmount(FpMLHelper.exportCurrencyAmount(CurrencyAmount.of(currency, amount)));
-    //fpml.setBuyerAccountReference(value);
-    fpml.setTradeDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(info.getTradeDate().get().toString()));
-    fpml.setFormOfPurchase(FpMLHelper.convert(formOfPurchase));
+    LoanTradeNotification fpml = factory.createLoanTradeNotification();
+
+    /*
+     * // LoanTrade-level attributes. fpml.setPrice(BigDecimal.valueOf(price *
+     * 100.0));
+     * 
+     * //// fpml.setAccrualSettlementType(accrualSettlementType.export());
+     * fpml.setAmount(FpMLHelper.exportCurrencyAmount(CurrencyAmount.of(currency,
+     * amount))); //fpml.setBuyerAccountReference(value);
+     * fpml.setTradeDate(info.getTradeDate().get());
+     * fpml.setFormOfPurchase(FpMLHelper.convert(formOfPurchase));
+     */
 
     return fpml;
   }
@@ -237,8 +210,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
   private final LoanTradingType tradeType;
 
   /**
-   * A flag to indicate the dependency of a secondary market loan trade upon 
-   * the closing of a primary market loan structuring and syndication process.
+   * A flag to indicate the dependency of a secondary market loan trade upon the
+   * closing of a primary market loan structuring and syndication process.
    */
   @PropertyDefinition(validate = "")
   private final boolean whenIssuedFlag;
@@ -294,19 +267,21 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     if (builder.product.getFacilityType() == Term && builder.product.getEvents() != null) {
       for (FacilityEvent event : builder.product.getEvents()) {
         switch (event.getType()) {
-          case CommitmentAdjustmentEvent:
-            CommitmentAdjustment adjustment = (CommitmentAdjustment) event;
+        case CommitmentAdjustmentEvent:
+          CommitmentAdjustment adjustment = (CommitmentAdjustment) event;
 
-            if (!adjustment.getEffectiveDate().isBefore(tradeDate) && !adjustment.isPik() && adjustment.isRefusalAllowed()) {
-              double lastPctShare = pctShareBuilder.build().getLatestValue();
-              double lastCommitmentAmount =
-                  builder.product.getCommitmentAmount(event.getEffectiveDate().minusDays(1)).getAmount();
-              double newCommmitmentAmount = builder.product.getCommitmentAmount(event.getEffectiveDate()).getAmount();
-              double newPctShare = lastPctShare * lastCommitmentAmount / newCommmitmentAmount;
+          if (!adjustment.getEffectiveDate().isBefore(tradeDate) && !adjustment.isPik()
+              && adjustment.isRefusalAllowed()) {
+            double lastPctShare = pctShareBuilder.build().getLatestValue();
+            double lastCommitmentAmount = builder.product
+                .getCommitmentAmount(event.getEffectiveDate().minusDays(1)).getAmount();
+            double newCommmitmentAmount = builder.product.getCommitmentAmount(event.getEffectiveDate())
+                .getAmount();
+            double newPctShare = lastPctShare * lastCommitmentAmount / newCommmitmentAmount;
 
-              pctShareBuilder.put(event.getEffectiveDate(), newPctShare);
-            }
-            break;
+            pctShareBuilder.put(event.getEffectiveDate(), newPctShare);
+          }
+          break;
         }
       }
     }
@@ -321,14 +296,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
    */
   @ImmutableDefaults
   private static void applyDefaults(Builder builder) {
-    builder
-        .info(TradeInfo.empty())
-        .delayedCompensationFlag(true)
-        .adjustmentOnTradeDate(false)
-        .tradeType(Secondary)
-        .whenIssuedFlag(false)
-        .buyer(StandardId.of("cpty", "BUYER"))
-        .seller(StandardId.of("cpty", "SELLER"));
+    builder.info(TradeInfo.empty()).delayedCompensationFlag(true).adjustmentOnTradeDate(false).tradeType(Secondary)
+        .whenIssuedFlag(false).buyer(StandardId.of("cpty", "BUYER")).seller(StandardId.of("cpty", "SELLER"));
   }
 
   /**
@@ -344,34 +313,21 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     ArgChecker.inRangeInclusive(price, 0, 2, "Trade price must be between 0 and 2 (normalized)");
   }
 
-  /* (non-Javadoc)
-   * @see com.opengamma.strata.product.ProductTrade#withInfo(com.opengamma.strata.product.TradeInfo)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.opengamma.strata.product.ProductTrade#withInfo(com.opengamma.strata.
+   * product.TradeInfo)
    */
   @Override
   public ProductTrade withInfo(TradeInfo info) {
-    return builder()
-        .accrualSettlementType(accrualSettlementType)
-        .adjustmentOnTradeDate(adjustmentOnTradeDate)
-        .amount(amount)
-        .association(association)
-        .averageLibor(averageLibor)
-        .buyer(buyer)
-        .buySell(buySell)
-        .commitmentReductionCreditFlag(commitmentReductionCreditFlag)
-        .currency(currency)
-        .delayedCompensationFlag(delayedCompensationFlag)
-        .documentationType(documentationType)
-        .expectedSettlementDate(expectedSettlementDate)
-        .formOfPurchase(formOfPurchase)
-        .info(info)
-        .paydownOnTradeDate(paydownOnTradeDate)
-        .pctShare(pctShare)
-        .price(price)
-        .product(product)
-        .seller(seller)
-        .tradeType(tradeType)
-        .whenIssuedFlag(whenIssuedFlag)
-        .build();
+    return builder().accrualSettlementType(accrualSettlementType).adjustmentOnTradeDate(adjustmentOnTradeDate)
+        .amount(amount).association(association).averageLibor(averageLibor).buyer(buyer).buySell(buySell)
+        .commitmentReductionCreditFlag(commitmentReductionCreditFlag).currency(currency)
+        .delayedCompensationFlag(delayedCompensationFlag).documentationType(documentationType)
+        .expectedSettlementDate(expectedSettlementDate).formOfPurchase(formOfPurchase).info(info)
+        .paydownOnTradeDate(paydownOnTradeDate).pctShare(pctShare).price(price).product(product).seller(seller)
+        .tradeType(tradeType).whenIssuedFlag(whenIssuedFlag).build();
   }
 
   //------------------------- AUTOGENERATED START -------------------------
@@ -585,8 +541,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
 
   //-----------------------------------------------------------------------
   /**
-   * Gets a flag to indicate the dependency of a secondary market loan trade upon
-   * the closing of a primary market loan structuring and syndication process.
+   * Gets a flag to indicate the dependency of a secondary market loan trade upon the
+   * closing of a primary market loan structuring and syndication process.
    * @return the value of the property
    */
   public boolean isWhenIssuedFlag() {
@@ -1556,8 +1512,8 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     }
 
     /**
-     * Sets a flag to indicate the dependency of a secondary market loan trade upon
-     * the closing of a primary market loan structuring and syndication process.
+     * Sets a flag to indicate the dependency of a secondary market loan trade upon the
+     * closing of a primary market loan structuring and syndication process.
      * @param whenIssuedFlag  the new value
      * @return this, for chaining, not null
      */

@@ -14,6 +14,7 @@ import com.opengamma.strata.basics.currency.CurrencyAmount;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingFormOfPurchaseEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.NonNegativeMoney;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.RequestMessageHeader;
 
 public final class FpMLHelper {
   private static final Logger log = LoggerFactory.getLogger(FpMLHelper.class);
@@ -69,5 +70,10 @@ public final class FpMLHelper {
       default:
         return LoanTradingFormOfPurchaseEnum.ASSIGNMENT;
     }
+  }
+  
+  public final static RequestMessageHeader getHeader(ObjectFactory factory) {
+	  RequestMessageHeader header = factory.createRequestMessageHeader();
+	  return header;
   }
 }
