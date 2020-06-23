@@ -1,4 +1,4 @@
-package com.syndloanhub.loansum.product.facility;
+package com.syndloanhub.loansum.fpml;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConfigurationException;

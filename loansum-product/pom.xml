@@ -24,11 +24,6 @@
       <artifactId>strata-market</artifactId>
       <version>2.0.0</version>
     </dependency>
-    <dependency>
-      <groupId>com.syndloanhub.loansum</groupId>
-      <artifactId>loansum-fpml</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
   </dependencies>
 
 </project>

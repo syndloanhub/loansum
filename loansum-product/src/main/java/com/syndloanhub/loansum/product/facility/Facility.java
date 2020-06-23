@@ -38,8 +38,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.opengamma.strata.basics.StandardId;
@@ -51,9 +49,6 @@ import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeriesBuilder;
 import com.opengamma.strata.collect.tuple.Pair;
 import com.opengamma.strata.product.Product;
 import com.opengamma.strata.product.ProductTrade;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityIdentifier;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.OutstandingContractsStatement;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedFacility;
 
 /**

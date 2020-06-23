@@ -1,9 +1,7 @@
-package com.syndloanhub.loansum.product.facility.prorated;
+package com.syndloanhub.loansum.fpml.test;
 
 import static com.opengamma.strata.product.common.BuySell.BUY;
 import static com.syndloanhub.loansum.product.facility.FacilityType.Term;
-import static com.syndloanhub.loansum.product.facility.FpMLHelper.exportCurrencyAmountElement;
-import static com.syndloanhub.loansum.product.facility.FpMLHelper.exportCurrencyElement;
 import static com.syndloanhub.loansum.product.facility.LoanTradingAccrualSettlement.SettledWithoutAccrued;
 import static com.syndloanhub.loansum.product.facility.LoanTradingAssoc.LSTA;
 import static com.syndloanhub.loansum.product.facility.LoanTradingDocType.Par;
@@ -29,6 +27,7 @@ import com.opengamma.strata.basics.date.DayCounts;
 import com.opengamma.strata.basics.index.IborIndex;
 import com.opengamma.strata.basics.schedule.Frequency;
 import com.opengamma.strata.product.TradeInfo;
+import com.syndloanhub.loansum.fpml.OutstandingContractsStatementExporter;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradeNotification;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.NonNegativeMoney;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.OutstandingContractsStatement;
@@ -39,7 +38,6 @@ import com.syndloanhub.loansum.product.facility.FacilityEvent;
 import com.syndloanhub.loansum.product.facility.FloatingRateAccrual;
 import com.syndloanhub.loansum.product.facility.LoanContract;
 import com.syndloanhub.loansum.product.facility.LoanTrade;
-import com.syndloanhub.loansum.product.facility.OutstandingContractsStatementExporter;
 import com.syndloanhub.loansum.product.facility.Repayment;
 
 class FpMLTest {

@@ -13,13 +13,9 @@ package com.syndloanhub.loansum.product.facility;
 import static com.syndloanhub.loansum.product.facility.FacilityType.Term;
 import static com.syndloanhub.loansum.product.facility.LoanTradingType.Secondary;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 
 import org.joda.beans.ImmutableBean;
 import org.joda.beans.JodaBeanUtils;
@@ -30,16 +26,12 @@ import org.joda.beans.impl.direct.DirectMetaPropertyMap;
 
 import com.opengamma.strata.basics.StandardId;
 import com.opengamma.strata.basics.currency.Currency;
-import com.opengamma.strata.basics.currency.CurrencyAmount;
 import com.opengamma.strata.collect.ArgChecker;
 import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeries;
 import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeriesBuilder;
 import com.opengamma.strata.product.ProductTrade;
 import com.opengamma.strata.product.TradeInfo;
 import com.opengamma.strata.product.common.BuySell;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradeNotification;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.NonNegativeMoney;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
 import com.syndloanhub.loansum.product.facility.prorated.ProratedLoanTrade;
 
 import org.joda.beans.Bean;
@@ -58,8 +50,7 @@ import org.joda.beans.gen.PropertyDefinition;
  * prorating of a loan trade accounts just for paydown-on-trade-date behavior.
  */
 @BeanDefinition
-public final class LoanTrade
-    implements ProductTrade, Proratable<ProratedLoanTrade>, FpMLExportable<LoanTradeNotification>, ImmutableBean {
+public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTrade>, ImmutableBean {
 
   /**
    * Prorate trade and associated global facility with itself. This is mainly for
@@ -102,25 +93,6 @@ public final class LoanTrade
         .price(price).expectedSettlementDate(expectedSettlementDate)
         .delayedCompensationFlag(delayedCompensationFlag).averageLibor(averageLibor).tradeType(tradeType)
         .info(info).product(loan.prorate(penultimateTrade)).pctShare(penultimateTrade.getPctShare()).build();
-  }
-
-  @Override
-  public LoanTradeNotification export() throws DatatypeConfigurationException {
-    ObjectFactory factory = new ObjectFactory();
-    LoanTradeNotification fpml = factory.createLoanTradeNotification();
-
-    /*
-     * // LoanTrade-level attributes. fpml.setPrice(BigDecimal.valueOf(price *
-     * 100.0));
-     * 
-     * //// fpml.setAccrualSettlementType(accrualSettlementType.export());
-     * fpml.setAmount(FpMLHelper.exportCurrencyAmount(CurrencyAmount.of(currency,
-     * amount))); //fpml.setBuyerAccountReference(value);
-     * fpml.setTradeDate(info.getTradeDate().get());
-     * fpml.setFormOfPurchase(FpMLHelper.convert(formOfPurchase));
-     */
-
-    return fpml;
   }
 
   /**

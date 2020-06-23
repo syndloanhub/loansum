@@ -1,4 +1,4 @@
-package com.syndloanhub.loansum.product.facility;
+package com.syndloanhub.loansum.fpml;
 
 import java.math.BigDecimal;
 
@@ -15,6 +15,7 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingFormOfPurchase
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.NonNegativeMoney;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.RequestMessageHeader;
+import com.syndloanhub.loansum.product.facility.LoanTradingFormOfPurchase;
 
 public final class FpMLHelper {
   private static final Logger log = LoggerFactory.getLogger(FpMLHelper.class);

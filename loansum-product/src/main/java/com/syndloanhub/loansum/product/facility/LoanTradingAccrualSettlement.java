@@ -10,13 +10,10 @@
 
 package com.syndloanhub.loansum.product.facility;
 
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingAccrualSettlementEnum;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
-
 /**
  * Types of loan settlements, standard is without accrued interest.
  */
-public enum LoanTradingAccrualSettlement implements FpMLExportable<LoanTradingAccrualSettlementEnum> {
+public enum LoanTradingAccrualSettlement {
   /**
    * Trades flat.
    */
@@ -31,9 +28,4 @@ public enum LoanTradingAccrualSettlement implements FpMLExportable<LoanTradingAc
    * / Settled without Accrued Interest: Interest accrued during for the settlement period is not paid at settlement.
    */
   SettledWithoutAccrued;
-
-  @Override
-  public LoanTradingAccrualSettlementEnum export() {
-    return LoanTradingAccrualSettlementEnum.fromValue(this.toString());
-  }
 }

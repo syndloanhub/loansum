@@ -55,6 +55,7 @@
 		<module>loansum-product</module>
 		<module>loansum-pricer</module>
 		<module>loansum-service</module>
+		<module>loansum-fpml</module>
 	</modules>
 
 	<build>
