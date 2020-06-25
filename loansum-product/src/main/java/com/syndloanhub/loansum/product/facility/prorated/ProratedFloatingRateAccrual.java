@@ -27,6 +27,7 @@ import com.opengamma.strata.basics.currency.CurrencyAmount;
 import com.opengamma.strata.basics.date.DayCount;
 import com.opengamma.strata.basics.index.RateIndex;
 import com.opengamma.strata.basics.schedule.Frequency;
+import com.syndloanhub.loansum.product.facility.AccrualType;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -38,7 +39,22 @@ import java.util.Optional;
  */
 @BeanDefinition
 public final class ProratedFloatingRateAccrual implements ProratedAccrual, ImmutableBean {
+  /**
+   * Return accrual type.
+   */
+  @Override
+  public AccrualType getAccrualType() {
+    return AccrualType.Floating;
+  }
 
+  /**
+   * The number of days in the accrual period.
+   * <p>
+   * Days calculated using day count.
+   */
+  @PropertyDefinition(validate = "")
+  private final int days;
+  
   /**
    * The start date of the accrual.
    * <p>
@@ -139,6 +155,7 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
   private static void preBuild(Builder builder) {
     final double yearFraction = builder.dayCount.yearFraction(builder.startDate, builder.endDate);
 
+    builder.days(builder.dayCount.days(builder.startDate, builder.endDate));
     builder.paymentProjection(CurrencyAmount.of(builder.accrualAmount.getCurrency(),
         builder.accrualAmount.getAmount() * builder.allInRate * yearFraction));
     builder.pikProjection(CurrencyAmount.of(builder.accrualAmount.getCurrency(),
@@ -167,6 +184,7 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
   }
 
   private ProratedFloatingRateAccrual(
+      int days,
       LocalDate startDate,
       LocalDate endDate,
       LocalDate paymentDate,
@@ -181,6 +199,7 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
       double baseRate,
       double spread) {
     JodaBeanUtils.notNull(index, "index");
+    this.days = days;
     this.startDate = startDate;
     this.endDate = endDate;
     this.paymentDate = paymentDate;
@@ -199,6 +218,17 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
   @Override
   public ProratedFloatingRateAccrual.Meta metaBean() {
     return ProratedFloatingRateAccrual.Meta.INSTANCE;
+  }
+
+  //-----------------------------------------------------------------------
+  /**
+   * Gets the number of days in the accrual period.
+   * <p>
+   * Days calculated using day count.
+   * @return the value of the property
+   */
+  public int getDays() {
+    return days;
   }
 
   //-----------------------------------------------------------------------
@@ -350,7 +380,8 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
     }
     if (obj != null && obj.getClass() == this.getClass()) {
       ProratedFloatingRateAccrual other = (ProratedFloatingRateAccrual) obj;
-      return JodaBeanUtils.equal(startDate, other.startDate) &&
+      return (days == other.days) &&
+          JodaBeanUtils.equal(startDate, other.startDate) &&
           JodaBeanUtils.equal(endDate, other.endDate) &&
           JodaBeanUtils.equal(paymentDate, other.paymentDate) &&
           JodaBeanUtils.equal(allInRate, other.allInRate) &&
@@ -370,6 +401,7 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
   @Override
   public int hashCode() {
     int hash = getClass().hashCode();
+    hash = hash * 31 + JodaBeanUtils.hashCode(days);
     hash = hash * 31 + JodaBeanUtils.hashCode(startDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(endDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(paymentDate);
@@ -388,8 +420,9 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
 
   @Override
   public String toString() {
-    StringBuilder buf = new StringBuilder(448);
+    StringBuilder buf = new StringBuilder(480);
     buf.append("ProratedFloatingRateAccrual{");
+    buf.append("days").append('=').append(days).append(',').append(' ');
     buf.append("startDate").append('=').append(startDate).append(',').append(' ');
     buf.append("endDate").append('=').append(endDate).append(',').append(' ');
     buf.append("paymentDate").append('=').append(paymentDate).append(',').append(' ');
@@ -417,6 +450,11 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
      */
     static final Meta INSTANCE = new Meta();
 
+    /**
+     * The meta-property for the {@code days} property.
+     */
+    private final MetaProperty<Integer> _days = DirectMetaProperty.ofImmutable(
+        this, "days", ProratedFloatingRateAccrual.class, Integer.TYPE);
     /**
      * The meta-property for the {@code startDate} property.
      */
@@ -487,6 +525,7 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
      */
     private final Map<String, MetaProperty<?>> _metaPropertyMap$ = new DirectMetaPropertyMap(
         this, null,
+        "days",
         "startDate",
         "endDate",
         "paymentDate",
@@ -510,6 +549,8 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
     @Override
     protected MetaProperty<?> metaPropertyGet(String propertyName) {
       switch (propertyName.hashCode()) {
+        case 3076183:  // days
+          return _days;
         case -2129778896:  // startDate
           return _startDate;
         case -1607727319:  // endDate
@@ -556,6 +597,14 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * The meta-property for the {@code days} property.
+     * @return the meta-property, not null
+     */
+    public MetaProperty<Integer> days() {
+      return _days;
+    }
+
     /**
      * The meta-property for the {@code startDate} property.
      * @return the meta-property, not null
@@ -664,6 +713,8 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
     @Override
     protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
       switch (propertyName.hashCode()) {
+        case 3076183:  // days
+          return ((ProratedFloatingRateAccrual) bean).getDays();
         case -2129778896:  // startDate
           return ((ProratedFloatingRateAccrual) bean).getStartDate();
         case -1607727319:  // endDate
@@ -711,6 +762,7 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
    */
   public static final class Builder extends DirectFieldsBeanBuilder<ProratedFloatingRateAccrual> {
 
+    private int days;
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate paymentDate;
@@ -736,6 +788,7 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
      * @param beanToCopy  the bean to copy from, not null
      */
     private Builder(ProratedFloatingRateAccrual beanToCopy) {
+      this.days = beanToCopy.getDays();
       this.startDate = beanToCopy.getStartDate();
       this.endDate = beanToCopy.getEndDate();
       this.paymentDate = beanToCopy.paymentDate;
@@ -755,6 +808,8 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
     @Override
     public Object get(String propertyName) {
       switch (propertyName.hashCode()) {
+        case 3076183:  // days
+          return days;
         case -2129778896:  // startDate
           return startDate;
         case -1607727319:  // endDate
@@ -789,6 +844,9 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
     @Override
     public Builder set(String propertyName, Object newValue) {
       switch (propertyName.hashCode()) {
+        case 3076183:  // days
+          this.days = (Integer) newValue;
+          break;
         case -2129778896:  // startDate
           this.startDate = (LocalDate) newValue;
           break;
@@ -844,6 +902,7 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
     public ProratedFloatingRateAccrual build() {
       preBuild(this);
       return new ProratedFloatingRateAccrual(
+          days,
           startDate,
           endDate,
           paymentDate,
@@ -860,6 +919,18 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Sets the number of days in the accrual period.
+     * <p>
+     * Days calculated using day count.
+     * @param days  the new value
+     * @return this, for chaining, not null
+     */
+    public Builder days(int days) {
+      this.days = days;
+      return this;
+    }
+
     /**
      * Sets the start date of the accrual.
      * <p>
@@ -1010,8 +1081,9 @@ public final class ProratedFloatingRateAccrual implements ProratedAccrual, Immut
     //-----------------------------------------------------------------------
     @Override
     public String toString() {
-      StringBuilder buf = new StringBuilder(448);
+      StringBuilder buf = new StringBuilder(480);
       buf.append("ProratedFloatingRateAccrual.Builder{");
+      buf.append("days").append('=').append(JodaBeanUtils.toString(days)).append(',').append(' ');
       buf.append("startDate").append('=').append(JodaBeanUtils.toString(startDate)).append(',').append(' ');
       buf.append("endDate").append('=').append(JodaBeanUtils.toString(endDate)).append(',').append(' ');
       buf.append("paymentDate").append('=').append(JodaBeanUtils.toString(paymentDate)).append(',').append(' ');

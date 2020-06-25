@@ -16,59 +16,73 @@ import java.util.Optional;
 import com.opengamma.strata.basics.currency.CurrencyAmount;
 import com.opengamma.strata.basics.date.DayCount;
 import com.opengamma.strata.basics.schedule.Frequency;
+import com.syndloanhub.loansum.product.facility.AccrualType;
 
 /**
- * Interface that all accrual (fixed and floating) classes implement to support pricing.
+ * Interface that all accrual (fixed and floating) classes implement to support
+ * pricing.
  */
 public interface ProratedAccrual {
-  /**
-   * @return accrual period start date
-   */
-  public abstract LocalDate getStartDate();
+	/**
+	 * @return number of days in accrual period
+	 */
+	public abstract int getDays();
+	
+	/**
+	 * @return accrual type
+	 */
+	public abstract AccrualType getAccrualType();
 
-  /**
-   * @return accrual period end date which may or may not coincide with payment date
-   */
-  public abstract LocalDate getEndDate();
+	/**
+	 * @return accrual period start date
+	 */
+	public abstract LocalDate getStartDate();
 
-  /**
-   * @return optional payment date, for implementing interest-on-paydown sub-accrual exception
-   */
-  public abstract Optional<LocalDate> getPaymentDate();
+	/**
+	 * @return accrual period end date which may or may not coincide with payment
+	 *         date
+	 */
+	public abstract LocalDate getEndDate();
 
-  /**
-   * @return total annual cash interest rate, this DOES NOT include the PIK spread
-   */
-  public abstract double getAllInRate();
+	/**
+	 * @return optional payment date, for implementing interest-on-paydown
+	 *         sub-accrual exception
+	 */
+	public abstract Optional<LocalDate> getPaymentDate();
 
-  /**
-   * @return total annual pay-in-kind interest rate
-   */
-  public abstract double getPikSpread();
+	/**
+	 * @return total annual cash interest rate, this DOES NOT include the PIK spread
+	 */
+	public abstract double getAllInRate();
 
-  /**
-   * @return accrual amount in specified currency
-   */
-  public abstract CurrencyAmount getAccrualAmount();
+	/**
+	 * @return total annual pay-in-kind interest rate
+	 */
+	public abstract double getPikSpread();
 
-  /**
-   * @return day count basis to be used for calculations
-   */
-  public abstract DayCount getDayCount();
+	/**
+	 * @return accrual amount in specified currency
+	 */
+	public abstract CurrencyAmount getAccrualAmount();
 
-  /**
-   * @return accrual payment frequency
-   */
-  public abstract Frequency getPaymentFrequency();
+	/**
+	 * @return day count basis to be used for calculations
+	 */
+	public abstract DayCount getDayCount();
 
-  /**
-   * @return calculated projected cash payment amount
-   */
-  public abstract CurrencyAmount getPaymentProjection();
+	/**
+	 * @return accrual payment frequency
+	 */
+	public abstract Frequency getPaymentFrequency();
 
-  /**
-   * @return calculated projected PIK capitalization amount
-   */
-  public abstract CurrencyAmount getPikProjection();
+	/**
+	 * @return calculated projected cash payment amount
+	 */
+	public abstract CurrencyAmount getPaymentProjection();
+
+	/**
+	 * @return calculated projected PIK capitalization amount
+	 */
+	public abstract CurrencyAmount getPikProjection();
 
 }

@@ -49,92 +49,71 @@ import java.util.Optional;
  */
 @BeanDefinition
 public final class FloatingRateAccrual implements Accrual, ImmutableBean {
+  /**
+   * Return accrual type.
+   */
+  @Override
+  public AccrualType getAccrualType() {
+    return AccrualType.Floating;
+  }
 
   /**
-   * An implementation of an interest or fee accrual featuring a floating cash rate and PIK spread. This is
-   * a global view of the accrual; a prorated version may be produced via the prorate function based
-   * on a specific trade. In addition, a sub-accrual structure may be constructed via the rebuild
-   * function. For example, an interest contract with a repayment embedded may be rebuilt into
-   * 2 sub-accruals implementing the pre and post-paydown accruals.
+   * An implementation of an interest or fee accrual featuring a floating cash
+   * rate and PIK spread. This is a global view of the accrual; a prorated version
+   * may be produced via the prorate function based on a specific trade. In
+   * addition, a sub-accrual structure may be constructed via the rebuild
+   * function. For example, an interest contract with a repayment embedded may be
+   * rebuilt into 2 sub-accruals implementing the pre and post-paydown accruals.
    */
   @Override
   public ProratedFloatingRateAccrual prorate(ProductTrade trade) {
     final LoanTrade loanTrade = (LoanTrade) trade;
     final double pctShare = tsget(loanTrade.getPctShare(), max(startDate, trade.getInfo().getTradeDate().get()));
 
-    return ProratedFloatingRateAccrual.builder()
-        .accrualAmount(accrualAmount.multipliedBy(pctShare))
-        .allInRate(allInRate)
-        .dayCount(dayCount)
-        .endDate(endDate)
-        .paymentDate(paymentDate)
-        .paymentFrequency(paymentFrequency)
-        .pikSpread(pikSpread)
-        .startDate(startDate)
+    return ProratedFloatingRateAccrual.builder().accrualAmount(accrualAmount.multipliedBy(pctShare))
+        .allInRate(allInRate).dayCount(dayCount).endDate(endDate).paymentDate(paymentDate)
+        .paymentFrequency(paymentFrequency).pikSpread(pikSpread).startDate(startDate)
         .paymentProjection(paymentProjection.multipliedBy(pctShare))
-        .pikProjection(pikProjection.multipliedBy(pctShare))
-        .baseRate(baseRate)
-        .spread(spread)
-        .index(index)
+        .pikProjection(pikProjection.multipliedBy(pctShare)).baseRate(baseRate).spread(spread).index(index)
         .build();
   }
 
   /**
-   * Construct a modified instance of this accrual given the new period and amount.
+   * Construct a modified instance of this accrual given the new period and
+   * amount.
    */
   @Override
-  public Accrual rebuild(LocalDate startDate, LocalDate endDate, CurrencyAmount accrualAmount, LocalDate paymentDate) {
-    return FloatingRateAccrual.builder()
-        .accrualAmount(accrualAmount)
-        .allInRate(allInRate)
-        .dayCount(dayCount)
-        .startDate(startDate)
-        .endDate(endDate)
-        .paymentDate(paymentDate)
-        .paymentFrequency(paymentFrequency)
-        .paymentProjection(paymentProjection)
-        .pikProjection(pikProjection)
-        .pikSpread(pikSpread)
-        .baseRate(baseRate)
-        .index(index)
-        .spread(spread)
-        .accrualAmount(accrualAmount)
-        .build();
+  public Accrual rebuild(LocalDate startDate, LocalDate endDate, CurrencyAmount accrualAmount,
+      LocalDate paymentDate) {
+    return FloatingRateAccrual.builder().accrualAmount(accrualAmount).allInRate(allInRate).dayCount(dayCount)
+        .startDate(startDate).endDate(endDate).paymentDate(paymentDate).paymentFrequency(paymentFrequency)
+        .paymentProjection(paymentProjection).pikProjection(pikProjection).pikSpread(pikSpread)
+        .baseRate(baseRate).index(index).spread(spread).accrualAmount(accrualAmount).build();
   }
 
   /**
-   * Split an accrual into cash and PIK sub-accruals. This is needed as a PIK accrual
-   * will always span the full period but cash typically will commence on the actual
-   * settlement date.
+   * Split an accrual into cash and PIK sub-accruals. This is needed as a PIK
+   * accrual will always span the full period but cash typically will commence on
+   * the actual settlement date.
    */
   @Override
   public Pair<Accrual, Accrual> split() {
     return Pair.of(
-        FloatingRateAccrual.builder()
-            .accrualAmount(accrualAmount)
-            .allInRate(allInRate)
-            .dayCount(dayCount)
-            .startDate(startDate)
-            .endDate(endDate)
-            .paymentFrequency(paymentFrequency)
-            .pikSpread(0)
-            .baseRate(baseRate)
-            .index(index)
-            .spread(spread)
-            .build(),
-        FloatingRateAccrual.builder()
-            .accrualAmount(accrualAmount)
-            .allInRate(0)
-            .dayCount(dayCount)
-            .startDate(startDate)
-            .endDate(endDate)
-            .paymentFrequency(paymentFrequency)
-            .pikSpread(pikSpread)
-            .baseRate(0)
-            .index(index)
-            .spread(0)
-            .build());
+        FloatingRateAccrual.builder().accrualAmount(accrualAmount).allInRate(allInRate).dayCount(dayCount)
+            .startDate(startDate).endDate(endDate).paymentFrequency(paymentFrequency).pikSpread(0)
+            .baseRate(baseRate).index(index).spread(spread).build(),
+        FloatingRateAccrual.builder().accrualAmount(accrualAmount).allInRate(0).dayCount(dayCount)
+            .startDate(startDate).endDate(endDate).paymentFrequency(paymentFrequency).pikSpread(pikSpread)
+            .baseRate(0).index(index).spread(0).build());
   }
+
+  /**
+   * The number of days in the accrual period.
+   * <p>
+   * Days calculated using day count.
+   */
+  @PropertyDefinition(validate = "")
+  private final int days;
 
   /**
    * The start date of the accrual.
@@ -248,6 +227,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
   private static void preBuild(Builder builder) {
     final double yearFraction = builder.dayCount.yearFraction(builder.startDate, builder.endDate);
 
+    builder.days(builder.dayCount.days(builder.startDate, builder.endDate));
     builder.paymentProjection(CurrencyAmount.of(builder.accrualAmount.getCurrency(),
         builder.accrualAmount.getAmount() * builder.allInRate * yearFraction));
     builder.pikProjection(CurrencyAmount.of(builder.accrualAmount.getCurrency(),
@@ -261,11 +241,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
    */
   @ImmutableDefaults
   private static void applyDefaults(Builder builder) {
-    builder
-        .pikSpread(0)
-        .paymentFrequency(Frequency.P1M)
-        .dayCount(DayCounts.ACT_360)
-        .paymentDate(null);
+    builder.pikSpread(0).paymentFrequency(Frequency.P1M).dayCount(DayCounts.ACT_360).paymentDate(null);
   }
 
   //------------------------- AUTOGENERATED START -------------------------
@@ -290,6 +266,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
   }
 
   private FloatingRateAccrual(
+      int days,
       LocalDate startDate,
       LocalDate endDate,
       LocalDate paymentDate,
@@ -305,6 +282,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
       double spread) {
     JodaBeanUtils.notNull(accrualAmount, "accrualAmount");
     JodaBeanUtils.notNull(index, "index");
+    this.days = days;
     this.startDate = startDate;
     this.endDate = endDate;
     this.paymentDate = paymentDate;
@@ -324,6 +302,17 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
   @Override
   public FloatingRateAccrual.Meta metaBean() {
     return FloatingRateAccrual.Meta.INSTANCE;
+  }
+
+  //-----------------------------------------------------------------------
+  /**
+   * Gets the number of days in the accrual period.
+   * <p>
+   * Days calculated using day count.
+   * @return the value of the property
+   */
+  public int getDays() {
+    return days;
   }
 
   //-----------------------------------------------------------------------
@@ -475,7 +464,8 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     }
     if (obj != null && obj.getClass() == this.getClass()) {
       FloatingRateAccrual other = (FloatingRateAccrual) obj;
-      return JodaBeanUtils.equal(startDate, other.startDate) &&
+      return (days == other.days) &&
+          JodaBeanUtils.equal(startDate, other.startDate) &&
           JodaBeanUtils.equal(endDate, other.endDate) &&
           JodaBeanUtils.equal(paymentDate, other.paymentDate) &&
           JodaBeanUtils.equal(allInRate, other.allInRate) &&
@@ -495,6 +485,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
   @Override
   public int hashCode() {
     int hash = getClass().hashCode();
+    hash = hash * 31 + JodaBeanUtils.hashCode(days);
     hash = hash * 31 + JodaBeanUtils.hashCode(startDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(endDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(paymentDate);
@@ -513,8 +504,9 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
 
   @Override
   public String toString() {
-    StringBuilder buf = new StringBuilder(448);
+    StringBuilder buf = new StringBuilder(480);
     buf.append("FloatingRateAccrual{");
+    buf.append("days").append('=').append(days).append(',').append(' ');
     buf.append("startDate").append('=').append(startDate).append(',').append(' ');
     buf.append("endDate").append('=').append(endDate).append(',').append(' ');
     buf.append("paymentDate").append('=').append(paymentDate).append(',').append(' ');
@@ -542,6 +534,11 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
      */
     static final Meta INSTANCE = new Meta();
 
+    /**
+     * The meta-property for the {@code days} property.
+     */
+    private final MetaProperty<Integer> _days = DirectMetaProperty.ofImmutable(
+        this, "days", FloatingRateAccrual.class, Integer.TYPE);
     /**
      * The meta-property for the {@code startDate} property.
      */
@@ -612,6 +609,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
      */
     private final Map<String, MetaProperty<?>> _metaPropertyMap$ = new DirectMetaPropertyMap(
         this, null,
+        "days",
         "startDate",
         "endDate",
         "paymentDate",
@@ -635,6 +633,8 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     @Override
     protected MetaProperty<?> metaPropertyGet(String propertyName) {
       switch (propertyName.hashCode()) {
+        case 3076183:  // days
+          return _days;
         case -2129778896:  // startDate
           return _startDate;
         case -1607727319:  // endDate
@@ -681,6 +681,14 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * The meta-property for the {@code days} property.
+     * @return the meta-property, not null
+     */
+    public MetaProperty<Integer> days() {
+      return _days;
+    }
+
     /**
      * The meta-property for the {@code startDate} property.
      * @return the meta-property, not null
@@ -789,6 +797,8 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     @Override
     protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
       switch (propertyName.hashCode()) {
+        case 3076183:  // days
+          return ((FloatingRateAccrual) bean).getDays();
         case -2129778896:  // startDate
           return ((FloatingRateAccrual) bean).getStartDate();
         case -1607727319:  // endDate
@@ -836,6 +846,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
    */
   public static final class Builder extends DirectFieldsBeanBuilder<FloatingRateAccrual> {
 
+    private int days;
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate paymentDate;
@@ -862,6 +873,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
      * @param beanToCopy  the bean to copy from, not null
      */
     private Builder(FloatingRateAccrual beanToCopy) {
+      this.days = beanToCopy.getDays();
       this.startDate = beanToCopy.getStartDate();
       this.endDate = beanToCopy.getEndDate();
       this.paymentDate = beanToCopy.paymentDate;
@@ -881,6 +893,8 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     @Override
     public Object get(String propertyName) {
       switch (propertyName.hashCode()) {
+        case 3076183:  // days
+          return days;
         case -2129778896:  // startDate
           return startDate;
         case -1607727319:  // endDate
@@ -915,6 +929,9 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     @Override
     public Builder set(String propertyName, Object newValue) {
       switch (propertyName.hashCode()) {
+        case 3076183:  // days
+          this.days = (Integer) newValue;
+          break;
         case -2129778896:  // startDate
           this.startDate = (LocalDate) newValue;
           break;
@@ -970,6 +987,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     public FloatingRateAccrual build() {
       preBuild(this);
       return new FloatingRateAccrual(
+          days,
           startDate,
           endDate,
           paymentDate,
@@ -986,6 +1004,18 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Sets the number of days in the accrual period.
+     * <p>
+     * Days calculated using day count.
+     * @param days  the new value
+     * @return this, for chaining, not null
+     */
+    public Builder days(int days) {
+      this.days = days;
+      return this;
+    }
+
     /**
      * Sets the start date of the accrual.
      * <p>
@@ -1137,8 +1167,9 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     //-----------------------------------------------------------------------
     @Override
     public String toString() {
-      StringBuilder buf = new StringBuilder(448);
+      StringBuilder buf = new StringBuilder(480);
       buf.append("FloatingRateAccrual.Builder{");
+      buf.append("days").append('=').append(JodaBeanUtils.toString(days)).append(',').append(' ');
       buf.append("startDate").append('=').append(JodaBeanUtils.toString(startDate)).append(',').append(' ');
       buf.append("endDate").append('=').append(JodaBeanUtils.toString(endDate)).append(',').append(' ');
       buf.append("paymentDate").append('=').append(JodaBeanUtils.toString(paymentDate)).append(',').append(' ');
