@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.opengamma.strata.basics.StandardId;
 import com.opengamma.strata.collect.tuple.Pair;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityIdentifier;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityReference;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.InstrumentId;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
@@ -61,6 +62,9 @@ public class OutstandingContractsStatementExporter {
 				LoanContract loanContract = LoanContractExporter.export(contract, facility);
 				fpml.getLoanContractOrLetterOfCredit().add(loanContract);
 				fpml.getParty().add((Party) loanContract.getBorrowerPartyReference().getHref());
+				FacilityReference facilityReference = FpMLHelper.factory.createFacilityReference();
+				facilityReference.setHref(fpml.getFacilityIdentifier());
+				loanContract.setFacilityReference(facilityReference);
 			}
 		}
 

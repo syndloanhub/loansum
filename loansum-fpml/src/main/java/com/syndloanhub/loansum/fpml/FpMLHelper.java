@@ -1,6 +1,8 @@
 package com.syndloanhub.loansum.fpml;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -22,16 +24,23 @@ import com.opengamma.strata.basics.StandardId;
 import com.opengamma.strata.basics.currency.Currency;
 import com.opengamma.strata.basics.currency.CurrencyAmount;
 import com.opengamma.strata.basics.date.DayCount;
+import com.opengamma.strata.basics.index.RateIndex;
+import com.opengamma.strata.basics.schedule.Frequency;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.DayCountFraction;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.FloatingRateIndexLoan;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingFormOfPurchaseEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.MessageAddress;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.MessageId;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.MoneyWithParticipantShare;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.NonNegativeMoney;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.Party;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.PartyName;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.PartyReference;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.PaymentProjection;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.Period;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.PeriodEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.RequestMessageHeader;
 import com.syndloanhub.loansum.product.facility.LoanTradingFormOfPurchase;
 
@@ -45,9 +54,11 @@ public final class FpMLHelper {
 	public static final String CUSIP_SCHEME = "http://www.fpml.org/coding-scheme/external/instrument-id-CUSIP";
 	public static final String BBG_SCHEME = "http://www.fpml.org/coding-scheme/external/instrument-id-Bloomberg";
 	public static final String PTY_SCHEME = "http://www.fpml.org/coding-scheme/external/iso9362";
-	public static final String NA_SCHEME = "http://www.fpml.org/coding-scheme/external/na";
+	public static final String NA_SCHEME = "http://www.syndloanhub.com/coding-scheme/na";
 	public static final String DCF_SCHEME = "http://www.fpml.org/coding-scheme/day-count-fraction-2-2";
-	
+	public static final String FRI_SCHEME = "http://www.fpml.org/coding-scheme/floating-rate-index-2-30";
+	public static final String CCY_SCHEME = "http://www.fpml.org/coding-scheme/currency-1-0";
+
 	private static Map<String, String> idMap = new HashMap<String, String>();
 	private static int nextId = 0;
 
@@ -137,18 +148,50 @@ public final class FpMLHelper {
 		party.setId(id.toString());
 		return party;
 	}
-	
+
 	public final static String makeID(String id) {
-		if (!idMap.containsKey(id)) 
+		if (!idMap.containsKey(id))
 			idMap.put(id, String.format("ID%08d", nextId++));
 		return idMap.get(id);
 	}
-	
+
 	public final static DayCountFraction convert(DayCount dc) {
 		DayCountFraction dc2 = factory.createDayCountFraction();
 		dc2.setDayCountFractionScheme(DCF_SCHEME);
 		dc2.setValue(DayCount.extendedEnum().externalNames("FpML").reverseLookup(dc));
 		return dc2;
+	}
+
+	public static Period convert(Frequency frequency) {
+		Period period = factory.createPeriod();
+		String s = frequency.toString();
+		period.setPeriod(PeriodEnum.valueOf(s.substring(s.length() - 1)));
+		period.setPeriodMultiplier(BigInteger.valueOf(Integer.valueOf(s.substring(1, s.length() - 1))));
+		return period;
+	}
+
+	public static FloatingRateIndexLoan convert(RateIndex index) {
+		FloatingRateIndexLoan fpmlIndex = factory.createFloatingRateIndexLoan();
+		fpmlIndex.setFloatingRateIndexScheme(FRI_SCHEME);
+		fpmlIndex.setValue(index.getName());
+		return fpmlIndex;
+	}
+
+	public static PaymentProjection convert(CurrencyAmount paymentProjection, LocalDate paymentDate) {
+		PaymentProjection projection = factory.createPaymentProjection();
+		projection.setNextPaymentDate(paymentDate);
+		projection.setProjectedAmount(convert(paymentProjection));
+		return projection;
+	}
+
+	public static MoneyWithParticipantShare convert(CurrencyAmount paymentProjection) {
+		MoneyWithParticipantShare amount = factory.createMoneyWithParticipantShare();
+		amount.setAmount(paymentProjection.getAmount());
+		com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency currency = factory.createCurrency();
+		currency.setCurrencyScheme(CCY_SCHEME);
+		currency.setValue(paymentProjection.getCurrency().getCode());
+		amount.setCurrency(currency);
+		return amount;
 	}
 
 }

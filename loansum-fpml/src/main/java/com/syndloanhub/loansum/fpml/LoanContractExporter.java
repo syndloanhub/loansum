@@ -2,6 +2,7 @@ package com.syndloanhub.loansum.fpml;
 
 import java.math.BigDecimal;
 
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.ContractId;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FixedRateAccrual;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.MoneyWithParticipantShare;
@@ -16,16 +17,16 @@ public class LoanContractExporter {
 	static public LoanContract export(com.syndloanhub.loansum.product.facility.LoanContract contract,
 			Facility facility) {
 		LoanContract fpml = FpMLHelper.factory.createLoanContract();
-
-		MoneyWithParticipantShare amount = new MoneyWithParticipantShare();
-		amount.setAmount(contract.getAccrual().getAccrualAmount().getAmount());
-		amount.setShareAmount(amount.getAmount());
-		fpml.setAmount(amount);
-
+		fpml.setAmount(FpMLHelper.convert(contract.getAccrual().getAccrualAmount()));
 		fpml.setMaturityDate(contract.getAccrual().getEndDate());
 		fpml.setEffectiveDate(contract.getAccrual().getStartDate());
 		fpml.setId(FpMLHelper.makeID(contract.getId().toString()));
-
+		
+		ContractId contractId = FpMLHelper.factory.createContractId();
+		contractId.setContractIdScheme(contract.getId().getScheme());
+		contractId.setValue(contract.getId().getValue());
+		fpml.getContractId().add(contractId);
+		
 		Party borrower = FpMLHelper.factory.createParty();
 		borrower.setId(FpMLHelper.makeID(facility.getBorrower().toString()));
 
@@ -51,6 +52,19 @@ public class LoanContractExporter {
 		default:
 			break;
 		}
+		
+		Party agent = FpMLHelper.factory.createParty();
+		agent.setId(FpMLHelper.makeID(facility.getAgent().toString()));
+
+		PartyId agentId = FpMLHelper.factory.createPartyId();
+		agentId.setPartyIdScheme(facility.getAgent().getScheme());
+		agentId.setValue(facility.getAgent().getValue());
+		agent.getPartyId().add(agentId);
+
+		PartyReference agentReference = FpMLHelper.factory.createPartyReference();
+		agentReference.setHref(agent);
+
+		fpml.setPartyReference(agentReference);
 
 		return fpml;
 	}
