@@ -2,7 +2,9 @@ package com.syndloanhub.loansum.fpml;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
@@ -28,18 +30,12 @@ public class OutstandingContractsStatementExporter {
 		OutstandingContractsStatement fpml = factory.createOutstandingContractsStatement();
 		fpml.setFpmlVersion("5-11");
 		fpml.setStatementDate(effectiveDate);
-		fpml.setHeader(FpMLHelper.getHeader(factory));
+		fpml.setHeader(FpMLHelper.getHeader());
 
 		FacilityIdentifier facilityId = factory.createFacilityIdentifier();
-		facilityId.setId(FpMLHelper.makeID(facility.getId().toString()));
+		facilityId.setId(FpMLHelper.makeID(facility.getId()));
 
-		Party agent = factory.createParty();
-		agent.setId(FpMLHelper.makeID(facility.getAgent().toString()));
-
-		PartyId agentId = factory.createPartyId();
-		agentId.setPartyIdScheme(facility.getAgent().getScheme());
-		agentId.setValue(facility.getAgent().getValue());
-		agent.getPartyId().add(agentId);
+		Party agent = FpMLHelper.makeParty(facility.getAgent());
 
 		PartyReference agentReference = factory.createPartyReference();
 		agentReference.setHref(agent);
@@ -55,13 +51,23 @@ public class OutstandingContractsStatementExporter {
 			instrumentId.setValue(id.getValue());
 			facilityId.getInstrumentId().add(instrumentId);
 		}
+		
+		Set<Party> parties = new HashSet<Party>();
 
 		for (com.syndloanhub.loansum.product.facility.LoanContract contract : facility.getContracts()) {
 			if (allContracts || Helper.intersects(effectiveDate,
 					Pair.of(contract.getAccrual().getStartDate(), contract.getAccrual().getEndDate()))) {
 				LoanContract loanContract = LoanContractExporter.export(contract, facility);
 				fpml.getLoanContractOrLetterOfCredit().add(loanContract);
-				fpml.getParty().add((Party) loanContract.getBorrowerPartyReference().getHref());
+				
+				Party borrower = (Party) loanContract.getBorrowerPartyReference().getHref();
+				if (!parties.contains(borrower)) {
+					fpml.getParty().add(borrower);
+					parties.add(borrower);
+				}
+				
+				
+				
 				FacilityReference facilityReference = FpMLHelper.factory.createFacilityReference();
 				facilityReference.setHref(fpml.getFacilityIdentifier());
 				loanContract.setFacilityReference(facilityReference);
