@@ -10,10 +10,10 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.FloatingRateAccrual;
 public class FloatingAccrualExporter {
 	static public FloatingRateAccrual export(com.syndloanhub.loansum.product.facility.FloatingRateAccrual accrual) {
 		FloatingRateAccrual fpml = FpMLHelper.factory.createFloatingRateAccrual();
-		fpml.setAllInRate(accrual.getAllInRate());
-		fpml.setBaseRate(accrual.getBaseRate());
+		fpml.setAllInRate(BigDecimal.valueOf(accrual.getAllInRate()));
+		fpml.setBaseRate(BigDecimal.valueOf(accrual.getBaseRate()));
 		fpml.setDayCountFraction(FpMLHelper.convert(accrual.getDayCount()));
-		fpml.setDefaultSpread(accrual.getSpread());
+		fpml.setDefaultSpread(BigDecimal.valueOf(accrual.getSpread()));
 		fpml.setEndDate(accrual.getEndDate());
 		fpml.setStartDate(accrual.getStartDate());
 		fpml.setNumberOfDays(BigInteger.valueOf(accrual.getDays()));
@@ -27,10 +27,10 @@ public class FloatingAccrualExporter {
 		accrualTypeId.setValue("N/A");
 		fpml.setAccrualOptionId(accrualTypeId);
 		if (accrual.getPikSpread() > 0)
-			fpml.setPikSpread(accrual.getPikSpread());
+			fpml.setPikSpread(BigDecimal.valueOf(accrual.getPikSpread()));
 		// TODO: add rate fixing date
 		fpml.setRateFixingDate(LocalDate.of(1900, 1, 1));
-		fpml.setSpread(accrual.getSpread());
+		fpml.setSpread(BigDecimal.valueOf(accrual.getSpread()));
 		return fpml;
 	}
 }
