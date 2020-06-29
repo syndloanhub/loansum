@@ -30,7 +30,7 @@ public class OutstandingContractsStatementExporter {
 		OutstandingContractsStatement fpml = factory.createOutstandingContractsStatement();
 		fpml.setFpmlVersion("5-11");
 		fpml.setStatementDate(effectiveDate);
-		fpml.setHeader(FpMLHelper.getHeader());
+		fpml.setHeader(FpMLHelper.makeHeader());
 
 		FacilityIdentifier facilityId = factory.createFacilityIdentifier();
 		facilityId.setId(FpMLHelper.makeID(facility.getId()));

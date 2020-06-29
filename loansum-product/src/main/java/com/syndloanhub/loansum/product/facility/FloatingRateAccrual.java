@@ -58,6 +58,14 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
   }
 
   /**
+   * The associated accrual option
+   * <p>
+   * The accrual inherits properties from the option.
+   */
+  @PropertyDefinition(validate = "notNull")
+  private final FeeAndRateOption option;
+
+  /**
    * An implementation of an interest or fee accrual featuring a floating cash
    * rate and PIK spread. This is a global view of the accrual; a prorated version
    * may be produced via the prorate function based on a specific trade. In
@@ -88,7 +96,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     return FloatingRateAccrual.builder().accrualAmount(accrualAmount).allInRate(allInRate).dayCount(dayCount)
         .startDate(startDate).endDate(endDate).paymentDate(paymentDate).paymentFrequency(paymentFrequency)
         .paymentProjection(paymentProjection).pikProjection(pikProjection).pikSpread(pikSpread)
-        .baseRate(baseRate).index(index).spread(spread).accrualAmount(accrualAmount).build();
+        .baseRate(baseRate).index(index).spread(spread).accrualAmount(accrualAmount).option(option).build();
   }
 
   /**
@@ -266,6 +274,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
   }
 
   private FloatingRateAccrual(
+      FeeAndRateOption option,
       int days,
       LocalDate startDate,
       LocalDate endDate,
@@ -280,8 +289,10 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
       RateIndex index,
       double baseRate,
       double spread) {
+    JodaBeanUtils.notNull(option, "option");
     JodaBeanUtils.notNull(accrualAmount, "accrualAmount");
     JodaBeanUtils.notNull(index, "index");
+    this.option = option;
     this.days = days;
     this.startDate = startDate;
     this.endDate = endDate;
@@ -302,6 +313,17 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
   @Override
   public FloatingRateAccrual.Meta metaBean() {
     return FloatingRateAccrual.Meta.INSTANCE;
+  }
+
+  //-----------------------------------------------------------------------
+  /**
+   * Gets the associated accrual option
+   * <p>
+   * The accrual inherits properties from the option.
+   * @return the value of the property, not null
+   */
+  public FeeAndRateOption getOption() {
+    return option;
   }
 
   //-----------------------------------------------------------------------
@@ -464,7 +486,8 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     }
     if (obj != null && obj.getClass() == this.getClass()) {
       FloatingRateAccrual other = (FloatingRateAccrual) obj;
-      return (days == other.days) &&
+      return JodaBeanUtils.equal(option, other.option) &&
+          (days == other.days) &&
           JodaBeanUtils.equal(startDate, other.startDate) &&
           JodaBeanUtils.equal(endDate, other.endDate) &&
           JodaBeanUtils.equal(paymentDate, other.paymentDate) &&
@@ -485,6 +508,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
   @Override
   public int hashCode() {
     int hash = getClass().hashCode();
+    hash = hash * 31 + JodaBeanUtils.hashCode(option);
     hash = hash * 31 + JodaBeanUtils.hashCode(days);
     hash = hash * 31 + JodaBeanUtils.hashCode(startDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(endDate);
@@ -504,8 +528,9 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
 
   @Override
   public String toString() {
-    StringBuilder buf = new StringBuilder(480);
+    StringBuilder buf = new StringBuilder(512);
     buf.append("FloatingRateAccrual{");
+    buf.append("option").append('=').append(option).append(',').append(' ');
     buf.append("days").append('=').append(days).append(',').append(' ');
     buf.append("startDate").append('=').append(startDate).append(',').append(' ');
     buf.append("endDate").append('=').append(endDate).append(',').append(' ');
@@ -534,6 +559,11 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
      */
     static final Meta INSTANCE = new Meta();
 
+    /**
+     * The meta-property for the {@code option} property.
+     */
+    private final MetaProperty<FeeAndRateOption> _option = DirectMetaProperty.ofImmutable(
+        this, "option", FloatingRateAccrual.class, FeeAndRateOption.class);
     /**
      * The meta-property for the {@code days} property.
      */
@@ -609,6 +639,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
      */
     private final Map<String, MetaProperty<?>> _metaPropertyMap$ = new DirectMetaPropertyMap(
         this, null,
+        "option",
         "days",
         "startDate",
         "endDate",
@@ -633,6 +664,8 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     @Override
     protected MetaProperty<?> metaPropertyGet(String propertyName) {
       switch (propertyName.hashCode()) {
+        case -1010136971:  // option
+          return _option;
         case 3076183:  // days
           return _days;
         case -2129778896:  // startDate
@@ -681,6 +714,14 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * The meta-property for the {@code option} property.
+     * @return the meta-property, not null
+     */
+    public MetaProperty<FeeAndRateOption> option() {
+      return _option;
+    }
+
     /**
      * The meta-property for the {@code days} property.
      * @return the meta-property, not null
@@ -797,6 +838,8 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     @Override
     protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
       switch (propertyName.hashCode()) {
+        case -1010136971:  // option
+          return ((FloatingRateAccrual) bean).getOption();
         case 3076183:  // days
           return ((FloatingRateAccrual) bean).getDays();
         case -2129778896:  // startDate
@@ -846,6 +889,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
    */
   public static final class Builder extends DirectFieldsBeanBuilder<FloatingRateAccrual> {
 
+    private FeeAndRateOption option;
     private int days;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -873,6 +917,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
      * @param beanToCopy  the bean to copy from, not null
      */
     private Builder(FloatingRateAccrual beanToCopy) {
+      this.option = beanToCopy.getOption();
       this.days = beanToCopy.getDays();
       this.startDate = beanToCopy.getStartDate();
       this.endDate = beanToCopy.getEndDate();
@@ -893,6 +938,8 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     @Override
     public Object get(String propertyName) {
       switch (propertyName.hashCode()) {
+        case -1010136971:  // option
+          return option;
         case 3076183:  // days
           return days;
         case -2129778896:  // startDate
@@ -929,6 +976,9 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     @Override
     public Builder set(String propertyName, Object newValue) {
       switch (propertyName.hashCode()) {
+        case -1010136971:  // option
+          this.option = (FeeAndRateOption) newValue;
+          break;
         case 3076183:  // days
           this.days = (Integer) newValue;
           break;
@@ -987,6 +1037,7 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     public FloatingRateAccrual build() {
       preBuild(this);
       return new FloatingRateAccrual(
+          option,
           days,
           startDate,
           endDate,
@@ -1004,6 +1055,19 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Sets the associated accrual option
+     * <p>
+     * The accrual inherits properties from the option.
+     * @param option  the new value, not null
+     * @return this, for chaining, not null
+     */
+    public Builder option(FeeAndRateOption option) {
+      JodaBeanUtils.notNull(option, "option");
+      this.option = option;
+      return this;
+    }
+
     /**
      * Sets the number of days in the accrual period.
      * <p>
@@ -1167,8 +1231,9 @@ public final class FloatingRateAccrual implements Accrual, ImmutableBean {
     //-----------------------------------------------------------------------
     @Override
     public String toString() {
-      StringBuilder buf = new StringBuilder(480);
+      StringBuilder buf = new StringBuilder(512);
       buf.append("FloatingRateAccrual.Builder{");
+      buf.append("option").append('=').append(JodaBeanUtils.toString(option)).append(',').append(' ');
       buf.append("days").append('=').append(JodaBeanUtils.toString(days)).append(',').append(' ');
       buf.append("startDate").append('=').append(JodaBeanUtils.toString(startDate)).append(',').append(' ');
       buf.append("endDate").append('=').append(JodaBeanUtils.toString(endDate)).append(',').append(' ');

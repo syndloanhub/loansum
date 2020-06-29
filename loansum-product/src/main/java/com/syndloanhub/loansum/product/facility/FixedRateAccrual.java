@@ -61,6 +61,14 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
   public AccrualType getAccrualType() {
     return AccrualType.Fixed;
   }
+  
+  /**
+   * The associated accrual option
+   * <p>
+   * The accrual inherits properties from the option.
+   */
+  @PropertyDefinition(validate = "notNull")
+  private final FeeAndRateOption option;
 
   /**
    * Prorate a global accrual into a share based on given trade.
@@ -245,6 +253,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
   }
 
   private FixedRateAccrual(
+      FeeAndRateOption option,
       int days,
       LocalDate startDate,
       LocalDate endDate,
@@ -256,6 +265,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
       Frequency paymentFrequency,
       CurrencyAmount paymentProjection,
       CurrencyAmount pikProjection) {
+    JodaBeanUtils.notNull(option, "option");
     JodaBeanUtils.notNull(startDate, "startDate");
     JodaBeanUtils.notNull(endDate, "endDate");
     ArgChecker.notNegative(allInRate, "allInRate");
@@ -263,6 +273,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     JodaBeanUtils.notNull(accrualAmount, "accrualAmount");
     JodaBeanUtils.notNull(dayCount, "dayCount");
     JodaBeanUtils.notNull(paymentFrequency, "paymentFrequency");
+    this.option = option;
     this.days = days;
     this.startDate = startDate;
     this.endDate = endDate;
@@ -280,6 +291,17 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
   @Override
   public FixedRateAccrual.Meta metaBean() {
     return FixedRateAccrual.Meta.INSTANCE;
+  }
+
+  //-----------------------------------------------------------------------
+  /**
+   * Gets the associated accrual option
+   * <p>
+   * The accrual inherits properties from the option.
+   * @return the value of the property, not null
+   */
+  public FeeAndRateOption getOption() {
+    return option;
   }
 
   //-----------------------------------------------------------------------
@@ -415,7 +437,8 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     }
     if (obj != null && obj.getClass() == this.getClass()) {
       FixedRateAccrual other = (FixedRateAccrual) obj;
-      return (days == other.days) &&
+      return JodaBeanUtils.equal(option, other.option) &&
+          (days == other.days) &&
           JodaBeanUtils.equal(startDate, other.startDate) &&
           JodaBeanUtils.equal(endDate, other.endDate) &&
           JodaBeanUtils.equal(paymentDate, other.paymentDate) &&
@@ -433,6 +456,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
   @Override
   public int hashCode() {
     int hash = getClass().hashCode();
+    hash = hash * 31 + JodaBeanUtils.hashCode(option);
     hash = hash * 31 + JodaBeanUtils.hashCode(days);
     hash = hash * 31 + JodaBeanUtils.hashCode(startDate);
     hash = hash * 31 + JodaBeanUtils.hashCode(endDate);
@@ -449,8 +473,9 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
 
   @Override
   public String toString() {
-    StringBuilder buf = new StringBuilder(384);
+    StringBuilder buf = new StringBuilder(416);
     buf.append("FixedRateAccrual{");
+    buf.append("option").append('=').append(option).append(',').append(' ');
     buf.append("days").append('=').append(days).append(',').append(' ');
     buf.append("startDate").append('=').append(startDate).append(',').append(' ');
     buf.append("endDate").append('=').append(endDate).append(',').append(' ');
@@ -476,6 +501,11 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
      */
     static final Meta INSTANCE = new Meta();
 
+    /**
+     * The meta-property for the {@code option} property.
+     */
+    private final MetaProperty<FeeAndRateOption> _option = DirectMetaProperty.ofImmutable(
+        this, "option", FixedRateAccrual.class, FeeAndRateOption.class);
     /**
      * The meta-property for the {@code days} property.
      */
@@ -536,6 +566,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
      */
     private final Map<String, MetaProperty<?>> _metaPropertyMap$ = new DirectMetaPropertyMap(
         this, null,
+        "option",
         "days",
         "startDate",
         "endDate",
@@ -557,6 +588,8 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     @Override
     protected MetaProperty<?> metaPropertyGet(String propertyName) {
       switch (propertyName.hashCode()) {
+        case -1010136971:  // option
+          return _option;
         case 3076183:  // days
           return _days;
         case -2129778896:  // startDate
@@ -599,6 +632,14 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * The meta-property for the {@code option} property.
+     * @return the meta-property, not null
+     */
+    public MetaProperty<FeeAndRateOption> option() {
+      return _option;
+    }
+
     /**
      * The meta-property for the {@code days} property.
      * @return the meta-property, not null
@@ -691,6 +732,8 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     @Override
     protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
       switch (propertyName.hashCode()) {
+        case -1010136971:  // option
+          return ((FixedRateAccrual) bean).getOption();
         case 3076183:  // days
           return ((FixedRateAccrual) bean).getDays();
         case -2129778896:  // startDate
@@ -734,6 +777,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
    */
   public static final class Builder extends DirectFieldsBeanBuilder<FixedRateAccrual> {
 
+    private FeeAndRateOption option;
     private int days;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -758,6 +802,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
      * @param beanToCopy  the bean to copy from, not null
      */
     private Builder(FixedRateAccrual beanToCopy) {
+      this.option = beanToCopy.getOption();
       this.days = beanToCopy.getDays();
       this.startDate = beanToCopy.getStartDate();
       this.endDate = beanToCopy.getEndDate();
@@ -775,6 +820,8 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     @Override
     public Object get(String propertyName) {
       switch (propertyName.hashCode()) {
+        case -1010136971:  // option
+          return option;
         case 3076183:  // days
           return days;
         case -2129778896:  // startDate
@@ -805,6 +852,9 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     @Override
     public Builder set(String propertyName, Object newValue) {
       switch (propertyName.hashCode()) {
+        case -1010136971:  // option
+          this.option = (FeeAndRateOption) newValue;
+          break;
         case 3076183:  // days
           this.days = (Integer) newValue;
           break;
@@ -854,6 +904,7 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     public FixedRateAccrual build() {
       preBuild(this);
       return new FixedRateAccrual(
+          option,
           days,
           startDate,
           endDate,
@@ -868,6 +919,19 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Sets the associated accrual option
+     * <p>
+     * The accrual inherits properties from the option.
+     * @param option  the new value, not null
+     * @return this, for chaining, not null
+     */
+    public Builder option(FeeAndRateOption option) {
+      JodaBeanUtils.notNull(option, "option");
+      this.option = option;
+      return this;
+    }
+
     /**
      * Sets the number of days in the accrual period.
      * <p>
@@ -1006,8 +1070,9 @@ public final class FixedRateAccrual implements Accrual, ImmutableBean {
     //-----------------------------------------------------------------------
     @Override
     public String toString() {
-      StringBuilder buf = new StringBuilder(384);
+      StringBuilder buf = new StringBuilder(416);
       buf.append("FixedRateAccrual.Builder{");
+      buf.append("option").append('=').append(JodaBeanUtils.toString(option)).append(',').append(' ');
       buf.append("days").append('=').append(JodaBeanUtils.toString(days)).append(',').append(' ');
       buf.append("startDate").append('=').append(JodaBeanUtils.toString(startDate)).append(',').append(' ');
       buf.append("endDate").append('=').append(JodaBeanUtils.toString(endDate)).append(',').append(' ');

@@ -243,6 +243,14 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
   private final ImmutableList<FacilityEvent> events;
 
   /**
+   * Rate and fee options associated with this loan.
+   * <p>
+   * A loan may have of one or more rate options.
+   */
+  @PropertyDefinition(validate = "", builderType = "List<? extends FeeAndRateOption>")
+  private final ImmutableList<FeeAndRateOption> options;
+
+  /**
    * Facility-level validation rules.
    */
   @ImmutableValidator
@@ -256,19 +264,24 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       ArgChecker.inOrderNotEqual(event.getEffectiveDate(), maturityDate, "effectiveDate", "maturityDate");
     }
 
+    /*
+    ArgChecker.isFalse(options == null || options.size() == 0,
+        "A loan must have at least one rate option");
+        */
+
     ArgChecker.isFalse(facilityType == Term && contracts == null || contracts.size() == 0,
         "A term loan must have at least one contract");
 
     for (LoanContract contract : contracts) {
       ArgChecker.isFalse(contract.getAccrual().getStartDate().isBefore(startDate),
-          "Contract " + contract.getId() + " start date " + contract.getAccrual().getStartDate()
-              + " is prior to facility start date " + startDate);
+          "Contract " + contract.getId() + " start date " + contract.getAccrual().getStartDate() +
+              " is prior to facility start date " + startDate);
       ArgChecker.isFalse(contract.getAccrual().getEndDate().isAfter(maturityDate),
-          "Contract " + contract.getId() + " end date " + contract.getAccrual().getEndDate()
-              + " is after facility maturity date " + maturityDate);
+          "Contract " + contract.getId() + " end date " + contract.getAccrual().getEndDate() +
+              " is after facility maturity date " + maturityDate);
       ArgChecker.isFalse(contract.getPaymentDate().isAfter(maturityDate),
-          "Contract " + contract.getId() + " payment date " + contract.getPaymentDate()
-              + " is after facility maturity date " + maturityDate);
+          "Contract " + contract.getId() + " payment date " + contract.getPaymentDate() + " is after facility maturity date " +
+              maturityDate);
 
       // TODO: figure out how to apply below, maybe as an option.
       /*
@@ -364,7 +377,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       List<? extends LoanContract> contracts,
       List<? extends AccruingFee> fees,
       LocalDateDoubleTimeSeries totalCommitmentSchedule,
-      List<? extends FacilityEvent> events) {
+      List<? extends FacilityEvent> events,
+      List<? extends FeeAndRateOption> options) {
     JodaBeanUtils.notNull(id, "id");
     JodaBeanUtils.notNull(borrower, "borrower");
     JodaBeanUtils.notNull(agent, "agent");
@@ -384,6 +398,7 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     this.fees = (fees != null ? ImmutableList.copyOf(fees) : null);
     this.totalCommitmentSchedule = totalCommitmentSchedule;
     this.events = (events != null ? ImmutableList.copyOf(events) : null);
+    this.options = (options != null ? ImmutableList.copyOf(options) : null);
     validate();
   }
 
@@ -520,6 +535,17 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
 
   //-----------------------------------------------------------------------
   /**
+   * Gets rate and fee options associated with this loan.
+   * <p>
+   * A loan may have of one or more rate options.
+   * @return the value of the property
+   */
+  public ImmutableList<FeeAndRateOption> getOptions() {
+    return options;
+  }
+
+  //-----------------------------------------------------------------------
+  /**
    * Returns a builder that allows this bean to be mutated.
    * @return the mutable builder, not null
    */
@@ -545,7 +571,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
           JodaBeanUtils.equal(contracts, other.contracts) &&
           JodaBeanUtils.equal(fees, other.fees) &&
           JodaBeanUtils.equal(totalCommitmentSchedule, other.totalCommitmentSchedule) &&
-          JodaBeanUtils.equal(events, other.events);
+          JodaBeanUtils.equal(events, other.events) &&
+          JodaBeanUtils.equal(options, other.options);
     }
     return false;
   }
@@ -565,12 +592,13 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     hash = hash * 31 + JodaBeanUtils.hashCode(fees);
     hash = hash * 31 + JodaBeanUtils.hashCode(totalCommitmentSchedule);
     hash = hash * 31 + JodaBeanUtils.hashCode(events);
+    hash = hash * 31 + JodaBeanUtils.hashCode(options);
     return hash;
   }
 
   @Override
   public String toString() {
-    StringBuilder buf = new StringBuilder(416);
+    StringBuilder buf = new StringBuilder(448);
     buf.append("Facility{");
     buf.append("id").append('=').append(id).append(',').append(' ');
     buf.append("borrower").append('=').append(borrower).append(',').append(' ');
@@ -583,7 +611,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     buf.append("contracts").append('=').append(contracts).append(',').append(' ');
     buf.append("fees").append('=').append(fees).append(',').append(' ');
     buf.append("totalCommitmentSchedule").append('=').append(totalCommitmentSchedule).append(',').append(' ');
-    buf.append("events").append('=').append(JodaBeanUtils.toString(events));
+    buf.append("events").append('=').append(events).append(',').append(' ');
+    buf.append("options").append('=').append(JodaBeanUtils.toString(options));
     buf.append('}');
     return buf.toString();
   }
@@ -663,6 +692,12 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     private final MetaProperty<ImmutableList<FacilityEvent>> _events = DirectMetaProperty.ofImmutable(
         this, "events", Facility.class, (Class) ImmutableList.class);
     /**
+     * The meta-property for the {@code options} property.
+     */
+    @SuppressWarnings({"unchecked", "rawtypes" })
+    private final MetaProperty<ImmutableList<FeeAndRateOption>> _options = DirectMetaProperty.ofImmutable(
+        this, "options", Facility.class, (Class) ImmutableList.class);
+    /**
      * The meta-properties.
      */
     private final Map<String, MetaProperty<?>> _metaPropertyMap$ = new DirectMetaPropertyMap(
@@ -678,7 +713,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
         "contracts",
         "fees",
         "totalCommitmentSchedule",
-        "events");
+        "events",
+        "options");
 
     /**
      * Restricted constructor.
@@ -713,6 +749,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
           return _totalCommitmentSchedule;
         case -1291329255:  // events
           return _events;
+        case -1249474914:  // options
+          return _options;
       }
       return super.metaPropertyGet(propertyName);
     }
@@ -829,6 +867,14 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       return _events;
     }
 
+    /**
+     * The meta-property for the {@code options} property.
+     * @return the meta-property, not null
+     */
+    public MetaProperty<ImmutableList<FeeAndRateOption>> options() {
+      return _options;
+    }
+
     //-----------------------------------------------------------------------
     @Override
     protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
@@ -857,6 +903,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
           return ((Facility) bean).getTotalCommitmentSchedule();
         case -1291329255:  // events
           return ((Facility) bean).getEvents();
+        case -1249474914:  // options
+          return ((Facility) bean).getOptions();
       }
       return super.propertyGet(bean, propertyName, quiet);
     }
@@ -890,6 +938,7 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
     private List<? extends AccruingFee> fees;
     private LocalDateDoubleTimeSeries totalCommitmentSchedule;
     private List<? extends FacilityEvent> events;
+    private List<? extends FeeAndRateOption> options;
 
     /**
      * Restricted constructor.
@@ -915,6 +964,7 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       this.fees = beanToCopy.getFees();
       this.totalCommitmentSchedule = beanToCopy.getTotalCommitmentSchedule();
       this.events = beanToCopy.getEvents();
+      this.options = beanToCopy.getOptions();
     }
 
     //-----------------------------------------------------------------------
@@ -945,6 +995,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
           return totalCommitmentSchedule;
         case -1291329255:  // events
           return events;
+        case -1249474914:  // options
+          return options;
         default:
           throw new NoSuchElementException("Unknown property: " + propertyName);
       }
@@ -990,6 +1042,9 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
         case -1291329255:  // events
           this.events = (List<? extends FacilityEvent>) newValue;
           break;
+        case -1249474914:  // options
+          this.options = (List<? extends FeeAndRateOption>) newValue;
+          break;
         default:
           throw new NoSuchElementException("Unknown property: " + propertyName);
       }
@@ -1017,7 +1072,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
           contracts,
           fees,
           totalCommitmentSchedule,
-          events);
+          events,
+          options);
     }
 
     //-----------------------------------------------------------------------
@@ -1206,10 +1262,32 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       return events(ImmutableList.copyOf(events));
     }
 
+    /**
+     * Sets rate and fee options associated with this loan.
+     * <p>
+     * A loan may have of one or more rate options.
+     * @param options  the new value
+     * @return this, for chaining, not null
+     */
+    public Builder options(List<? extends FeeAndRateOption> options) {
+      this.options = options;
+      return this;
+    }
+
+    /**
+     * Sets the {@code options} property in the builder
+     * from an array of objects.
+     * @param options  the new value
+     * @return this, for chaining, not null
+     */
+    public Builder options(FeeAndRateOption... options) {
+      return options(ImmutableList.copyOf(options));
+    }
+
     //-----------------------------------------------------------------------
     @Override
     public String toString() {
-      StringBuilder buf = new StringBuilder(416);
+      StringBuilder buf = new StringBuilder(448);
       buf.append("Facility.Builder{");
       buf.append("id").append('=').append(JodaBeanUtils.toString(id)).append(',').append(' ');
       buf.append("borrower").append('=').append(JodaBeanUtils.toString(borrower)).append(',').append(' ');
@@ -1222,7 +1300,8 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       buf.append("contracts").append('=').append(JodaBeanUtils.toString(contracts)).append(',').append(' ');
       buf.append("fees").append('=').append(JodaBeanUtils.toString(fees)).append(',').append(' ');
       buf.append("totalCommitmentSchedule").append('=').append(JodaBeanUtils.toString(totalCommitmentSchedule)).append(',').append(' ');
-      buf.append("events").append('=').append(JodaBeanUtils.toString(events));
+      buf.append("events").append('=').append(JodaBeanUtils.toString(events)).append(',').append(' ');
+      buf.append("options").append('=').append(JodaBeanUtils.toString(options));
       buf.append('}');
       return buf.toString();
     }

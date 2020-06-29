@@ -8,18 +8,13 @@ import static com.syndloanhub.loansum.product.facility.LoanTradingDocType.Par;
 import static com.syndloanhub.loansum.product.facility.LoanTradingFormOfPurchase.Assignment;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.junit.jupiter.api.Test;
@@ -33,15 +28,11 @@ import com.opengamma.strata.basics.date.DayCounts;
 import com.opengamma.strata.basics.index.IborIndex;
 import com.opengamma.strata.basics.schedule.Frequency;
 import com.opengamma.strata.product.TradeInfo;
-import com.syndloanhub.loansum.fpml.FpMLHelper;
-import com.syndloanhub.loansum.fpml.LoanContractExporter;
+import com.syndloanhub.loansum.fpml.FacilityStatementExporter;
 import com.syndloanhub.loansum.fpml.LoanServicingNotificationExporter;
-import com.syndloanhub.loansum.fpml.OutstandingContractsStatementExporter;
-import com.syndloanhub.loansum.fpml.ProratedLoanContractExporter;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityContractIdentifier;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityStatement;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanServicingNotification;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.OutstandingContractsStatement;
 import com.syndloanhub.loansum.fpml.v5_11.util.FpMLNamespacePrefixMapper;
 import com.syndloanhub.loansum.product.facility.CommitmentAdjustment;
 import com.syndloanhub.loansum.product.facility.Facility;
@@ -67,20 +58,18 @@ class FpMLTest {
     Marshaller marshaller = context.createMarshaller();
 
     marshaller.setProperty("jaxb.formatted.output", Boolean.TRUE);
-    marshaller.setProperty("jaxb.fragment", Boolean.TRUE);
-    marshaller.setProperty("com.sun.xml.internal.bind.xmlHeaders", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+   // marshaller.setProperty("jaxb.fragment", Boolean.TRUE);
+    //marshaller.setProperty("com.sun.xml.internal.bind.xmlHeaders", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
         "http://www.fpml.org/FpML-5/confirmation https://loansum.org/schemas/fpml/5_11/confirmation/fpml-loan-5-11.xsd");
     marshaller.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper", mapper);
-    marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
-        "http://www.fpml.org/FpML-5/confirmation https://loansum.org/schemas/fpml/5_11/confirmation/fpml-loan-5-11.xsd");
-
+ 
     return marshaller;
   }
 
   @SuppressWarnings("unchecked")
   @Test
-  public void test_termLoan_1() throws IOException, JAXBException, DatatypeConfigurationException {
+  private void test_termLoan_1() throws IOException, JAXBException, DatatypeConfigurationException {
     final Repayment REPAYMENT_1 = Repayment.builder().effectiveDate(LocalDate.of(2017, 3, 31))
         .amount(CurrencyAmount.of(Currency.USD, 4050000)).build();
     final Repayment REPAYMENT_2 = Repayment.builder().effectiveDate(LocalDate.of(2017, 6, 30))
@@ -147,7 +136,17 @@ class FpMLTest {
     StringWriter sw = new StringWriter();
     marshaller.marshal(je, sw);
 
-    log.debug("facility: \n" + sw.toString());
+    log.debug("notice FpML: \n" + sw.toString());
+    
+    JAXBElement<FacilityStatement> je2 = factory.createFacilityStatement(
+        FacilityStatementExporter.convert(LOAN));
+    
+    context = JAXBContext.newInstance(FacilityStatement.class);
+    marshaller = createMarshaller(context);
+    sw = new StringWriter();
+    marshaller.marshal(je2, sw);
+
+    log.debug("facility FpML: \n" + sw.toString());
     
     /*
     ObjectFactory factory = new ObjectFactory();

@@ -128,12 +128,12 @@ public final class FpMLHelper {
     return now;
   }
 
-  public final static RequestMessageHeader getHeader() throws DatatypeConfigurationException {
+  public final static RequestMessageHeader makeHeader() throws DatatypeConfigurationException {
     RequestMessageHeader header = factory.createRequestMessageHeader();
 
     MessageId id = factory.createMessageId();
     id.setMessageIdScheme(MESSAGE_ID_SCHEME);
-    id.setValue("" + new Random().nextInt());
+    id.setValue("" + Math.abs(new Random().nextInt()));
     header.setMessageId(id);
 
     MessageAddress address = factory.createMessageAddress();
@@ -150,6 +150,11 @@ public final class FpMLHelper {
     PartyReference ref = factory.createPartyReference();
     ref.setHref(party);
     return ref;
+  }
+  
+  public final static PartyReference makePartyReference(StandardId id) {
+    Party party = makeParty(id);
+    return makePartyReference(party);
   }
 
   public final static BusinessEventIdentifier makeBusinessEventIdentifier(Object party) {

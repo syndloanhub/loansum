@@ -2,15 +2,18 @@ package com.syndloanhub.loansum.fpml;
 
 import java.time.LocalDate;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+
 import com.opengamma.strata.basics.StandardId;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityCommitment;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilitySummary;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.InstrumentId;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.TermLoan;
 
-public class FacilitySummaryExporter {
+public class TermLoanExporter {
 
-  static public FacilitySummary convert(com.syndloanhub.loansum.product.facility.Facility facility) {
-    FacilitySummary fpml = FpMLHelper.factory.createFacilitySummary();
+  static public TermLoan convert(com.syndloanhub.loansum.product.facility.Facility facility)
+      throws DatatypeConfigurationException {
+    TermLoan fpml = FpMLHelper.factory.createTermLoan();
 
     for (StandardId id : facility.getIdentifiers()) {
       InstrumentId instrumentId = FpMLHelper.factory.createInstrumentId();

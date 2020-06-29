@@ -25,7 +25,7 @@ public class LoanServicingNotificationExporter {
     LoanServicingNotification fpml = FpMLHelper.factory.createLoanServicingNotification();
     fpml.setFpmlVersion("5-11");
     fpml.setNoticeDate(LocalDate.now());
-    fpml.setHeader(FpMLHelper.getHeader());
+    fpml.setHeader(FpMLHelper.makeHeader());
     fpml.setIsGlobalOnly(true);
 
     Party agent = FpMLHelper.makeParty(facility.getAgent());
