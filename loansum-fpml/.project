@@ -2,7 +2,9 @@
 <projectDescription>
   <name>loansum-fpml</name>
   <comment>Export/Import of loansum facility structures based on FpML. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
-  <projects/>
+  <projects>
+    <project>loansum-product</project>
+  </projects>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>

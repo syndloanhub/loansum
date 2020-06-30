@@ -1751,7 +1751,8 @@ class LoanTradePricerTest {
     assertEquals(cashFlows, expected);
   }
 
-  private void test_portfolio_1() throws IOException {
+  @Test
+  public void test_portfolio_1() throws IOException {
     final Repayment REPAYMENT_1 = Repayment.builder()
         .effectiveDate(LocalDate.of(2017, 3, 31))
         .amount(CurrencyAmount.of(Currency.USD, 4050000)).build();
@@ -2072,7 +2073,8 @@ class LoanTradePricerTest {
     assertEquals(cashFlows, expected);
   }
 
-  private void test_portfolio_3() throws IOException {
+  @Test
+  public void test_portfolio_3() throws IOException {
     final LoanContract CONTRACT_1 = LoanContract
         .builder()
         .id(StandardId.of("contract", "1"))

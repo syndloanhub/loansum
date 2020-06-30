@@ -6,23 +6,25 @@
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-  <classpathentry kind="var" path="M2_REPO/com/syndloanhub/loansum/loansum-product/1.0.0-SNAPSHOT/loansum-product-1.0.0-SNAPSHOT.jar" sourcepath="M2_REPO/com/syndloanhub/loansum/loansum-product/1.0.0-SNAPSHOT/loansum-product-1.0.0-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-product/2.0.0/strata-product-2.0.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-product/2.0.0/strata-product-2.0.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-collect/2.0.0/strata-collect-2.0.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-collect/2.0.0/strata-collect-2.0.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/google/guava/guava/26.0-jre/guava-26.0-jre.jar" sourcepath="M2_REPO/com/google/guava/guava/26.0-jre/guava-26.0-jre-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/joda/joda-beans/2.3/joda-beans-2.3.jar" sourcepath="M2_REPO/org/joda/joda-beans/2.3/joda-beans-2.3-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/joda/joda-convert/2.1.1/joda-convert-2.1.1.jar" sourcepath="M2_REPO/org/joda/joda-convert/2.1.1/joda-convert-2.1.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-basics/2.0.0/strata-basics-2.0.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-basics/2.0.0/strata-basics-2.0.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-market/2.0.0/strata-market-2.0.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-market/2.0.0/strata-market-2.0.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-data/2.0.0/strata-data-2.0.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-data/2.0.0/strata-data-2.0.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-math/2.0.0/strata-math-2.0.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-math/2.0.0/strata-math-2.0.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar" sourcepath="M2_REPO/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25-sources.jar"/>
+  <classpathentry kind="src" path="/loansum-product"/>
   <classpathentry kind="var" path="M2_REPO/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar" sourcepath="M2_REPO/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar" sourcepath="M2_REPO/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-measure/2.7.0/strata-measure-2.7.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-measure/2.7.0/strata-measure-2.7.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-collect/2.7.0/strata-collect-2.7.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-collect/2.7.0/strata-collect-2.7.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/guava/guava/26.0-jre/guava-26.0-jre.jar" sourcepath="M2_REPO/com/google/guava/guava/26.0-jre/guava-26.0-jre-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/joda/joda-beans/2.7.1/joda-beans-2.7.1.jar" sourcepath="M2_REPO/org/joda/joda-beans/2.7.1/joda-beans-2.7.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/joda/joda-convert/2.2.1/joda-convert-2.2.1.jar" sourcepath="M2_REPO/org/joda/joda-convert/2.2.1/joda-convert-2.2.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-basics/2.7.0/strata-basics-2.7.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-basics/2.7.0/strata-basics-2.7.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-data/2.7.0/strata-data-2.7.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-data/2.7.0/strata-data-2.7.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-calc/2.7.0/strata-calc-2.7.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-calc/2.7.0/strata-calc-2.7.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-product/2.7.0/strata-product-2.7.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-product/2.7.0/strata-product-2.7.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-market/2.7.0/strata-market-2.7.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-market/2.7.0/strata-market-2.7.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-math/2.7.0/strata-math-2.7.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-math/2.7.0/strata-math-2.7.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar" sourcepath="M2_REPO/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-pricer/2.7.0/strata-pricer-2.7.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-pricer/2.7.0/strata-pricer-2.7.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/syndloanhub/loansum/loansum-jaxb/0.0.1-SNAPSHOT/loansum-jaxb-0.0.1-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/googlecode/jaxb-namespaceprefixmapper-interfaces/JAXBNamespacePrefixMapper/2.2.4/JAXBNamespacePrefixMapper-2.2.4.jar" sourcepath="M2_REPO/com/googlecode/jaxb-namespaceprefixmapper-interfaces/JAXBNamespacePrefixMapper/2.2.4/JAXBNamespacePrefixMapper-2.2.4-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/opengamma/strata/strata-loader/2.0.0/strata-loader-2.0.0.jar" sourcepath="M2_REPO/com/opengamma/strata/strata-loader/2.0.0/strata-loader-2.0.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/junit/jupiter/junit-jupiter-engine/5.6.2/junit-jupiter-engine-5.6.2.jar" sourcepath="M2_REPO/org/junit/jupiter/junit-jupiter-engine/5.6.2/junit-jupiter-engine-5.6.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar" sourcepath="M2_REPO/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/junit/platform/junit-platform-engine/1.6.2/junit-platform-engine-1.6.2.jar" sourcepath="M2_REPO/org/junit/platform/junit-platform-engine/1.6.2/junit-platform-engine-1.6.2-sources.jar"/>

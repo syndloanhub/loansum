@@ -29,6 +29,7 @@ import com.opengamma.strata.basics.currency.Currency;
 import com.opengamma.strata.collect.ArgChecker;
 import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeries;
 import com.opengamma.strata.collect.timeseries.LocalDateDoubleTimeSeriesBuilder;
+import com.opengamma.strata.product.PortfolioItemInfo;
 import com.opengamma.strata.product.ProductTrade;
 import com.opengamma.strata.product.TradeInfo;
 import com.opengamma.strata.product.common.BuySell;
@@ -239,21 +240,20 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
     if (builder.product.getFacilityType() == Term && builder.product.getEvents() != null) {
       for (FacilityEvent event : builder.product.getEvents()) {
         switch (event.getType()) {
-        case CommitmentAdjustmentEvent:
-          CommitmentAdjustment adjustment = (CommitmentAdjustment) event;
+          case CommitmentAdjustmentEvent:
+            CommitmentAdjustment adjustment = (CommitmentAdjustment) event;
 
-          if (!adjustment.getEffectiveDate().isBefore(tradeDate) && !adjustment.isPik()
-              && adjustment.isRefusalAllowed()) {
-            double lastPctShare = pctShareBuilder.build().getLatestValue();
-            double lastCommitmentAmount = builder.product
-                .getCommitmentAmount(event.getEffectiveDate().minusDays(1)).getAmount();
-            double newCommmitmentAmount = builder.product.getCommitmentAmount(event.getEffectiveDate())
-                .getAmount();
-            double newPctShare = lastPctShare * lastCommitmentAmount / newCommmitmentAmount;
+            if (!adjustment.getEffectiveDate().isBefore(tradeDate) && !adjustment.isPik() && adjustment.isRefusalAllowed()) {
+              double lastPctShare = pctShareBuilder.build().getLatestValue();
+              double lastCommitmentAmount = builder.product
+                  .getCommitmentAmount(event.getEffectiveDate().minusDays(1)).getAmount();
+              double newCommmitmentAmount = builder.product.getCommitmentAmount(event.getEffectiveDate())
+                  .getAmount();
+              double newPctShare = lastPctShare * lastCommitmentAmount / newCommmitmentAmount;
 
-            pctShareBuilder.put(event.getEffectiveDate(), newPctShare);
-          }
-          break;
+              pctShareBuilder.put(event.getEffectiveDate(), newPctShare);
+            }
+            break;
         }
       }
     }
@@ -289,15 +289,15 @@ public final class LoanTrade implements ProductTrade, Proratable<ProratedLoanTra
    * (non-Javadoc)
    * 
    * @see com.opengamma.strata.product.ProductTrade#withInfo(com.opengamma.strata.
-   * product.TradeInfo)
+   * product.PortfolioItemInfo)
    */
   @Override
-  public ProductTrade withInfo(TradeInfo info) {
+  public ProductTrade withInfo(PortfolioItemInfo info) {
     return builder().accrualSettlementType(accrualSettlementType).adjustmentOnTradeDate(adjustmentOnTradeDate)
         .amount(amount).association(association).averageLibor(averageLibor).buyer(buyer).buySell(buySell)
         .commitmentReductionCreditFlag(commitmentReductionCreditFlag).currency(currency)
         .delayedCompensationFlag(delayedCompensationFlag).documentationType(documentationType)
-        .expectedSettlementDate(expectedSettlementDate).formOfPurchase(formOfPurchase).info(info)
+        .expectedSettlementDate(expectedSettlementDate).formOfPurchase(formOfPurchase).info((TradeInfo) info)
         .paydownOnTradeDate(paydownOnTradeDate).pctShare(pctShare).price(price).product(product).seller(seller)
         .tradeType(tradeType).whenIssuedFlag(whenIssuedFlag).build();
   }
