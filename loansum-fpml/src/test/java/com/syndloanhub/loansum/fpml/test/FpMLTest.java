@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.opengamma.strata.basics.StandardId;
 import com.opengamma.strata.basics.currency.Currency;
 import com.opengamma.strata.basics.currency.CurrencyAmount;
+import com.opengamma.strata.basics.date.DayCount;
 import com.opengamma.strata.basics.date.DayCounts;
 import com.opengamma.strata.basics.index.IborIndex;
 import com.opengamma.strata.basics.schedule.Frequency;
@@ -38,6 +39,7 @@ import com.syndloanhub.loansum.product.facility.CommitmentAdjustment;
 import com.syndloanhub.loansum.product.facility.Facility;
 import com.syndloanhub.loansum.product.facility.FacilityEvent;
 import com.syndloanhub.loansum.product.facility.FloatingRateAccrual;
+import com.syndloanhub.loansum.product.facility.FloatingRateOption;
 import com.syndloanhub.loansum.product.facility.LoanContract;
 import com.syndloanhub.loansum.product.facility.LoanTrade;
 import com.syndloanhub.loansum.product.facility.Repayment;
@@ -58,18 +60,30 @@ class FpMLTest {
     Marshaller marshaller = context.createMarshaller();
 
     marshaller.setProperty("jaxb.formatted.output", Boolean.TRUE);
-   // marshaller.setProperty("jaxb.fragment", Boolean.TRUE);
+    // marshaller.setProperty("jaxb.fragment", Boolean.TRUE);
     //marshaller.setProperty("com.sun.xml.internal.bind.xmlHeaders", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
         "http://www.fpml.org/FpML-5/confirmation https://loansum.org/schemas/fpml/5_11/confirmation/fpml-loan-5-11.xsd");
     marshaller.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper", mapper);
- 
+
     return marshaller;
   }
 
   @SuppressWarnings("unchecked")
   @Test
   public void test_termLoan_1() throws IOException, JAXBException, DatatypeConfigurationException {
+    final FloatingRateOption OPTION = FloatingRateOption.builder()
+        .currency(Currency.USD)
+        .dayCount(DayCounts.ACT_360)
+        .startDate(LocalDate.of(2017, 1, 24))
+        .endDate(LocalDate.of(2022, 8, 14))
+        .id(StandardId.of(NA_SCHEME, "1"))
+        .index(IborIndex.of("USD-LIBOR-3M"))
+        .paymentFrequency(Frequency.P3M)
+        .pikSpread(0)
+        .rate(3.25 / 100)
+        .build();
+
     final Repayment REPAYMENT_1 = Repayment.builder().effectiveDate(LocalDate.of(2017, 3, 31))
         .amount(CurrencyAmount.of(Currency.USD, 4050000)).build();
     final Repayment REPAYMENT_2 = Repayment.builder().effectiveDate(LocalDate.of(2017, 6, 30))
@@ -113,6 +127,7 @@ class FpMLTest {
         .facilityType(Term).originalCommitmentAmount(CurrencyAmount.of(Currency.USD, 1598500000))
         .identifiers(
             Arrays.asList(StandardId.of(CUSIP_SCHEME, "012345678"), StandardId.of(BBG_SCHEME, "012345678")))
+        .options(OPTION)
         .build();
 
     final TradeInfo TRADE_INFO = TradeInfo.builder().id(StandardId.of(NA_SCHEME, "126838"))
@@ -137,42 +152,42 @@ class FpMLTest {
     marshaller.marshal(je, sw);
 
     log.debug("notice FpML: \n" + sw.toString());
-    
+
     JAXBElement<FacilityStatement> je2 = factory.createFacilityStatement(
         FacilityStatementExporter.convert(LOAN));
-    
+
     context = JAXBContext.newInstance(FacilityStatement.class);
     marshaller = createMarshaller(context);
     sw = new StringWriter();
     marshaller.marshal(je2, sw);
 
     log.debug("facility FpML: \n" + sw.toString());
-    
+
     /*
     ObjectFactory factory = new ObjectFactory();
     JAXBElement<OutstandingContractsStatement> je = factory.createOutstandingContractsStatement(
         OutstandingContractsStatementExporter.export(effectiveDate, LOAN, true));
     JAXBContext context = JAXBContext.newInstance(OutstandingContractsStatement.class);
     Marshaller marshaller = createMarshaller(context);
-
+    
     StringWriter sw = new StringWriter();
     marshaller.marshal(je, sw);
-
+    
     log.debug("contracts: \n" + sw.toString());
-
+    
     Unmarshaller unmarshaller = context.createUnmarshaller();
-
+    
     je = (JAXBElement<OutstandingContractsStatement>) unmarshaller.unmarshal(new StringReader(sw.toString()));
-
+    
     List<LoanContract> contracts = new ArrayList<LoanContract>();
-
+    
     for (FacilityContractIdentifier contractOrLC : je.getValue().getLoanContractOrLetterOfCredit()) {
       if (contractOrLC.getClass() == com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract.class) {
         com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract contract =
             (com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract) contractOrLC;
       }
     }
-  }
-*/
+    }
+    */
   }
 }

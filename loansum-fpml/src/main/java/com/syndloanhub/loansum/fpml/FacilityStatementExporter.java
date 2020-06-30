@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityStatement;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.Party;
 
 public class FacilityStatementExporter {
 
@@ -13,6 +14,7 @@ public class FacilityStatementExporter {
     fpml.setFpmlVersion("5-11");
     fpml.setHeader(FpMLHelper.makeHeader());
     fpml.setStatementDate(LocalDate.now());
+    fpml.setIsCorrection(false);
     
     switch(facility.getFacilityType()) {
       case Term:
@@ -21,6 +23,9 @@ public class FacilityStatementExporter {
         default:
           break;
     }
+    
+    fpml.getParty().add((Party)fpml.getFacilityGroup().getValue().getAgentPartyReference().getHref());
+    fpml.getParty().add((Party)fpml.getFacilityGroup().getValue().getBorrowerPartyReference().getHref());
    
     return fpml;
   }

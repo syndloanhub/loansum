@@ -9,6 +9,9 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityCommitment;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.InstrumentId;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.TermLoan;
 
+import com.syndloanhub.loansum.product.facility.FeeAndRateOption;
+import com.syndloanhub.loansum.product.facility.FeeAndRateOptionType;
+
 public class TermLoanExporter {
 
   static public TermLoan convert(com.syndloanhub.loansum.product.facility.Facility facility)
@@ -33,6 +36,16 @@ public class TermLoanExporter {
     commitment.setTotalCommitmentAmount(FpMLHelper.convert(facility.getCommitmentAmount(LocalDate.now())));
 
     fpml.setCurrentCommitment(commitment);
+
+    for (FeeAndRateOption option : facility.getOptions()) {
+      switch (option.getOptionType()) {
+        case FloatingRate:
+          fpml.getFixedRateOptionOrFloatingRateOptionOrLcOption().add(FloatingRateOptionExporter.convert(option));
+          break;
+        default:
+          break;
+      }
+    }
 
     return fpml;
   }

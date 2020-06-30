@@ -52,6 +52,7 @@ public final class FpMLHelper {
   public static final ObjectFactory factory = new ObjectFactory();
   public static final String MESSAGE_ID_SCHEME = "http://www.syndloanhub.com/messaging/id";
   public static final String MESSAGE_ADDRESS_SCHEME = "http://www.syndloanhub.com/messaging/address";
+  public static final String OPTION_SCHEME = "http://www.syndloanhub.com/messaging/borrowingoptionids";
   public static final String SYNDLOANHUB_EIN = "0600447425";
   public static final String NJEIN_SCHEME = "https://www.njportal.com";
   public static final String CUSIP_SCHEME = "http://www.fpml.org/coding-scheme/external/instrument-id-CUSIP";
