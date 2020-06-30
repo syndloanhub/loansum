@@ -87,7 +87,7 @@ public final class FpMLHelper {
   public final static NonNegativeMoney exportCurrencyAmount(CurrencyAmount value) {
     NonNegativeMoney fpml = factory.createNonNegativeMoney();
     fpml.setCurrency(exportCurrency(value.getCurrency()));
-    fpml.setAmount(BigDecimal.valueOf(value.getAmount()));
+    fpml.setAmount(value.getAmount());
     return fpml;
   }
 
@@ -226,7 +226,7 @@ public final class FpMLHelper {
 
   public static MoneyWithParticipantShare convert(CurrencyAmount paymentProjection) {
     MoneyWithParticipantShare amount = factory.createMoneyWithParticipantShare();
-    amount.setAmount(BigDecimal.valueOf(paymentProjection.getAmount()));
+    amount.setAmount(paymentProjection.getAmount());
     com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency currency = factory.createCurrency();
     currency.setCurrencyScheme(CCY_SCHEME);
     currency.setValue(paymentProjection.getCurrency().getCode());

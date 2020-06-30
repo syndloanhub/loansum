@@ -264,10 +264,12 @@ public final class Facility implements Product, Proratable<ProratedFacility>, Im
       ArgChecker.inOrderNotEqual(event.getEffectiveDate(), maturityDate, "effectiveDate", "maturityDate");
     }
 
-    /*
-    ArgChecker.isFalse(options == null || options.size() == 0,
-        "A loan must have at least one rate option");
-        */
+    /**
+     * Since loansum is focused on cash flow generation, accrual options
+     * not required, used just to support FpML.
+     *
+     * ArgChecker.isFalse(options == null || options.size() == 0, "A loan must have at least one rate option");
+     */
 
     ArgChecker.isFalse(facilityType == Term && contracts == null || contracts.size() == 0,
         "A term loan must have at least one contract");

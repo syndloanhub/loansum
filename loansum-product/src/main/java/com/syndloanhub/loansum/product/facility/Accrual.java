@@ -25,11 +25,6 @@ import com.syndloanhub.loansum.product.facility.prorated.ProratedAccrual;
  * pricing.
  */
 public interface Accrual extends Proratable<ProratedAccrual> {
-  /**
-   * @return associated accrual option
-   */
-  public abstract FeeAndRateOption getOption();
-  
 	/**
 	 * @return number of days in accrual period
 	 */

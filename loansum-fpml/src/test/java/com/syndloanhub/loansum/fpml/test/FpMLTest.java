@@ -69,7 +69,7 @@ class FpMLTest {
 
   @SuppressWarnings("unchecked")
   @Test
-  private void test_termLoan_1() throws IOException, JAXBException, DatatypeConfigurationException {
+  public void test_termLoan_1() throws IOException, JAXBException, DatatypeConfigurationException {
     final Repayment REPAYMENT_1 = Repayment.builder().effectiveDate(LocalDate.of(2017, 3, 31))
         .amount(CurrencyAmount.of(Currency.USD, 4050000)).build();
     final Repayment REPAYMENT_2 = Repayment.builder().effectiveDate(LocalDate.of(2017, 6, 30))

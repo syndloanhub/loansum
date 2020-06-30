@@ -118,8 +118,6 @@ public class ProratedLoanTradePricer {
         facilityId = trade.getProduct().getId();
       else if (trade.getProduct().getId() != facilityId)
         throw new IllegalArgumentException("Attempt to price multiple facilities given same clean price");
-
-      log.info("b/s=" + trade.getBuySell() + " pv=" + presentValueFromCleanPrice(trade, provider, cleanPrice, explainBuilder));
       pv = pv.plus(presentValueFromCleanPrice(trade, provider, cleanPrice, explainBuilder));
     }
 

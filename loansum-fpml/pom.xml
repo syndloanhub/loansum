@@ -15,7 +15,7 @@
 			<groupId>com.syndloanhub.loansum</groupId>
 			<artifactId>loansum-product</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>com.syndloanhub.loansum</groupId>
 			<artifactId>loansum-jaxb</artifactId>

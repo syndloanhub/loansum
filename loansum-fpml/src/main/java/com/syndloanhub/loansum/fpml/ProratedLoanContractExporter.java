@@ -16,8 +16,8 @@ public class ProratedLoanContractExporter {
 		ProratedLoanContract proratedContract = contract.prorate(trade);
 
 		MoneyWithParticipantShare amount = new MoneyWithParticipantShare();
-		amount.setAmount(BigDecimal.valueOf(contract.getAccrual().getAccrualAmount().getAmount()));
-		amount.setShareAmount(BigDecimal.valueOf(proratedContract.getAccrual().getAccrualAmount().getAmount()));
+		amount.setAmount(contract.getAccrual().getAccrualAmount().getAmount());
+		amount.setShareAmount(proratedContract.getAccrual().getAccrualAmount().getAmount());
 		fpml.setAmount(amount);
 
 		fpml.setMaturityDate(contract.getAccrual().getEndDate());
