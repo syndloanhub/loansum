@@ -31,6 +31,7 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.DayCountFraction;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.EventId;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FloatingRateIndexLoan;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingAccrualSettlementEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingFormOfPurchaseEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.MessageAddress;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.MessageId;
@@ -45,6 +46,7 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.PaymentProjection;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.Period;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.PeriodEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.RequestMessageHeader;
+import com.syndloanhub.loansum.product.facility.LoanTradingAccrualSettlement;
 import com.syndloanhub.loansum.product.facility.LoanTradingFormOfPurchase;
 
 public final class FpMLHelper {
@@ -64,7 +66,7 @@ public final class FpMLHelper {
   public static final String FRI_SCHEME = "http://www.fpml.org/coding-scheme/floating-rate-index-2-30";
   public static final String CCY_SCHEME = "http://www.fpml.org/coding-scheme/currency-1-0";
 
-  private static Map<StandardId, String> idMap = new HashMap<StandardId, String>();
+  //private static Map<StandardId, String> idMap = new HashMap<StandardId, String>();
   private static int nextId = 0;
 
   private static Map<StandardId, Party> partyMap = new HashMap<StandardId, Party>();
@@ -147,7 +149,7 @@ public final class FpMLHelper {
     return header;
   }
 
-  public final static PartyReference makePartyReference(Party party) {
+  private final static PartyReference makePartyReference(Party party) {
     PartyReference ref = factory.createPartyReference();
     ref.setHref(party);
     return ref;
@@ -174,10 +176,14 @@ public final class FpMLHelper {
     return eid;
   }
   
-  public final static Party makeParty(StandardId id) {
+  public final static void clearPartyMap() {
+    partyMap.clear();
+  }
+  
+  private final static Party makeParty(StandardId id) {
     if (!partyMap.containsKey(id)) {
       Party party = factory.createParty();
-      party.setId(makeID(id));
+      party.setId(nextID());
 
       PartyId partyId = factory.createPartyId();
       partyId.setPartyIdScheme(id.getScheme());
@@ -190,10 +196,8 @@ public final class FpMLHelper {
     return partyMap.get(id);
   }
 
-  public final static String makeID(StandardId id) {
-    if (!idMap.containsKey(id))
-      idMap.put(id, String.format("ID%08d", nextId++));
-    return idMap.get(id);
+  public final static String nextID() {
+    return String.format("ID%08d", nextId++);
   }
 
   public final static DayCountFraction convert(DayCount dc) {
@@ -233,6 +237,22 @@ public final class FpMLHelper {
     currency.setValue(paymentProjection.getCurrency().getCode());
     amount.setCurrency(currency);
     return amount;
+  }
+
+  public static LoanTradingAccrualSettlementEnum convert(LoanTradingAccrualSettlement accrualSettlementType) {
+    LoanTradingAccrualSettlementEnum accrualSettlementEnum = LoanTradingAccrualSettlementEnum.SETTLED_WITHOUT_ACCRUED;
+    switch(accrualSettlementType) {
+      case Flat:
+        accrualSettlementEnum = LoanTradingAccrualSettlementEnum.FLAT;
+        break;
+      case SettledWithAccrued:
+        accrualSettlementEnum = LoanTradingAccrualSettlementEnum.SETTLED_WITH_ACCRUED;
+        break;
+      case SettledWithoutAccrued:
+        accrualSettlementEnum = LoanTradingAccrualSettlementEnum.SETTLED_WITHOUT_ACCRUED;
+        break;
+    }
+    return accrualSettlementEnum;
   }
 
 }

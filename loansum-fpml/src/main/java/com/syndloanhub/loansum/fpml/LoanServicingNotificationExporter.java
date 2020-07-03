@@ -22,24 +22,21 @@ public class LoanServicingNotificationExporter {
 
   // Convert ALL of the data associated with a loansum facility into FpML.
   static public LoanServicingNotification convert(Facility facility) throws DatatypeConfigurationException {
+    FpMLHelper.clearPartyMap();
+
     LoanServicingNotification fpml = FpMLHelper.factory.createLoanServicingNotification();
     fpml.setFpmlVersion("5-11");
     fpml.setNoticeDate(LocalDate.now());
     fpml.setHeader(FpMLHelper.makeHeader());
     fpml.setIsGlobalOnly(true);
 
-    Party agent = FpMLHelper.makeParty(facility.getAgent());
-    fpml.getParty().add(agent);
-    PartyReference agentReference = FpMLHelper.makePartyReference(agent);
-
-    Party borrower = FpMLHelper.makeParty(facility.getBorrower());
-    fpml.getParty().add(borrower);
-    PartyReference borrowerReference = FpMLHelper.makePartyReference(borrower);
+    PartyReference agentReference = FpMLHelper.makePartyReference(facility.getAgent());
+    PartyReference borrowerReference = FpMLHelper.makePartyReference(facility.getBorrower());
 
     FacilityIdentifier facilityId = FpMLHelper.factory.createFacilityIdentifier();
     fpml.getDealIdentifierOrDealSummaryAndFacilityIdentifier()
         .add(FpMLHelper.factory.createLoanServicingNotificationFacilityIdentifier(facilityId));
-    facilityId.setId(FpMLHelper.makeID(facility.getId()));
+    facilityId.setId(FpMLHelper.nextID());
     facilityId.setPartyReference(agentReference);
 
     for (StandardId id : facility.getIdentifiers()) {
@@ -73,6 +70,9 @@ public class LoanServicingNotificationExporter {
 
     fpml.getDealIdentifierOrDealSummaryAndFacilityIdentifier().add(
         FpMLHelper.factory.createLoanServicingNotificationFacilitySummary(FacilitySummaryExporter.convert(facility)));
+
+    fpml.getParty().add((Party) agentReference.getHref());
+    fpml.getParty().add((Party) borrowerReference.getHref());
 
     return fpml;
   }

@@ -10,7 +10,10 @@ import static com.syndloanhub.loansum.product.facility.LoanTradingFormOfPurchase
 import java.io.IOException;
 import java.io.StringWriter;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -24,15 +27,18 @@ import org.slf4j.LoggerFactory;
 import com.opengamma.strata.basics.StandardId;
 import com.opengamma.strata.basics.currency.Currency;
 import com.opengamma.strata.basics.currency.CurrencyAmount;
-import com.opengamma.strata.basics.date.DayCount;
 import com.opengamma.strata.basics.date.DayCounts;
 import com.opengamma.strata.basics.index.IborIndex;
 import com.opengamma.strata.basics.schedule.Frequency;
 import com.opengamma.strata.product.TradeInfo;
 import com.syndloanhub.loansum.fpml.FacilityStatementExporter;
 import com.syndloanhub.loansum.fpml.LoanServicingNotificationExporter;
+import com.syndloanhub.loansum.fpml.LoanTradeNotificationExporter;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityStatement;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanServicingNotification;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradeNotification;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoansumFacilityType;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoansumPortfolioType;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
 import com.syndloanhub.loansum.fpml.v5_11.util.FpMLNamespacePrefixMapper;
 import com.syndloanhub.loansum.product.facility.CommitmentAdjustment;
@@ -63,13 +69,12 @@ class FpMLTest {
     // marshaller.setProperty("jaxb.fragment", Boolean.TRUE);
     //marshaller.setProperty("com.sun.xml.internal.bind.xmlHeaders", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
-        "http://www.fpml.org/FpML-5/confirmation https://loansum.org/schemas/fpml/5_11/confirmation/fpml-loan-5-11.xsd");
+        "http://www.fpml.org/FpML-5/confirmation https://loansum.org/schemas/fpml/5_11/loansum/loansum.xsd");
     marshaller.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper", mapper);
 
     return marshaller;
   }
 
-  @SuppressWarnings("unchecked")
   @Test
   public void test_termLoan_1() throws IOException, JAXBException, DatatypeConfigurationException {
     final FloatingRateOption OPTION = FloatingRateOption.builder()
@@ -143,51 +148,30 @@ class FpMLTest {
     final LocalDate effectiveDate = LocalDate.of(2017, 5, 1);
 
     ObjectFactory factory = new ObjectFactory();
-    JAXBElement<LoanServicingNotification> je = factory.createLoanServicingNotification(
-        LoanServicingNotificationExporter.convert(LOAN));
-    JAXBContext context = JAXBContext.newInstance(LoanServicingNotification.class);
-    Marshaller marshaller = createMarshaller(context);
 
+    FacilityStatement facility = FacilityStatementExporter.convert(LOAN);
+    LoanServicingNotification contracts = LoanServicingNotificationExporter.convert(LOAN);
+    
+    List<LoanTradeNotification> trades = new ArrayList<LoanTradeNotification>();
+    trades.add(LoanTradeNotificationExporter.convert(LOAN_TRADE));
+
+    LoansumPortfolioType loansumPortfolio = factory.createLoansumPortfolioType();
+    LoansumFacilityType loansumFacility = factory.createLoansumFacilityType();
+    
+    loansumFacility.setFpMLFacility(facility);
+    loansumFacility.setFpMLContracts(contracts);
+    loansumFacility.getFpMLTrade().addAll(trades);
+    
+    loansumPortfolio.getLoansumFacility().add(loansumFacility);
+
+    JAXBElement<LoansumPortfolioType> je = factory.createLoansumPortfolio(loansumPortfolio);
+
+    JAXBContext context = JAXBContext.newInstance(LoansumPortfolioType.class);
+    Marshaller marshaller = createMarshaller(context);
     StringWriter sw = new StringWriter();
+
     marshaller.marshal(je, sw);
 
-    log.debug("notice FpML: \n" + sw.toString());
-
-    JAXBElement<FacilityStatement> je2 = factory.createFacilityStatement(
-        FacilityStatementExporter.convert(LOAN));
-
-    context = JAXBContext.newInstance(FacilityStatement.class);
-    marshaller = createMarshaller(context);
-    sw = new StringWriter();
-    marshaller.marshal(je2, sw);
-
-    log.debug("facility FpML: \n" + sw.toString());
-
-    /*
-    ObjectFactory factory = new ObjectFactory();
-    JAXBElement<OutstandingContractsStatement> je = factory.createOutstandingContractsStatement(
-        OutstandingContractsStatementExporter.export(effectiveDate, LOAN, true));
-    JAXBContext context = JAXBContext.newInstance(OutstandingContractsStatement.class);
-    Marshaller marshaller = createMarshaller(context);
-    
-    StringWriter sw = new StringWriter();
-    marshaller.marshal(je, sw);
-    
-    log.debug("contracts: \n" + sw.toString());
-    
-    Unmarshaller unmarshaller = context.createUnmarshaller();
-    
-    je = (JAXBElement<OutstandingContractsStatement>) unmarshaller.unmarshal(new StringReader(sw.toString()));
-    
-    List<LoanContract> contracts = new ArrayList<LoanContract>();
-    
-    for (FacilityContractIdentifier contractOrLC : je.getValue().getLoanContractOrLetterOfCredit()) {
-      if (contractOrLC.getClass() == com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract.class) {
-        com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract contract =
-            (com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract) contractOrLC;
-      }
-    }
-    }
-    */
+    log.debug("portfolio FpML: \n" + sw.toString());
   }
 }

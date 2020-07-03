@@ -10,6 +10,8 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.Party;
 public class FacilityStatementExporter {
 
   static public FacilityStatement convert(com.syndloanhub.loansum.product.facility.Facility facility) throws DatatypeConfigurationException {
+    FpMLHelper.clearPartyMap();
+    
     FacilityStatement fpml = FpMLHelper.factory.createFacilityStatement();
     fpml.setFpmlVersion("5-11");
     fpml.setHeader(FpMLHelper.makeHeader());
