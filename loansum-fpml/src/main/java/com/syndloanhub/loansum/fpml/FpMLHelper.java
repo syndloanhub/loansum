@@ -33,6 +33,7 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.FloatingRateIndexLoan;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingAccrualSettlementEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingFormOfPurchaseEnum;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingPartyRole;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.MessageAddress;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.MessageId;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.MoneyWithParticipantShare;
@@ -65,12 +66,13 @@ public final class FpMLHelper {
   public static final String DCF_SCHEME = "http://www.fpml.org/coding-scheme/day-count-fraction-2-2";
   public static final String FRI_SCHEME = "http://www.fpml.org/coding-scheme/floating-rate-index-2-30";
   public static final String CCY_SCHEME = "http://www.fpml.org/coding-scheme/currency-1-0";
+  public static final String TP_ROLE_SCHEME = "http://www.fpml.org/coding-scheme/trading-party-role-1-0";
 
   //private static Map<StandardId, String> idMap = new HashMap<StandardId, String>();
   private static int nextId = 0;
 
   private static Map<StandardId, Party> partyMap = new HashMap<StandardId, Party>();
-  
+
   private static int nextEventId = 0;
 
   public final static com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency exportCurrency(Currency value) {
@@ -154,32 +156,30 @@ public final class FpMLHelper {
     ref.setHref(party);
     return ref;
   }
-  
+
   public final static PartyReference makePartyReference(StandardId id) {
     Party party = makeParty(id);
     return makePartyReference(party);
   }
 
-  public final static BusinessEventIdentifier makeBusinessEventIdentifier(Object party) {
+  public final static BusinessEventIdentifier makeBusinessEventIdentifier(PartyReference party) {
     BusinessEventIdentifier id = factory.createBusinessEventIdentifier();
-    PartyReference ref = factory.createPartyReference();
-    ref.setHref(party);
-    id.setPartyReference(ref);
+    id.setPartyReference(party);
     id.setEventId(makeEventId());
     return id;
   }
-  
+
   public final static EventId makeEventId() {
     EventId eid = factory.createEventId();
     eid.setEventIdScheme(EVENT_ID_SCHEME);
     eid.setValue(String.format("EID%08d", nextEventId++));
     return eid;
   }
-  
+
   public final static void clearPartyMap() {
     partyMap.clear();
   }
-  
+
   private final static Party makeParty(StandardId id) {
     if (!partyMap.containsKey(id)) {
       Party party = factory.createParty();
@@ -241,7 +241,7 @@ public final class FpMLHelper {
 
   public static LoanTradingAccrualSettlementEnum convert(LoanTradingAccrualSettlement accrualSettlementType) {
     LoanTradingAccrualSettlementEnum accrualSettlementEnum = LoanTradingAccrualSettlementEnum.SETTLED_WITHOUT_ACCRUED;
-    switch(accrualSettlementType) {
+    switch (accrualSettlementType) {
       case Flat:
         accrualSettlementEnum = LoanTradingAccrualSettlementEnum.FLAT;
         break;
@@ -253,6 +253,13 @@ public final class FpMLHelper {
         break;
     }
     return accrualSettlementEnum;
+  }
+
+  public static LoanTradingPartyRole makeTradingRole(String role) {
+    LoanTradingPartyRole fpml = factory.createLoanTradingPartyRole();
+    fpml.setTradingPartyRoleScheme(TP_ROLE_SCHEME);
+    fpml.setValue(role);
+    return fpml;
   }
 
 }

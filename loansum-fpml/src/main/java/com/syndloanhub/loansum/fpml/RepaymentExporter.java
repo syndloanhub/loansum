@@ -11,7 +11,7 @@ public class RepaymentExporter {
     fpml.setAmount(FpMLHelper.convert(event.getAmount()));
     fpml.setPrice(event.getPrice());
     fpml.setEffectiveDate(event.getEffectiveDate());
-    fpml.getEventIdentifier().add(FpMLHelper.makeBusinessEventIdentifier(contract.getPartyReference().getHref()));
+    fpml.getEventIdentifier().add(FpMLHelper.makeBusinessEventIdentifier(contract.getPartyReference()));
     LoanContractReference ref = FpMLHelper.factory.createLoanContractReference();
     ref.setHref(contract);
     fpml.setLoanContractReference(ref);
