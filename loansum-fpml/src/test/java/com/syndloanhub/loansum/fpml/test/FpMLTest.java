@@ -32,14 +32,15 @@ import com.opengamma.strata.basics.index.IborIndex;
 import com.opengamma.strata.basics.schedule.Frequency;
 import com.opengamma.strata.product.TradeInfo;
 import com.syndloanhub.loansum.fpml.FacilityStatementExporter;
+import com.syndloanhub.loansum.fpml.FpMLHelper;
 import com.syndloanhub.loansum.fpml.LoanServicingNotificationExporter;
 import com.syndloanhub.loansum.fpml.LoanTradeNotificationExporter;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityStatement;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanServicingNotification;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradeNotification;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoansumFacilityType;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoansumPortfolioType;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
+import com.syndloanhub.loansum.fpml.v5_11.loansum.FacilityType;
+import com.syndloanhub.loansum.fpml.v5_11.loansum.PortfolioType;
 import com.syndloanhub.loansum.fpml.v5_11.util.FpMLNamespacePrefixMapper;
 import com.syndloanhub.loansum.product.facility.CommitmentAdjustment;
 import com.syndloanhub.loansum.product.facility.Facility;
@@ -61,6 +62,7 @@ class FpMLTest {
   private Marshaller createMarshaller(JAXBContext context) throws JAXBException {
     FpMLNamespacePrefixMapper mapper = new FpMLNamespacePrefixMapper();
     mapper.addMapping("http://www.fpml.org/FpML-5/confirmation", "fpml");
+    mapper.addMapping("http://www.loansum.org/ns/ls", "ls");
     mapper.addMapping("http://www.w3.org/2000/09/xmldsig#", "ds");
 
     Marshaller marshaller = context.createMarshaller();
@@ -69,7 +71,8 @@ class FpMLTest {
     // marshaller.setProperty("jaxb.fragment", Boolean.TRUE);
     //marshaller.setProperty("com.sun.xml.internal.bind.xmlHeaders", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
-        "http://www.fpml.org/FpML-5/confirmation https://loansum.org/schemas/fpml/5_11/loansum/loansum.xsd");
+        "http://www.fpml.org/FpML-5/confirmation https://loansum.org/schemas/fpml/5_11/confirmation/fpml-loan-5-11.xsd " +
+            "http://www.loansum.org/ns/ls https://loansum.org/schemas/fpml/5_11/loansum/loansum.xsd");
     marshaller.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper", mapper);
 
     return marshaller;
@@ -147,31 +150,29 @@ class FpMLTest {
 
     final LocalDate effectiveDate = LocalDate.of(2017, 5, 1);
 
-    ObjectFactory factory = new ObjectFactory();
-
     FacilityStatement facility = FacilityStatementExporter.convert(LOAN);
     LoanServicingNotification contracts = LoanServicingNotificationExporter.convert(LOAN);
-    
+
     List<LoanTradeNotification> trades = new ArrayList<LoanTradeNotification>();
     trades.add(LoanTradeNotificationExporter.convert(LOAN_TRADE));
 
-    LoansumPortfolioType loansumPortfolio = factory.createLoansumPortfolioType();
-    LoansumFacilityType loansumFacility = factory.createLoansumFacilityType();
-    
+    PortfolioType loansumPortfolio = FpMLHelper.loansumFactory.createPortfolioType();
+    FacilityType loansumFacility = FpMLHelper.loansumFactory.createFacilityType();
+
     loansumFacility.setFpMLFacility(facility);
     loansumFacility.setFpMLContracts(contracts);
     loansumFacility.getFpMLTrade().addAll(trades);
-    
-    loansumPortfolio.getLoansumFacility().add(loansumFacility);
 
-    JAXBElement<LoansumPortfolioType> je = factory.createLoansumPortfolio(loansumPortfolio);
+    loansumPortfolio.getFacility().add(loansumFacility);
 
-    JAXBContext context = JAXBContext.newInstance(LoansumPortfolioType.class);
+    JAXBElement<PortfolioType> je = FpMLHelper.loansumFactory.createPortfolio(loansumPortfolio);
+
+    JAXBContext context = JAXBContext.newInstance(PortfolioType.class);
     Marshaller marshaller = createMarshaller(context);
     StringWriter sw = new StringWriter();
 
     marshaller.marshal(je, sw);
 
-    log.debug("portfolio FpML: \n" + sw.toString());
+    System.out.println(sw.toString());
   }
 }

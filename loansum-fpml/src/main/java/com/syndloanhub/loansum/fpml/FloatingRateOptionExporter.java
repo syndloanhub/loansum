@@ -15,7 +15,7 @@ public class FloatingRateOptionExporter {
     fpml.setAccrualOptionId(id);
     fpml.setSpread(option.getRate());
     fpml.setPikSpread(option.getPikSpread());
-    fpml.setCurrency(FpMLHelper.exportCurrency(option.getCurrency()));
+    fpml.setCurrency(FpMLHelper.convert(option.getCurrency()));
     fpml.setStartDate(option.getStartDate());
     fpml.setEndDate(option.getEndDate());
     fpml.setFloatingRateIndex(FpMLHelper.convert(option.getIndex().get()));
