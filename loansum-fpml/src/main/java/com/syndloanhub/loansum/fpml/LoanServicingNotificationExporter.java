@@ -6,7 +6,10 @@ import java.util.Set;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import com.google.common.collect.ImmutableList;
 import com.opengamma.strata.basics.StandardId;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.CommitmentAdjustment;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityCommitment;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityIdentifier;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityReference;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.InstrumentId;
@@ -15,6 +18,7 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanServicingNotification
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.Party;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.PartyReference;
 import com.syndloanhub.loansum.product.facility.Facility;
+import com.syndloanhub.loansum.product.facility.FacilityEvent;
 import com.syndloanhub.loansum.product.facility.LoanContractEventType;
 import com.syndloanhub.loansum.product.facility.Repayment;
 
@@ -73,6 +77,24 @@ public class LoanServicingNotificationExporter {
 
     fpml.getParty().add((Party) agentReference.getHref());
     fpml.getParty().add((Party) borrowerReference.getHref());
+
+    for (FacilityEvent event : facility.getEvents()) {
+      switch (event.getType()) {
+        case CommitmentAdjustmentEvent:
+          CommitmentAdjustment adj =
+              CommitmentAdjustmentExporter.convert((com.syndloanhub.loansum.product.facility.CommitmentAdjustment) event);
+          adj.getEventIdentifier().add(FpMLHelper.makeBusinessEventIdentifier(agentReference));
+          adj.setFacilityReference(facilityRef);
+          FacilityCommitment commitment = FpMLHelper.factory.createFacilityCommitment();
+          commitment.setTotalCommitmentAmount(FpMLHelper.convert(facility.getCommitmentAmount(event.getEffectiveDate())));
+          adj.setFacilityCommitment(commitment);
+          fpml.getFacilityEventGroupOrLcEventGroupOrLoanContractEventGroup().add(
+              FpMLHelper.factory.createCommitmentAdjustment(adj));
+          break;
+        default:
+          throw new DatatypeConfigurationException();
+      }
+    }
 
     return fpml;
   }
