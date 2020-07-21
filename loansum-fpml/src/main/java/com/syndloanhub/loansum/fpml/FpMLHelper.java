@@ -2,8 +2,10 @@ package com.syndloanhub.loansum.fpml;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -23,11 +25,15 @@ import com.opengamma.strata.basics.currency.CurrencyAmount;
 import com.opengamma.strata.basics.date.DayCount;
 import com.opengamma.strata.basics.index.RateIndex;
 import com.opengamma.strata.basics.schedule.Frequency;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.AbstractFacility;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.AbstractLoanServicingEvent;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.BusinessEventIdentifier;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.DayCountFraction;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.EventId;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityStatement;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FloatingRateIndexLoan;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.IssuerId;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanServicingNotification;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingAccrualSettlementEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingAssocEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingDocTypeEnum;
@@ -45,8 +51,10 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.PartyReference;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.PaymentProjection;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.Period;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.PeriodEnum;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.Repayment;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.RequestMessageHeader;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.TradeId;
+import com.syndloanhub.loansum.product.facility.Facility;
 import com.syndloanhub.loansum.product.facility.LoanTrade;
 import com.syndloanhub.loansum.product.facility.LoanTradingAccrualSettlement;
 import com.syndloanhub.loansum.product.facility.LoanTradingAssoc;
@@ -157,6 +165,13 @@ public final class FpMLHelper {
     return header;
   }
 
+  public final static StandardId convert(PartyReference ref) {
+    Party party = (Party) ref.getHref();
+    PartyId partyId = party.getPartyId().get(0);
+    StandardId id = StandardId.of(partyId.getPartyIdScheme(), partyId.getValue());
+    return id;
+  }
+  
   private final static PartyReference makePartyReference(Party party) {
     PartyReference ref = factory.createPartyReference();
     ref.setHref(party);
@@ -314,6 +329,42 @@ public final class FpMLHelper {
       case Distressed:
         return LoanTradingDocTypeEnum.DISTRESSED;
     }
+  }
+
+  public static Facility convert(FacilityStatement facility, LoanServicingNotification contracts) {
+    List<com.syndloanhub.loansum.product.facility.Repayment> repayments =
+        new ArrayList<com.syndloanhub.loansum.product.facility.Repayment>();
+
+    List<JAXBElement<? extends AbstractLoanServicingEvent>> events =
+        contracts.getFacilityEventGroupOrLcEventGroupOrLoanContractEventGroup();
+    for (JAXBElement<? extends AbstractLoanServicingEvent> event : events) {
+      if (event.getDeclaredType() == Repayment.class) {
+        repayments.add(FpMLHelper.convert((Repayment)event.getValue()));
+      }
+    }
+    
+    AbstractFacility loan = facility.getFacilityGroup().getValue();
+    
+    return Facility.builder()
+        .agent(convert(loan.getAgentPartyReference()))
+        .build();
+  }
+
+  static public com.syndloanhub.loansum.product.facility.Repayment convert(Repayment event) {
+    // TODO: interest on paydown?
+    return com.syndloanhub.loansum.product.facility.Repayment.builder()
+        .effectiveDate(event.getEffectiveDate())
+        .amount(FpMLHelper.convert(event.getAmount()))
+        .price(event.getPrice())
+        .build();
+  }
+
+  public static CurrencyAmount convert(MoneyWithParticipantShare amount) {
+    return CurrencyAmount.of(FpMLHelper.convert(amount.getCurrency()), amount.getAmount());
+  }
+
+  private static Currency convert(com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency currency) {
+    return Currency.of(currency.getValue());
   }
 
 }

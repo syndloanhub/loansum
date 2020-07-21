@@ -13,7 +13,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.syndloanhub.loansum</groupId>
-			<artifactId>loansum-product</artifactId>
+			<artifactId>loansum-pricer</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency> 
 		<dependency>
