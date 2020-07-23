@@ -1,5 +1,6 @@
 package com.syndloanhub.loansum.fpml;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,7 +33,9 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.DayCountFraction;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.EventId;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityStatement;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FloatingRateIndexLoan;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.InstrumentId;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.IssuerId;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanContract;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanServicingNotification;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingAccrualSettlementEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradingAssocEnum;
@@ -53,8 +56,10 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.Period;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.PeriodEnum;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.Repayment;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.RequestMessageHeader;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.TermLoan;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.TradeId;
 import com.syndloanhub.loansum.product.facility.Facility;
+import com.syndloanhub.loansum.product.facility.FacilityType;
 import com.syndloanhub.loansum.product.facility.LoanTrade;
 import com.syndloanhub.loansum.product.facility.LoanTradingAccrualSettlement;
 import com.syndloanhub.loansum.product.facility.LoanTradingAssoc;
@@ -331,23 +336,62 @@ public final class FpMLHelper {
     }
   }
 
-  public static Facility convert(FacilityStatement facility, LoanServicingNotification contracts) {
+  public static Facility convert(FacilityStatement fpmlFacility, LoanServicingNotification fpmlContracts) {
     List<com.syndloanhub.loansum.product.facility.Repayment> repayments =
         new ArrayList<com.syndloanhub.loansum.product.facility.Repayment>();
-
-    List<JAXBElement<? extends AbstractLoanServicingEvent>> events =
-        contracts.getFacilityEventGroupOrLcEventGroupOrLoanContractEventGroup();
-    for (JAXBElement<? extends AbstractLoanServicingEvent> event : events) {
+    List<com.syndloanhub.loansum.product.facility.LoanContract> contracts =
+        new ArrayList<com.syndloanhub.loansum.product.facility.LoanContract>();
+    List<com.syndloanhub.loansum.product.facility.FacilityEvent> events =
+        new ArrayList<com.syndloanhub.loansum.product.facility.FacilityEvent>();
+    
+    List<JAXBElement<? extends AbstractLoanServicingEvent>> fpmlEvents =
+        fpmlContracts.getFacilityEventGroupOrLcEventGroupOrLoanContractEventGroup();
+    
+    for (JAXBElement<? extends AbstractLoanServicingEvent> event : fpmlEvents) {
       if (event.getDeclaredType() == Repayment.class) {
         repayments.add(FpMLHelper.convert((Repayment)event.getValue()));
       }
     }
     
-    AbstractFacility loan = facility.getFacilityGroup().getValue();
+    for (JAXBElement<? extends Serializable>  item: 
+        fpmlContracts.getDealIdentifierOrDealSummaryAndFacilityIdentifier()) {
+      Object object = item.getValue();
+      if (object.getClass() == LoanContract.class) {
+        contracts.add(convert((LoanContract)object));
+      }
+    }
+    
+    AbstractFacility loan = fpmlFacility.getFacilityGroup().getValue();
+    FacilityType facilityType = FacilityType.Term;
+    
+     if (loan.getClass() == TermLoan.class)
+       facilityType = FacilityType.Term;
+     
+     List<StandardId> identifiers = new ArrayList<StandardId>();
     
     return Facility.builder()
         .agent(convert(loan.getAgentPartyReference()))
+        .borrower(convert(loan.getBorrowerPartyReference()))
+        .contracts(contracts)
+        .events(events)
+        .facilityType(facilityType)
+        .id(convert(loan.getInstrumentId().get(0)))
+        .identifiers(identifiers)
+        .maturityDate(loan.getMaturityDate())
+        .originalCommitmentAmount(convert(loan.getOriginalCommitment()))
+        .startDate(loan.getStartDate())
         .build();
+  }
+
+  private static com.syndloanhub.loansum.product.facility.LoanContract convert(LoanContract contract) {
+    log.debug("fixed: " + contract.getFixedRateAccrual());
+    log.debug("floating: " + contract.getFloatingRateAccrual());
+    return com.syndloanhub.loansum.product.facility.LoanContract.builder()
+        .build();
+  }
+
+  private static StandardId convert(InstrumentId instrumentId) {
+    return StandardId.of(instrumentId.getInstrumentIdScheme(), instrumentId.getValue());
   }
 
   static public com.syndloanhub.loansum.product.facility.Repayment convert(Repayment event) {
