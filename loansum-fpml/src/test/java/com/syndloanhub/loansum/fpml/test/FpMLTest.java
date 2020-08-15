@@ -6,9 +6,8 @@ import static com.syndloanhub.loansum.product.facility.LoanTradingAccrualSettlem
 import static com.syndloanhub.loansum.product.facility.LoanTradingAssoc.LSTA;
 import static com.syndloanhub.loansum.product.facility.LoanTradingDocType.Par;
 import static com.syndloanhub.loansum.product.facility.LoanTradingFormOfPurchase.Assignment;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -16,8 +15,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -25,7 +22,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 
-import org.joda.beans.ser.JodaBeanSer;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +35,10 @@ import com.opengamma.strata.basics.schedule.Frequency;
 import com.opengamma.strata.pricer.rate.ImmutableRatesProvider;
 import com.opengamma.strata.pricer.rate.RatesProvider;
 import com.opengamma.strata.product.TradeInfo;
-import com.syndloanhub.loansum.fpml.FacilityStatementExporter;
 import com.syndloanhub.loansum.fpml.FpMLHelper;
-import com.syndloanhub.loansum.fpml.LoanServicingNotificationExporter;
-import com.syndloanhub.loansum.fpml.LoanTradeNotificationExporter;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityStatement;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanServicingNotification;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTradeNotification;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.ObjectFactory;
 import com.syndloanhub.loansum.fpml.v5_11.loansum.FacilityType;
 import com.syndloanhub.loansum.fpml.v5_11.loansum.PortfolioType;
 import com.syndloanhub.loansum.fpml.v5_11.util.FpMLNamespacePrefixMapper;
@@ -182,11 +174,11 @@ class FpMLTest {
 
     final LocalDate effectiveDate = TRADE_INFO.getSettlementDate().get().plusDays(1);
 
-    FacilityStatement facility = FacilityStatementExporter.convert(LOAN);
-    LoanServicingNotification contracts = LoanServicingNotificationExporter.convert(LOAN);
+    FacilityStatement facility = FpMLHelper.convert(LOAN, new FacilityStatement());
+    LoanServicingNotification contracts = FpMLHelper.convert(LOAN, new LoanServicingNotification());
 
     List<LoanTradeNotification> trades = new ArrayList<LoanTradeNotification>();
-    trades.add(LoanTradeNotificationExporter.convert(LOAN_TRADE));
+    trades.add(FpMLHelper.convert(LOAN_TRADE, new LoanTradeNotification()));
 
     PortfolioType loansumPortfolio = FpMLHelper.loansumFactory.createPortfolioType();
     FacilityType loansumFacility = FpMLHelper.loansumFactory.createFacilityType();
@@ -206,13 +198,15 @@ class FpMLTest {
     marshaller.marshal(je, sw);
     System.out.println(sw.toString());
 
-    context = JAXBContext.newInstance("com.syndloanhub.loansum.fpml.v5_11.loansum:com.syndloanhub.loansum.fpml.v5_11.confirmation");
+    context =
+        JAXBContext.newInstance("com.syndloanhub.loansum.fpml.v5_11.loansum:com.syndloanhub.loansum.fpml.v5_11.confirmation");
     Unmarshaller unmarshaller = createUnmarshaller(context);
     je = (JAXBElement<PortfolioType>) unmarshaller.unmarshal(new StringReader(sw.toString()));
 
     loansumPortfolio = je.getValue();
     final Facility FPML_LOAN = FpMLHelper.convert(loansumPortfolio.getFacility().get(0).getFpMLFacility(),
         loansumPortfolio.getFacility().get(0).getFpMLContracts());
-
+    
+    assertTrue(FPML_LOAN.equals(LOAN));
   }
 }
