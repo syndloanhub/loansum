@@ -29,6 +29,7 @@ import com.opengamma.strata.basics.index.RateIndex;
 import com.opengamma.strata.basics.schedule.Frequency;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.AbstractFacility;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.AbstractLoanServicingEvent;
+import com.syndloanhub.loansum.fpml.v5_11.confirmation.AccrualOptionBase;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.AccrualTypeId;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.Adjustment;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.AmountAdjustmentEnum;
@@ -81,6 +82,7 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.TermLoan;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.TradeId;
 import com.syndloanhub.loansum.product.facility.Accrual;
 import com.syndloanhub.loansum.product.facility.Facility;
+import com.syndloanhub.loansum.product.facility.FacilityEvent;
 import com.syndloanhub.loansum.product.facility.FacilityType;
 import com.syndloanhub.loansum.product.facility.FeeAndRateOption;
 import com.syndloanhub.loansum.product.facility.LoanContractEvent;
@@ -371,7 +373,7 @@ public final class FpMLHelper {
     }
   }
 
-  public static Facility convert(FacilityStatement fpmlFacility, LoanServicingNotification fpmlContracts) {
+  public static Facility convert(FacilityStatement fpmlFacility, LoanServicingNotification fpmlContracts) throws Exception {
     List<com.syndloanhub.loansum.product.facility.LoanContract> contracts =
         new ArrayList<com.syndloanhub.loansum.product.facility.LoanContract>();
     Map<StandardId, List<LoanContractEvent>> eventMap = new HashMap<StandardId, List<LoanContractEvent>>();
@@ -390,6 +392,8 @@ public final class FpMLHelper {
           eventMap.put(contractId, new ArrayList<LoanContractEvent>());
         }
         eventMap.get(contractId).add(convert(repayment));
+      } else if (event.getDeclaredType() == CommitmentAdjustment.class) {
+        events.add(convert((CommitmentAdjustment) event.getValue()));
       }
     }
 
@@ -411,6 +415,15 @@ public final class FpMLHelper {
       identifiers.add(convert(id));
     }
 
+    List<FeeAndRateOption> options = new ArrayList<FeeAndRateOption>();
+
+    for (AccrualOptionBase option : loan.getFixedRateOptionOrFloatingRateOptionOrLcOption()) {
+      if (option instanceof FloatingRateOption) {
+        options.add(convert((FloatingRateOption) option));
+      } else
+        throw new Exception();
+    }
+
     return Facility.builder()
         .agent(convert(loan.getAgentPartyReference()))
         .borrower(convert(loan.getBorrowerPartyReference()))
@@ -422,7 +435,18 @@ public final class FpMLHelper {
         .maturityDate(loan.getMaturityDate())
         .originalCommitmentAmount(convert(loan.getOriginalCommitment()))
         .startDate(loan.getStartDate())
+        .options(options)
         .build();
+  }
+
+  private static CurrencyAmount convert(Adjustment adjustment) {
+    switch (adjustment.getAdjustmentType()) {
+      case INCREASE:
+      default:
+        return CurrencyAmount.of(adjustment.getAmount().getCurrency().getValue(), adjustment.getAmount().getAmount());
+      case DECREASE:
+        return CurrencyAmount.of(adjustment.getAmount().getCurrency().getValue(), adjustment.getAmount().getAmount()).negated();
+    }
   }
 
   private static com.syndloanhub.loansum.product.facility.LoanContract convert(LoanContract contract,
@@ -514,6 +538,15 @@ public final class FpMLHelper {
     }
     fpml.setAdjustment(adj);
     return fpml;
+  }
+
+  static public com.syndloanhub.loansum.product.facility.CommitmentAdjustment convert(CommitmentAdjustment fpml) {
+    return com.syndloanhub.loansum.product.facility.CommitmentAdjustment.builder()
+        .effectiveDate(fpml.getEffectiveDate())
+        .pik(fpml.isPik())
+        .refusalAllowed(fpml.isRefusalAllowed())
+        .amount(convert(fpml.getAdjustment()))
+        .build();
   }
 
   static public FixedRateAccrual convert(com.syndloanhub.loansum.product.facility.FixedRateAccrual accrual) {
@@ -804,8 +837,8 @@ public final class FpMLHelper {
   static public FloatingRateOption convert(com.syndloanhub.loansum.product.facility.FeeAndRateOption option) {
     FloatingRateOption fpml = FpMLHelper.factory.createFloatingRateOption();
     AccrualTypeId id = FpMLHelper.factory.createAccrualTypeId();
-    id.setAccrualTypeIdScheme(FpMLHelper.OPTION_SCHEME);
-    id.setValue("" + Math.abs(new Random().nextInt()));
+    id.setAccrualTypeIdScheme(option.getId().getScheme());
+    id.setValue(option.getId().getValue());
     fpml.setAccrualOptionId(id);
     fpml.setSpread(option.getRate());
     fpml.setPikSpread(option.getPikSpread());
@@ -814,7 +847,23 @@ public final class FpMLHelper {
     fpml.setEndDate(option.getEndDate());
     fpml.setFloatingRateIndex(FpMLHelper.convert(option.getIndex().get()));
     fpml.setDayCountFraction(FpMLHelper.convert(option.getDayCount()));
+    fpml.setPaymentFrequency(convert(option.getPaymentFrequency()));
     return fpml;
+  }
+
+  static public com.syndloanhub.loansum.product.facility.FloatingRateOption convert(FloatingRateOption option) {
+    StandardId id = StandardId.of(option.getAccrualOptionId().getAccrualTypeIdScheme(), option.getAccrualOptionId().getValue());
+    return com.syndloanhub.loansum.product.facility.FloatingRateOption.builder()
+        .currency(convert(option.getCurrency()))
+        .dayCount(convert(option.getDayCountFraction()))
+        .endDate(option.getEndDate())
+        .id(id)
+        .index(convert(option.getFloatingRateIndex()))
+        .paymentFrequency(convert(option.getPaymentFrequency()))
+        .pikSpread(option.getPikSpread())
+        .rate(option.getSpread())
+        .startDate(option.getStartDate())
+        .build();
   }
 
   static public com.syndloanhub.loansum.product.facility.FloatingRateAccrual convert(FloatingRateAccrual accrual) {

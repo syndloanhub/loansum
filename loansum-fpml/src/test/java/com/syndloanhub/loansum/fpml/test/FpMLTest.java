@@ -95,7 +95,7 @@ class FpMLTest {
   }
 
   @Test
-  public void test_termLoan_1() throws IOException, JAXBException, DatatypeConfigurationException {
+  public void test_termLoan_1() throws Exception {
     final FloatingRateOption OPTION = FloatingRateOption.builder()
         .currency(Currency.USD)
         .dayCount(DayCounts.ACT_360)
