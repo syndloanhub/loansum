@@ -11,15 +11,9 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.opengamma.strata.basics.StandardId;
 import com.opengamma.strata.basics.currency.Currency;
 import com.opengamma.strata.basics.currency.CurrencyAmount;
@@ -43,7 +37,6 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityCommitment;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityIdentifier;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityReference;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilityStatement;
-import com.syndloanhub.loansum.fpml.v5_11.confirmation.FacilitySummary;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FixedRateAccrual;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FloatingRateAccrual;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.FloatingRateIndexLoan;
@@ -82,7 +75,6 @@ import com.syndloanhub.loansum.fpml.v5_11.confirmation.TermLoan;
 import com.syndloanhub.loansum.fpml.v5_11.confirmation.TradeId;
 import com.syndloanhub.loansum.product.facility.Accrual;
 import com.syndloanhub.loansum.product.facility.Facility;
-import com.syndloanhub.loansum.product.facility.FacilityEvent;
 import com.syndloanhub.loansum.product.facility.FacilityType;
 import com.syndloanhub.loansum.product.facility.FeeAndRateOption;
 import com.syndloanhub.loansum.product.facility.LoanContractEvent;
@@ -93,24 +85,19 @@ import com.syndloanhub.loansum.product.facility.LoanTradingFormOfPurchase;
 import com.syndloanhub.loansum.product.facility.LoanTradingType;
 
 public final class FpMLHelper {
-  public static final Logger log = LoggerFactory.getLogger(FpMLHelper.class);
-  public static final ObjectFactory factory = new ObjectFactory();
-  public static final com.syndloanhub.loansum.fpml.v5_11.loansum.ObjectFactory loansumFactory =
+  public final static com.syndloanhub.loansum.fpml.v5_11.loansum.ObjectFactory loansumFactory =
       new com.syndloanhub.loansum.fpml.v5_11.loansum.ObjectFactory();
-  public static final String MESSAGE_ID_SCHEME = "http://www.syndloanhub.com/messaging/id";
-  public static final String MESSAGE_ADDRESS_SCHEME = "http://www.syndloanhub.com/messaging/address";
-  public static final String OPTION_SCHEME = "http://www.syndloanhub.com/messaging/borrowingoptionids";
-  public static final String SYNDLOANHUB_EIN = "0600447425";
-  public static final String NJEIN_SCHEME = "https://www.njportal.com";
-  public static final String CUSIP_SCHEME = "http://www.fpml.org/coding-scheme/external/instrument-id-CUSIP";
-  public static final String BBG_SCHEME = "http://www.fpml.org/coding-scheme/external/instrument-id-Bloomberg";
-  public static final String PTY_SCHEME = "http://www.fpml.org/coding-scheme/external/iso9362";
-  public static final String NA_SCHEME = "http://www.syndloanhub.com/coding-scheme/na";
-  public static final String EVENT_ID_SCHEME = "http://www.syndloanhub.com/coding-scheme/event-id";
-  public static final String DCF_SCHEME = "http://www.fpml.org/coding-scheme/day-count-fraction-2-2";
-  public static final String FRI_SCHEME = "http://www.fpml.org/coding-scheme/floating-rate-index-2-30";
-  public static final String CCY_SCHEME = "http://www.fpml.org/coding-scheme/currency-1-0";
-  public static final String TP_ROLE_SCHEME = "http://www.fpml.org/coding-scheme/trading-party-role-1-0";
+
+  private static final ObjectFactory factory = new ObjectFactory();
+
+  private static final String MESSAGE_ID_SCHEME = "http://www.syndloanhub.com/messaging/id";
+  private static final String SYNDLOANHUB_EIN = "0600447425";
+  private static final String NJEIN_SCHEME = "https://www.njportal.com";
+  private static final String NA_SCHEME = "http://www.syndloanhub.com/coding-scheme/na";
+  private static final String EVENT_ID_SCHEME = "http://www.syndloanhub.com/coding-scheme/event-id";
+  private static final String DCF_SCHEME = "http://www.fpml.org/coding-scheme/day-count-fraction-2-2";
+  private static final String FRI_SCHEME = "http://www.fpml.org/coding-scheme/floating-rate-index-2-30";
+  private static final String TP_ROLE_SCHEME = "http://www.fpml.org/coding-scheme/trading-party-role-1-0";
 
   //private static Map<StandardId, String> idMap = new HashMap<StandardId, String>();
   private static int nextId = 0;
@@ -119,47 +106,13 @@ public final class FpMLHelper {
 
   private static int nextEventId = 0;
 
-  public final static com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency convert(Currency value) {
+  private final static com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency convert(Currency value) {
     com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency fpml = factory.createCurrency();
     fpml.setValue(value.toString());
     return fpml;
   }
 
-  public final static JAXBElement<com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency> exportCurrencyElement(
-      Currency value) {
-    com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency fpml = convert(value);
-    return new JAXBElement<com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency>(
-        new QName(value.getClass().getSimpleName()),
-        com.syndloanhub.loansum.fpml.v5_11.confirmation.Currency.class, fpml);
-  }
-
-  public final static NonNegativeMoney exportCurrencyAmount(CurrencyAmount value) {
-    NonNegativeMoney fpml = factory.createNonNegativeMoney();
-    fpml.setCurrency(convert(value.getCurrency()));
-    fpml.setAmount(value.getAmount());
-    return fpml;
-  }
-
-  public final static JAXBElement<NonNegativeMoney> exportCurrencyAmountElement(CurrencyAmount value) {
-    final NonNegativeMoney export = exportCurrencyAmount(value);
-    final XmlType xmlType = export.getClass().getAnnotation(XmlType.class);
-    final JAXBElement<NonNegativeMoney> element = new JAXBElement<NonNegativeMoney>(new QName(xmlType.name()),
-        NonNegativeMoney.class, exportCurrencyAmount(value));
-
-    return element;
-  }
-
-  public final static JAXBElement<com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade> createLoanTradeElement(
-      com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade export) {
-    final XmlType xmlType = export.getClass().getAnnotation(XmlType.class);
-    final JAXBElement<com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade> element =
-        new JAXBElement<com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade>(
-            new QName(xmlType.name()), com.syndloanhub.loansum.fpml.v5_11.confirmation.LoanTrade.class, export);
-
-    return element;
-  }
-
-  public final static LoanTradingFormOfPurchaseEnum convert(LoanTradingFormOfPurchase fop) {
+  private final static LoanTradingFormOfPurchaseEnum convert(LoanTradingFormOfPurchase fop) {
     switch (fop) {
       case Assignment:
         return LoanTradingFormOfPurchaseEnum.ASSIGNMENT;
@@ -170,14 +123,14 @@ public final class FpMLHelper {
     }
   }
 
-  public final static XMLGregorianCalendar getXMLGregorianCalendarNow() throws DatatypeConfigurationException {
+  private final static XMLGregorianCalendar getXMLGregorianCalendarNow() throws DatatypeConfigurationException {
     GregorianCalendar gregorianCalendar = new GregorianCalendar();
     DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
     XMLGregorianCalendar now = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
     return now;
   }
 
-  public final static RequestMessageHeader makeHeader() throws DatatypeConfigurationException {
+  private final static RequestMessageHeader makeHeader() throws DatatypeConfigurationException {
     RequestMessageHeader header = factory.createRequestMessageHeader();
 
     MessageId id = factory.createMessageId();
@@ -195,7 +148,7 @@ public final class FpMLHelper {
     return header;
   }
 
-  public final static StandardId convert(PartyReference ref) {
+  private final static StandardId convert(PartyReference ref) {
     Party party = (Party) ref.getHref();
     PartyId partyId = party.getPartyId().get(0);
     StandardId id = StandardId.of(partyId.getPartyIdScheme(), partyId.getValue());
@@ -208,26 +161,26 @@ public final class FpMLHelper {
     return ref;
   }
 
-  public final static PartyReference makePartyReference(StandardId id) {
+  private final static PartyReference makePartyReference(StandardId id) {
     Party party = makeParty(id);
     return makePartyReference(party);
   }
 
-  public final static BusinessEventIdentifier makeBusinessEventIdentifier(PartyReference party) {
+  private final static BusinessEventIdentifier makeBusinessEventIdentifier(PartyReference party) {
     BusinessEventIdentifier id = factory.createBusinessEventIdentifier();
     id.setPartyReference(party);
     id.setEventId(makeEventId());
     return id;
   }
 
-  public final static EventId makeEventId() {
+  private final static EventId makeEventId() {
     EventId eid = factory.createEventId();
     eid.setEventIdScheme(EVENT_ID_SCHEME);
     eid.setValue(String.format("EID%08d", nextEventId++));
     return eid;
   }
 
-  public final static void clearPartyMap() {
+  private final static void clearPartyMap() {
     partyMap.clear();
   }
 
@@ -247,22 +200,22 @@ public final class FpMLHelper {
     return partyMap.get(id);
   }
 
-  public final static String nextID() {
+  private final static String nextID() {
     return String.format("ID%08d", nextId++);
   }
 
-  public final static DayCountFraction convert(DayCount dc) {
+  private final static DayCountFraction convert(DayCount dc) {
     DayCountFraction dc2 = factory.createDayCountFraction();
     dc2.setDayCountFractionScheme(DCF_SCHEME);
     dc2.setValue(DayCount.extendedEnum().externalNames("FpML").reverseLookup(dc));
     return dc2;
   }
 
-  public final static DayCount convert(DayCountFraction dc) {
+  private final static DayCount convert(DayCountFraction dc) {
     return DayCount.of(dc.getValue());
   }
 
-  public static Period convert(Frequency frequency) {
+  private final static Period convert(Frequency frequency) {
     Period period = factory.createPeriod();
     String s = frequency.toString();
     period.setPeriod(PeriodEnum.valueOf(s.substring(s.length() - 1)));
@@ -270,43 +223,43 @@ public final class FpMLHelper {
     return period;
   }
 
-  public static Frequency convert(Period period) {
+  private final static Frequency convert(Period period) {
     return Frequency.parse("P" + period.getPeriodMultiplier() + period.getPeriod().toString());
   }
 
-  public static FloatingRateIndexLoan convert(RateIndex index) {
+  private final static FloatingRateIndexLoan convert(RateIndex index) {
     FloatingRateIndexLoan fpmlIndex = factory.createFloatingRateIndexLoan();
     fpmlIndex.setFloatingRateIndexScheme(FRI_SCHEME);
     fpmlIndex.setValue(index.getName());
     return fpmlIndex;
   }
 
-  public static RateIndex convert(FloatingRateIndexLoan index) {
+  private final static RateIndex convert(FloatingRateIndexLoan index) {
     return IborIndex.of(index.getValue());
   }
 
-  public static PaymentProjection convert(CurrencyAmount paymentProjection, LocalDate paymentDate) {
+  private final static PaymentProjection convert(CurrencyAmount paymentProjection, LocalDate paymentDate) {
     PaymentProjection projection = factory.createPaymentProjection();
     projection.setNextPaymentDate(paymentDate);
     projection.setProjectedAmount(convert(paymentProjection));
     return projection;
   }
 
-  public static MoneyWithParticipantShare convert(CurrencyAmount amount) {
+  private final static MoneyWithParticipantShare convert(CurrencyAmount amount) {
     MoneyWithParticipantShare fpml = factory.createMoneyWithParticipantShare();
     fpml.setAmount(amount.getAmount());
     fpml.setCurrency(convert(amount.getCurrency()));
     return fpml;
   }
 
-  public static NonNegativeMoney convertToNonNegativeMoney(CurrencyAmount amount) {
+  private final static NonNegativeMoney convertToNonNegativeMoney(CurrencyAmount amount) {
     NonNegativeMoney fpml = factory.createNonNegativeMoney();
     fpml.setCurrency(convert(amount.getCurrency()));
     fpml.setAmount(amount.getAmount());
     return fpml;
   }
 
-  public static LoanTradingAccrualSettlementEnum convert(LoanTradingAccrualSettlement accrualSettlementType) {
+  private final static LoanTradingAccrualSettlementEnum convert(LoanTradingAccrualSettlement accrualSettlementType) {
     LoanTradingAccrualSettlementEnum accrualSettlementEnum = LoanTradingAccrualSettlementEnum.SETTLED_WITHOUT_ACCRUED;
     switch (accrualSettlementType) {
       case Flat:
@@ -322,28 +275,28 @@ public final class FpMLHelper {
     return accrualSettlementEnum;
   }
 
-  public static LoanTradingPartyRole makeTradingRole(String role) {
+  private final static LoanTradingPartyRole makeTradingRole(String role) {
     LoanTradingPartyRole fpml = factory.createLoanTradingPartyRole();
     fpml.setTradingPartyRoleScheme(TP_ROLE_SCHEME);
     fpml.setValue(role);
     return fpml;
   }
 
-  public static IssuerId makeIssuerId(com.syndloanhub.loansum.product.facility.LoanTrade trade) {
+  private final static IssuerId makeIssuerId(com.syndloanhub.loansum.product.facility.LoanTrade trade) {
     IssuerId id = factory.createIssuerId();
     id.setIssuerIdScheme(NA_SCHEME);
     id.setValue("" + Math.abs(new Random().nextInt()));
     return id;
   }
 
-  public static TradeId makeTradeId(com.syndloanhub.loansum.product.facility.LoanTrade trade) {
+  private final static TradeId makeTradeId(com.syndloanhub.loansum.product.facility.LoanTrade trade) {
     TradeId id = factory.createTradeId();
     id.setTradeIdScheme(trade.getInfo().getId().get().getScheme());
     id.setValue(trade.getInfo().getId().get().getValue());
     return id;
   }
 
-  public static LoanTradingTypeEnum convert(LoanTradingType tradeType) {
+  private final static LoanTradingTypeEnum convert(LoanTradingType tradeType) {
     switch (tradeType) {
       case Secondary:
       default:
@@ -353,7 +306,7 @@ public final class FpMLHelper {
     }
   }
 
-  public static LoanTradingAssocEnum convert(LoanTradingAssoc association) {
+  private final static LoanTradingAssocEnum convert(LoanTradingAssoc association) {
     switch (association) {
       case LMA:
         return LoanTradingAssocEnum.LMA;
@@ -363,7 +316,7 @@ public final class FpMLHelper {
     }
   }
 
-  public static LoanTradingDocTypeEnum convert(LoanTradingDocType documentationType) {
+  private final static LoanTradingDocTypeEnum convert(LoanTradingDocType documentationType) {
     switch (documentationType) {
       case Par:
       default:
@@ -373,7 +326,7 @@ public final class FpMLHelper {
     }
   }
 
-  public static Facility convert(FacilityStatement fpmlFacility, LoanServicingNotification fpmlContracts) throws Exception {
+  public final static Facility convert(FacilityStatement fpmlFacility, LoanServicingNotification fpmlContracts) throws Exception {
     List<com.syndloanhub.loansum.product.facility.LoanContract> contracts =
         new ArrayList<com.syndloanhub.loansum.product.facility.LoanContract>();
     Map<StandardId, List<LoanContractEvent>> eventMap = new HashMap<StandardId, List<LoanContractEvent>>();
@@ -505,7 +458,7 @@ public final class FpMLHelper {
     return StandardId.of(instrumentId.getInstrumentIdScheme(), instrumentId.getValue());
   }
 
-  static public com.syndloanhub.loansum.product.facility.Repayment convert(Repayment event) {
+  static private com.syndloanhub.loansum.product.facility.Repayment convert(Repayment event) {
     // TODO: interest on paydown?
     return com.syndloanhub.loansum.product.facility.Repayment.builder()
         .effectiveDate(event.getEffectiveDate())
@@ -514,7 +467,7 @@ public final class FpMLHelper {
         .build();
   }
 
-  public static CurrencyAmount convert(MoneyWithParticipantShare amount) {
+  private final static CurrencyAmount convert(MoneyWithParticipantShare amount) {
     return CurrencyAmount.of(FpMLHelper.convert(amount.getCurrency()), amount.getAmount());
   }
 
@@ -522,7 +475,7 @@ public final class FpMLHelper {
     return Currency.of(currency.getValue());
   }
 
-  static public CommitmentAdjustment convert(com.syndloanhub.loansum.product.facility.CommitmentAdjustment event) {
+  static private CommitmentAdjustment convert(com.syndloanhub.loansum.product.facility.CommitmentAdjustment event) {
     CommitmentAdjustment fpml = FpMLHelper.factory.createCommitmentAdjustment();
     fpml.setEffectiveDate(event.getEffectiveDate());
     fpml.setRefusalAllowed(event.isRefusalAllowed());
@@ -540,7 +493,7 @@ public final class FpMLHelper {
     return fpml;
   }
 
-  static public com.syndloanhub.loansum.product.facility.CommitmentAdjustment convert(CommitmentAdjustment fpml) {
+  static private com.syndloanhub.loansum.product.facility.CommitmentAdjustment convert(CommitmentAdjustment fpml) {
     return com.syndloanhub.loansum.product.facility.CommitmentAdjustment.builder()
         .effectiveDate(fpml.getEffectiveDate())
         .pik(fpml.isPik())
@@ -549,12 +502,12 @@ public final class FpMLHelper {
         .build();
   }
 
-  static public FixedRateAccrual convert(com.syndloanhub.loansum.product.facility.FixedRateAccrual accrual) {
+  static private FixedRateAccrual convert(com.syndloanhub.loansum.product.facility.FixedRateAccrual accrual) {
     FixedRateAccrual fpml = FpMLHelper.factory.createFixedRateAccrual();
     return fpml;
   }
 
-  static public FloatingRateAccrual convert(com.syndloanhub.loansum.product.facility.FloatingRateAccrual accrual) {
+  static private FloatingRateAccrual convert(com.syndloanhub.loansum.product.facility.FloatingRateAccrual accrual) {
     FloatingRateAccrual fpml = FpMLHelper.factory.createFloatingRateAccrual();
     fpml.setAllInRate(accrual.getAllInRate());
     fpml.setBaseRate(accrual.getBaseRate());
@@ -580,7 +533,7 @@ public final class FpMLHelper {
     return fpml;
   }
 
-  static public TermLoan convert(com.syndloanhub.loansum.product.facility.Facility facility)
+  static private TermLoan convert(com.syndloanhub.loansum.product.facility.Facility facility)
       throws DatatypeConfigurationException {
     TermLoan fpml = FpMLHelper.factory.createTermLoan();
 
@@ -616,7 +569,7 @@ public final class FpMLHelper {
     return fpml;
   }
 
-  static public LoanTrade convert(com.syndloanhub.loansum.product.facility.LoanTrade trade) {
+  static private LoanTrade convert(com.syndloanhub.loansum.product.facility.LoanTrade trade) {
     LoanTrade fpml = factory.createLoanTrade();
     fpml.setId(FpMLHelper.nextID());
     fpml.setAccrualSettlementType(FpMLHelper.convert(trade.getAccrualSettlementType()));
@@ -772,7 +725,7 @@ public final class FpMLHelper {
     return fpml;
   }
 
-  static public Repayment convert(com.syndloanhub.loansum.product.facility.Repayment event, LoanContract contract) {
+  static private Repayment convert(com.syndloanhub.loansum.product.facility.Repayment event, LoanContract contract) {
     Repayment fpml = FpMLHelper.factory.createRepayment();
     fpml.setAmount(FpMLHelper.convert(event.getAmount()));
     fpml.setPrice(event.getPrice());
@@ -784,26 +737,7 @@ public final class FpMLHelper {
     return fpml;
   }
 
-  static public com.syndloanhub.loansum.product.facility.LoanContract convert(LoanContract fpmlContract, Facility facility) {
-    ContractId contractId = fpmlContract.getContractId().get(0);
-    Accrual accrual = null;
-
-    if (fpmlContract.getFloatingRateAccrual() != null) {
-      accrual = convert(fpmlContract.getFloatingRateAccrual());
-    }
-
-    List<LoanContractEvent> events = new ArrayList<LoanContractEvent>();
-    //for (Object event: fpmlContract.)
-
-    return com.syndloanhub.loansum.product.facility.LoanContract.builder()
-        .id(StandardId.of(contractId.getContractIdScheme(), contractId.getValue()))
-        .accrual(accrual)
-        .paymentDate(fpmlContract.getMaturityDate()) // TODO: maturity date?
-        .events(events)
-        .build();
-  }
-
-  static public LoanContract convert(com.syndloanhub.loansum.product.facility.LoanContract contract,
+  static private LoanContract convert(com.syndloanhub.loansum.product.facility.LoanContract contract,
       Facility facility) {
     LoanContract fpml = FpMLHelper.factory.createLoanContract();
     fpml.setAmount(FpMLHelper.convert(contract.getAccrual().getAccrualAmount()));
@@ -834,7 +768,7 @@ public final class FpMLHelper {
     return fpml;
   }
 
-  static public FloatingRateOption convert(com.syndloanhub.loansum.product.facility.FeeAndRateOption option) {
+  static private FloatingRateOption convert(com.syndloanhub.loansum.product.facility.FeeAndRateOption option) {
     FloatingRateOption fpml = FpMLHelper.factory.createFloatingRateOption();
     AccrualTypeId id = FpMLHelper.factory.createAccrualTypeId();
     id.setAccrualTypeIdScheme(option.getId().getScheme());
@@ -851,7 +785,7 @@ public final class FpMLHelper {
     return fpml;
   }
 
-  static public com.syndloanhub.loansum.product.facility.FloatingRateOption convert(FloatingRateOption option) {
+  static private com.syndloanhub.loansum.product.facility.FloatingRateOption convert(FloatingRateOption option) {
     StandardId id = StandardId.of(option.getAccrualOptionId().getAccrualTypeIdScheme(), option.getAccrualOptionId().getValue());
     return com.syndloanhub.loansum.product.facility.FloatingRateOption.builder()
         .currency(convert(option.getCurrency()))
@@ -864,35 +798,6 @@ public final class FpMLHelper {
         .rate(option.getSpread())
         .startDate(option.getStartDate())
         .build();
-  }
-
-  static public com.syndloanhub.loansum.product.facility.FloatingRateAccrual convert(FloatingRateAccrual accrual) {
-    return null;
-  }
-
-  static public FacilitySummary convert(com.syndloanhub.loansum.product.facility.Facility facility, FacilitySummary selector) {
-    FacilitySummary fpml = FpMLHelper.factory.createFacilitySummary();
-
-    for (StandardId id : facility.getIdentifiers()) {
-      InstrumentId instrumentId = FpMLHelper.factory.createInstrumentId();
-      instrumentId.setInstrumentIdScheme(id.getScheme());
-      instrumentId.setValue(id.getValue());
-      fpml.getInstrumentId().add(instrumentId);
-    }
-
-    fpml.setAgentPartyReference(FpMLHelper.makePartyReference(facility.getAgent()));
-    fpml.setBorrowerPartyReference(FpMLHelper.makePartyReference(facility.getBorrower()));
-    fpml.setOriginalCommitment(FpMLHelper.convert(facility.getOriginalCommitmentAmount()));
-    fpml.setPartyReference(fpml.getAgentPartyReference());
-    fpml.setStartDate(facility.getStartDate());
-    fpml.setMaturityDate(facility.getMaturityDate());
-
-    FacilityCommitment commitment = FpMLHelper.factory.createFacilityCommitment();
-    commitment.setTotalCommitmentAmount(FpMLHelper.convert(facility.getCommitmentAmount(LocalDate.now())));
-
-    fpml.setCurrentCommitment(commitment);
-
-    return fpml;
   }
 
   static public FacilityStatement convert(com.syndloanhub.loansum.product.facility.Facility facility, FacilityStatement selector)
